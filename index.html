@@ -158,7 +158,7 @@ button,input{font:inherit;color:inherit}
 .pfav .mt{font-weight:800;color:var(--vetiver);font-size:15px}
 .seeall{font-weight:600;color:var(--vetiver);text-underline-offset:3px}
 .pacc{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
-.pacc div{min-height:118px;border-radius:16px;padding:14px 16px;background:var(--c);color:var(--t);display:flex;flex-direction:column;justify-content:space-between;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.pacc div{min-height:118px;border-radius:16px;padding:14px 16px;background:var(--c);color:var(--t);display:flex;flex-direction:column;justify-content:flex-end;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
 .pacc b{font-family:var(--f-display);font-size:30px;font-weight:600;line-height:1;text-transform:capitalize}
 .pacc small{font-size:13px;font-weight:550;opacity:.85}
 .pnotes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:24px 16px}
@@ -463,7 +463,7 @@ button,input{font:inherit;color:inherit}
     <div class="ptype" id="pType"></div>
     <section class="psec"><header><h3>Perfumes you love</h3><span id="pFavCount"></span></header><div class="pfavs" id="pFavs"></div></section>
     <section class="psec"><header><h3>Try these next</h3><a href="#matches" class="seeall">See all matches</a></header><div class="pfavs" id="pNext"></div></section>
-    <section class="psec"><header><h3>Your accords</h3><span>Strongest first</span></header><div class="pacc" id="pAcc"></div></section>
+    <section class="psec"><header><h3>Your accords</h3></header><div class="pacc" id="pAcc"></div></section>
     <section class="psec"><header><h3>Your notes</h3><span id="pNoteCount"></span></header><div class="pnotes" id="pNotes"></div></section>
     <section class="psec"><header><h3>Your shareable card</h3></header>
       <div class="pshare"><div class="dnawrap" id="pCard"></div>
@@ -820,7 +820,7 @@ function swatch(i, hint){
 function drawAccords(){
   const fav = favAccRank().slice(0, 12);
   const favCount = new Map(); for (const id of S.favs) { const p = D.byId.get(id); if (p) for (const [a, s] of p.acc) if (s >= .4) favCount.set(a, (favCount.get(a) || 0) + 1); }
-  $("#accFav").replaceChildren(...fav.map(i => swatch(i, favCount.get(i) ? `in ${favCount.get(i)} of ${S.favs.length}` : null)));
+  $("#accFav").replaceChildren(...fav.map(i => swatch(i)));
   const rest = D.accords.map((_, i) => i).filter(i => !fav.includes(i)).sort((a, b) => D.accFreq[b] - D.accFreq[a]);
   $("#accRest").replaceChildren(...(accAll ? rest : rest.slice(0, 12)).map(i => swatch(i)));
   $("#accMore").hidden = accAll;
@@ -984,9 +984,7 @@ async function openProfile(){
     el("div", {class:"minipills"}, ...p.acc.slice(0, 4).map(([a]) => { const n = D.accords[a], c = accColor(n); return el("span", {style:`--c:${c};--t:${textOn(c)}`, text:n}); })),
     el("a", {href:`https://www.fragrantica.com/perfume/${slugF(p.brand)}/${slugF(p.name)}-${p.id}.html`, target:"_blank", rel:"noopener", text:"Open on Fragrantica"}))));
   // accords
-  const favCount = new Map(); for (const f of m.favs) for (const [a, s2] of f.acc) if (s2 >= .4) favCount.set(D.accords[a], (favCount.get(D.accords[a]) || 0) + 1);
-  $("#pAcc").replaceChildren(...m.accs.map(a => { const c = accColor(a.name), n = favCount.get(a.name);
-    return el("div", {style:`--c:${c};--t:${textOn(c)}`}, n ? el("small", {text:`In ${n} of ${m.favs.length} favorites`}) : el("small"), el("b", {text:a.name})); }));
+  $("#pAcc").replaceChildren(...m.accs.map(a => { const c = accColor(a.name); return el("div", {style:`--c:${c};--t:${textOn(c)}`}, el("b", {text:a.name})); }));
   // notes, with where they sit in the favourites
   $("#pNoteCount").textContent = m.notes.length ? `${m.notes.length} chosen` : "";
   const noteIdx = S.notes;
