@@ -54,7 +54,7 @@ button,input{font:inherit;color:inherit}
 .wrap{max-width:1120px;margin:0 auto}
 
 /* top */
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:18px}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding-block:18px}
 .mark{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:24px;letter-spacing:0}
 .mark svg{width:26px;height:26px;color:var(--vetiver)}
 .status{font-size:var(--s-1);color:var(--ink-2);display:flex;align-items:center;gap:8px}
@@ -117,6 +117,40 @@ button,input{font:inherit;color:inherit}
 .nimg{position:relative}
 .nimg i{font-style:normal}
 .nimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* ---------- accounts ---------- */
+.acctwrap{position:relative;display:flex;align-items:center;gap:14px}
+.acct{min-height:38px;padding:0 16px;border-radius:999px;border:1.5px solid var(--rule);background:var(--raise);font-weight:600;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.acct:hover{border-color:var(--ink)}
+.acct .dot{width:26px;height:26px;border-radius:50%;background:var(--vetiver);color:var(--vetiver-ink);display:grid;place-items:center;font-size:13px;font-weight:700;overflow:hidden}
+.acct .dot img{width:100%;height:100%;object-fit:cover}
+.acctmenu{position:absolute;right:0;top:calc(100% + 8px);z-index:20;min-width:260px;background:var(--raise);border:1.5px solid var(--rule);border-radius:16px;padding:16px;display:grid;gap:10px;box-shadow:0 18px 40px -18px rgba(8,30,25,.45)}
+.acctmenu .who{font-size:14px;color:var(--ink-2);overflow-wrap:anywhere}
+.acctmenu .who b{display:block;color:var(--ink);font-size:16px}
+.acctmenu .sync{font-size:13px;color:var(--vetiver)}
+.acctmenu .danger{color:var(--warn)}
+.auth{max-width:440px;margin:0 auto;padding-block:32px;display:grid;gap:22px}
+.auth h2{font-size:48px}
+.auth .sub{color:var(--ink-2);font-size:17px}
+.auth form{display:grid;gap:16px}
+.auth .go{width:100%}
+.auth .or{display:flex;align-items:center;gap:12px;color:var(--ink-2);font-size:14px}
+.auth .or::before,.auth .or::after{content:"";flex:1;height:1.5px;background:var(--rule)}
+.auth .oauth{display:grid;gap:10px}
+.auth .oauth .quiet{justify-content:center;width:100%}
+.auth .switch{font-size:15px;color:var(--ink-2)}
+.auth .switch a{color:var(--vetiver);font-weight:600;text-underline-offset:3px}
+.auth .ok{color:var(--vetiver);font-size:15px;min-height:1.2em}
+.savebar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;padding:16px 20px;border-radius:16px;background:var(--vetiver-soft)}
+.savebar p{font-size:16px}
+.savebar p b{display:block}
+.legal{max-width:68ch;padding-block:32px;display:grid;gap:16px}
+.legal h2{font-size:48px}
+.legal h3{font-size:28px;margin-top:12px}
+.legal p,.legal li{color:var(--ink-2);font-size:17px}
+.legal ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.sitefoot{margin-top:56px;padding-top:18px;border-top:1.5px solid var(--rule);display:flex;flex-wrap:wrap;gap:8px 20px;font-size:14px;color:var(--ink-2)}
+.sitefoot a{color:var(--ink-2);text-underline-offset:3px}
 
 /* ---------- view tabs ---------- */
 .views{display:flex;gap:2px;padding:4px;border-radius:999px;background:var(--sunk)}
@@ -181,6 +215,7 @@ button,input{font:inherit;color:inherit}
 @media (max-width:560px){
   .phead{grid-template-columns:1fr;justify-items:start;gap:20px}
   .pav{width:110px;height:110px;font-size:44px}
+  .pacts{grid-template-columns:1fr}
   .psec h3{font-size:32px}
   .pfavs{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
   .pfav .n{font-size:22px}
@@ -188,6 +223,8 @@ button,input{font:inherit;color:inherit}
   .pnotes{grid-template-columns:repeat(3,minmax(0,1fr))}
   .pnote .ni{width:72px;height:72px}
   .top .status{display:none}
+  .views{order:3;width:100%;justify-content:center}
+  .views a{flex:1;justify-content:center}
 }
 
 /* ---------- landing ---------- */
@@ -322,7 +359,17 @@ button,input{font:inherit;color:inherit}
 <header class="top wrap">
   <button class="mark" id="homeBtn" type="button"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 2c0 7 12 8 12 11S7 17 7 24M19 2c0 7-12 8-12 11s12 4 12 11"/><path d="M9 6h8M9 20h8" stroke-width="1.6"/></svg>Scent DNA</button>
   <nav class="views" id="viewNav" aria-label="Your pages" hidden><a href="#profile" data-view="profile">Profile</a><a href="#matches" data-view="matches">Matches</a></nav>
-  <div class="status" id="status" role="status"><b></b><span id="statusTxt">Loading 48,531 perfumes</span></div>
+  <div class="acctwrap">
+    <div class="status" id="status" role="status"><b></b><span id="statusTxt">Loading 48,531 perfumes</span></div>
+    <button class="acct" id="acctBtn" type="button" hidden aria-haspopup="true" aria-expanded="false">Sign in</button>
+    <div class="acctmenu" id="acctMenu" hidden>
+      <div class="who" id="acctWho"></div>
+      <div class="sync" id="acctSync"></div>
+      <button class="quiet" id="signOutBtn" type="button">Sign out</button>
+      <button class="textbtn danger" id="delAcctBtn" type="button">Delete my account</button>
+      <div id="delAsk" hidden style="font-size:14px">This permanently deletes your account and profile. <button class="textbtn danger" id="delYes" type="button">Delete it</button> <button class="textbtn" id="delNo" type="button">Keep it</button></div>
+    </div>
+  </div>
 </header>
 
 <main class="wrap">
@@ -452,6 +499,7 @@ button,input{font:inherit;color:inherit}
   </section>
 
   <section id="vProfile" class="profile" hidden>
+    <div class="savebar" id="saveBar" hidden><p><b>Keep your Scent DNA on every device</b>Right now it's only saved in this browser.</p><a class="go" href="#account" style="text-decoration:none">Create a free account</a></div>
     <div class="phead">
       <div class="pav" id="pAvatar"></div>
       <div class="pid"><h1 id="pName"></h1><dl class="pfacts" id="pFacts"></dl></div>
@@ -477,10 +525,45 @@ button,input{font:inherit;color:inherit}
       <span id="pResetAsk" hidden> This deletes your answers from this device. <button class="textbtn" id="pResetYes" type="button">Delete</button> <button class="textbtn" id="pResetNo" type="button">Keep</button></span></div>
   </section>
 
+  <section id="vAuth" class="auth" hidden>
+    <div><h2 id="authTitle">Sign in</h2><p class="sub" id="authSub">Sign in to see your Scent DNA on any device.</p></div>
+    <form id="authForm" novalidate>
+      <div class="field"><label for="authEmail">Email</label><input class="inp" id="authEmail" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="authPass">Password</label><input class="inp" id="authPass" type="password" autocomplete="current-password" minlength="8" required></div>
+      <div class="err" id="authErr" role="alert"></div>
+      <button class="go" id="authSubmit" type="submit">Sign in</button>
+    </form>
+    <button class="textbtn" id="forgotBtn" type="button" style="justify-self:start">Forgot your password?</button>
+    <div class="ok" id="authOk" role="status"></div>
+    <div id="oauthWrap" hidden><div class="or">or</div><div class="oauth" id="oauthBtns"></div></div>
+    <p class="switch" id="authSwitch"></p>
+    <p class="switch">By creating an account you agree to how we handle your data, described in our <a href="#privacy">privacy page</a>.</p>
+  </section>
+
+  <section id="vPrivacy" class="legal" hidden>
+    <h2>Privacy</h2>
+    <p>Scent DNA keeps as little about you as it can, and you can delete it at any time.</p>
+    <h3>Without an account</h3>
+    <p>Your answers and photo are saved only in this browser on this device. Nothing is sent to us.</p>
+    <h3>With an account</h3>
+    <ul>
+      <li>We store your email address, your password (encrypted, we can't read it), your name, birthday, profile photo if you add one, and the perfumes, accords and notes you picked.</li>
+      <li>Your profile is private. Only you can see it when you're signed in.</li>
+      <li>We use your data only to show your profile and recommendations. We don't sell it or share it with advertisers.</li>
+      <li>If you sign in with Google, Google tells us your email address and name.</li>
+    </ul>
+    <h3>Deleting your data</h3>
+    <p>Open the account menu at the top of the page and choose "Delete my account". Your account, profile and photo are deleted right away.</p>
+    <h3>Perfume data</h3>
+    <p>Perfume information comes from the Decant dataset of Fragrantica community data. Bottle and note photos are from Fragrantica.</p>
+    <p><a href="#profile" class="textbtn" style="padding:0">Back to Scent DNA</a></p>
+  </section>
+
   <section id="vLoading" class="loading" hidden>
     <p id="loadTxt">Opening the catalog of 48,531 perfumes</p>
     <div class="meter"><i id="meter"></i></div>
   </section>
+  <footer class="sitefoot"><span>Scent DNA</span><a href="#privacy">Privacy</a></footer>
 </main>
 
 <script>
@@ -558,7 +641,7 @@ function scentType(accs){
 /* ---------- storage ---------- */
 const KEY = "scentDNA.v1", OLDKEY = "scentPassport.v1";
 const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || localStorage.getItem(OLDKEY) || "null"); } catch { return null; } };
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} if (typeof schedulePush === "function") schedulePush(); };
 const wipe = () => { try { localStorage.removeItem(KEY); localStorage.removeItem(OLDKEY); } catch {} };
 const blank = () => ({name:"", dob:"", photo:"", favs:[], accords:[], notes:[], issued:"", accTouched:false});
 let S = Object.assign(blank(), load() || {});
@@ -706,7 +789,7 @@ function card(m){
 $("#sampleCard").append(card(SAMPLE));
 
 /* ---------- views ---------- */
-const V = {landing:$("#vLanding"), builder:$("#vBuilder"), result:$("#vResult"), profile:$("#vProfile"), loading:$("#vLoading")};
+const V = {landing:$("#vLanding"), builder:$("#vBuilder"), result:$("#vResult"), profile:$("#vProfile"), auth:$("#vAuth"), privacy:$("#vPrivacy"), loading:$("#vLoading")};
 function show(v){
   for (const [k, e] of Object.entries(V)) e.hidden = k !== v;
   $("#viewNav").hidden = !(S.issued && S.name);
@@ -714,7 +797,12 @@ function show(v){
   window.scrollTo(0, 0);
 }
 // #matches and #profile are real addresses, so the back button and shared links work
-function route(){ if (!(S.issued && S.name)) return show("landing"); return location.hash === "#matches" ? openResult() : openProfile(); }
+function route(){
+  if (location.hash === "#privacy") return show("privacy");
+  if (location.hash === "#account") return openAuth();
+  if (!(S.issued && S.name)) return show("landing");
+  return location.hash === "#matches" ? openResult() : openProfile();
+}
 function goView(v){ if (location.hash === "#" + v) route(); else location.hash = v; }
 window.addEventListener("hashchange", route);
 async function needData(){ if (!D) { show("loading"); await dataPromise; } }
@@ -755,14 +843,14 @@ function drawThumb(){
 $("#nameInput").addEventListener("input", e => { S.name = e.target.value.replace(/\s+/g, " ").trimStart(); save(); refreshLive(); });
 $("#dobInput").addEventListener("input", e => { S.dob = e.target.value; save(); refreshLive(); });
 $("#photoPick").addEventListener("click", () => $("#photoInput").click());
-$("#photoRemove").addEventListener("click", () => { S.photo = ""; save(); drawThumb(); refreshLive(); });
+$("#photoRemove").addEventListener("click", () => { S.photo = ""; S.photoDirty = true; save(); drawThumb(); refreshLive(); });
 $("#photoInput").addEventListener("change", e => {
   const f = e.target.files[0]; if (!f) return; e.target.value = "";
   const fr = new FileReader();
   fr.onload = () => { const im = new Image();
     im.onload = () => { const W = 360, c = document.createElement("canvas"); c.width = W; c.height = W; const g = c.getContext("2d");
       const s = Math.max(W / im.width, W / im.height); g.drawImage(im, (W - im.width * s) / 2, (W - im.height * s) / 2, im.width * s, im.height * s);
-      S.photo = c.toDataURL("image/jpeg", .85); save(); drawThumb(); refreshLive(); $("#err0").textContent = ""; };
+      S.photo = c.toDataURL("image/jpeg", .85); S.photoDirty = true; save(); drawThumb(); refreshLive(); $("#err0").textContent = ""; };
     im.onerror = () => $("#err0").textContent = "That file can't be read as an image. Choose a JPG or PNG.";
     im.src = fr.result; };
   fr.readAsDataURL(f);
@@ -962,7 +1050,7 @@ async function openResult(){
 
 $("#resetBtn").addEventListener("click", () => $("#resetAsk").hidden = false);
 $("#resetNo").addEventListener("click", () => $("#resetAsk").hidden = true);
-function startOver(){ wipe(); S = blank(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; history.replaceState(null, "", location.pathname + location.search); show("landing"); }
+function startOver(){ wipe(); S = blank(); if (Acc.user) push(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; history.replaceState(null, "", location.pathname + location.search); show("landing"); }
 $("#resetYes").addEventListener("click", startOver);
 
 /* ---------- profile ---------- */
@@ -972,6 +1060,7 @@ const slugF = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[
 async function openProfile(){
   if (!S.issued || !S.name) return show("landing");
   await needData(); show("profile");
+  $("#saveBar").hidden = !(Acc.on && !Acc.user);
   const m = model(), initials = S.name.split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();
   $("#pAvatar").replaceChildren(S.photo ? el("img", {src:S.photo, alt:""}) : initials);
   $("#pName").textContent = S.name;
@@ -1124,9 +1213,149 @@ $("#saveImg").addEventListener("click", () => saveImage($("#msg")));
 $("#pSave").addEventListener("click", () => saveImage($("#pMsg")));
 $("#pSave2").addEventListener("click", () => saveImage($("#pMsg2")));
 
+/* ---------- accounts (PocketBase) ----------
+   Accounts switch on only when this site is served by its own PocketBase server.
+   On GitHub Pages the check below fails quietly and the site works as before, saving in the browser. */
+const Acc = {on:false, pb:null, user:null, ready:null, pushT:null, busy:false};
+const baseURL = new URL(".", location.href).href.replace(/\/$/, "");
+function loadScript(src){ return new Promise((res, rej) => { const sc = document.createElement("script"); sc.src = src; sc.onload = res; sc.onerror = rej; document.head.append(sc); }); }
+async function initAccounts(){
+  if (!/^https?:$/.test(location.protocol)) return;
+  try {
+    const ctl = new AbortController(); setTimeout(() => ctl.abort(), 4000);
+    const r = await fetch(baseURL + "/api/health", {signal:ctl.signal, cache:"no-store"});
+    const j = r.ok ? await r.json() : null;
+    if (!j || j.code !== 200) return;
+    await loadScript("vendor/pocketbase.umd.js");
+    Acc.pb = new PocketBase(baseURL); Acc.on = true;
+    if (Acc.pb.authStore.isValid) {
+      try { await Acc.pb.collection("users").authRefresh(); Acc.user = Acc.pb.authStore.record; await afterSignIn(false); }
+      catch { Acc.pb.authStore.clear(); Acc.user = null; }
+    }
+  } catch {}
+  drawAcct();
+}
+const toDate = d => d ? d + " 00:00:00.000Z" : "";
+function recordToState(rec){
+  return {name:rec.name || "", dob:rec.birthday ? rec.birthday.slice(0, 10) : "",
+    favs:(rec.favorites || []).filter(id => D.byId.has(id)),
+    accords:(rec.accords || []).map(n => D.accords.indexOf(n)).filter(i => i >= 0),
+    notes:(rec.notes || []).map(n => D.notes.indexOf(n)).filter(i => i >= 0),
+    issued:rec.profile_made || "", photo:rec.avatar ? Acc.pb.files.getURL(rec, rec.avatar) : "", accTouched:true, photoDirty:false};
+}
+async function afterSignIn(fresh){
+  await dataPromise;
+  const rec = Acc.user;
+  if (rec.profile_made) {               // the account already has a profile: it wins
+    Object.assign(S, blank(), recordToState(rec)); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {}
+  } else if (S.issued) {                // first sign-in: move this browser's profile into the account
+    S.photoDirty = !!S.photo; await push(true);
+  }
+  if (S.issued) { $("#resumeBtn").hidden = false; $("#startBtn").hidden = true; }
+  drawAcct();
+}
+function dataURLtoBlob(u){ const [h, b] = u.split(","), bin = atob(b), a = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return new Blob([a], {type:h.split(":")[1].split(";")[0]}); }
+function schedulePush(){ if (!Acc.user) return; clearTimeout(Acc.pushT); Acc.pushT = setTimeout(push, 900); setSync("Saving…"); }
+async function push(){
+  if (!Acc.user || !D) return;
+  const fd = new FormData();
+  fd.append("name", S.name || ""); fd.append("birthday", toDate(S.dob));
+  fd.append("favorites", JSON.stringify(S.favs)); fd.append("accords", JSON.stringify(S.accords.map(i => D.accords[i])));
+  fd.append("notes", JSON.stringify(S.notes.map(i => D.notes[i]))); fd.append("profile_made", S.issued || "");
+  if (S.photoDirty) { if (S.photo && S.photo.startsWith("data:")) fd.append("avatar", dataURLtoBlob(S.photo), "photo.jpg"); else fd.append("avatar", ""); }
+  try {
+    const rec = await Acc.pb.collection("users").update(Acc.user.id, fd);
+    Acc.user = rec; S.photoDirty = false; try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {}
+    setSync("Saved to your account");
+  } catch (e) { console.error(e); setSync("Couldn't save to your account. Your changes are kept in this browser and we'll try again."); clearTimeout(Acc.pushT); Acc.pushT = setTimeout(push, 15000); }
+}
+function setSync(t){ const e = $("#acctSync"); if (e) e.textContent = t; }
+function drawAcct(){
+  const b = $("#acctBtn"); b.hidden = !Acc.on;
+  if (!Acc.on) return;
+  if (Acc.user) {
+    const nm = Acc.user.name || S.name || Acc.user.email, ini = nm.split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+    b.replaceChildren(el("span", {class:"dot"}, S.photo ? el("img", {src:S.photo, alt:""}) : ini), "Account");
+    $("#acctWho").replaceChildren(el("b", {text:nm}), Acc.user.email);
+  } else { b.replaceChildren("Sign in"); $("#acctMenu").hidden = true; }
+  if (V.profile && !V.profile.hidden) $("#saveBar").hidden = !!Acc.user;
+}
+$("#acctBtn").addEventListener("click", () => {
+  if (!Acc.user) return goView("account");
+  const m = $("#acctMenu"); m.hidden = !m.hidden; $("#acctBtn").setAttribute("aria-expanded", String(!m.hidden)); $("#delAsk").hidden = true;
+});
+document.addEventListener("click", e => { if (!e.target.closest(".acctwrap")) $("#acctMenu").hidden = true; });
+function signedOutReset(){ Acc.pb.authStore.clear(); Acc.user = null; wipe(); S = blank(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; $("#acctMenu").hidden = true; drawAcct(); history.replaceState(null, "", location.pathname + location.search); show("landing"); }
+$("#signOutBtn").addEventListener("click", async () => { clearTimeout(Acc.pushT); if (Acc.user) await push(); signedOutReset(); });
+$("#delAcctBtn").addEventListener("click", () => $("#delAsk").hidden = false);
+$("#delNo").addEventListener("click", () => $("#delAsk").hidden = true);
+$("#delYes").addEventListener("click", async () => {
+  try { await Acc.pb.collection("users").delete(Acc.user.id); signedOutReset(); }
+  catch (e) { setSync("Your account couldn't be deleted. Check your connection and try again."); }
+});
+
+// sign in / create account page
+let authMode = "signin";
+async function openAuth(){
+  if (!Acc.ready) Acc.ready = initAccounts(); await Acc.ready;
+  if (!Acc.on) { show("privacy"); return; }
+  if (Acc.user) return goView("profile");
+  show("auth"); drawAuth();
+  try {
+    const m = await Acc.pb.collection("users").listAuthMethods();
+    const prov = (m.oauth2 && m.oauth2.enabled ? m.oauth2.providers : []) || [];
+    $("#oauthWrap").hidden = !prov.length;
+    $("#oauthBtns").replaceChildren(...prov.map(p => el("button", {class:"quiet", type:"button", text:`Continue with ${p.displayName || cap(p.name)}`, onclick:() => oauth(p.name)})));
+  } catch { $("#oauthWrap").hidden = true; }
+}
+function drawAuth(){
+  const up = authMode === "signup";
+  $("#authTitle").textContent = up ? "Create your account" : "Sign in";
+  $("#authSub").textContent = up ? (S.issued ? "Your current Scent DNA moves into your new account, so you can open it on any device." : "Save your Scent DNA and open it on any device.") : "Sign in to see your Scent DNA on any device.";
+  $("#authSubmit").textContent = up ? "Create account" : "Sign in";
+  $("#authPass").autocomplete = up ? "new-password" : "current-password";
+  $("#forgotBtn").hidden = up;
+  $("#authErr").textContent = ""; $("#authOk").textContent = "";
+  $("#authSwitch").replaceChildren(up ? "Already have an account? " : "New here? ",
+    el("button", {class:"textbtn", type:"button", text:up ? "Sign in" : "Create an account", style:"padding:0", onclick:() => { authMode = up ? "signin" : "signup"; drawAuth(); }}));
+}
+const authMsg = (e, up) => {
+  const d = e?.response?.data || {};
+  if (up && d.email) return "That email already has an account. Sign in instead, or use another email.";
+  if (d.password) return "Use a password of at least 8 characters.";
+  if (d.email) return "Enter a valid email address.";
+  if (e?.status === 0) return "We couldn't reach the server. Check your connection and try again.";
+  return up ? "The account couldn't be created. Check your details and try again." : "That email and password don't match an account.";
+};
+$("#authForm").addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const email = $("#authEmail").value.trim(), pass = $("#authPass").value, up = authMode === "signup", err = $("#authErr");
+  if (!/^\S+@\S+\.\S+$/.test(email)) { err.textContent = "Enter a valid email address."; return; }
+  if (pass.length < 8) { err.textContent = "Use a password of at least 8 characters."; return; }
+  err.textContent = ""; $("#authSubmit").disabled = true;
+  try {
+    if (up) await Acc.pb.collection("users").create({email, password:pass, passwordConfirm:pass, name:S.name || ""});
+    await Acc.pb.collection("users").authWithPassword(email, pass);
+    Acc.user = Acc.pb.authStore.record; await afterSignIn(true);
+    $("#authPass").value = ""; goView(S.issued ? "profile" : "profile");
+  } catch (e) { err.textContent = authMsg(e, up); }
+  finally { $("#authSubmit").disabled = false; }
+});
+$("#forgotBtn").addEventListener("click", async () => {
+  const email = $("#authEmail").value.trim();
+  if (!/^\S+@\S+\.\S+$/.test(email)) { $("#authErr").textContent = "Enter your email above first, then choose Forgot your password."; return; }
+  try { await Acc.pb.collection("users").requestPasswordReset(email); } catch {}
+  $("#authErr").textContent = ""; $("#authOk").textContent = "If that email has an account, we've sent it a link to reset the password.";
+});
+async function oauth(provider){
+  try { await Acc.pb.collection("users").authWithOAuth2({provider}); Acc.user = Acc.pb.authStore.record; await afterSignIn(true); goView("profile"); }
+  catch (e) { $("#authErr").textContent = "Signing in with that service didn't finish. Try again."; }
+}
+
 /* ---------- boot ---------- */
 loadData();
 if (S.issued && S.name) { $("#resumeBtn").hidden = false; $("#startBtn").hidden = true; }
+Acc.ready = initAccounts().then(() => { if (Acc.user) route(); });
 route();
 })();
 </script>

@@ -63,6 +63,10 @@ The page must be opened through a web address. Opening `index.html` straight fro
 
 After running the download script, replace any file in `images/perfumes/` or `images/notes/` with your own photo, keeping the same file name and format. Bottle files are named by perfume ID (the number at the end of its Fragrantica address) and note files by the note's image ID, for example `images/notes/55.webp` is Saffron. Square note images around 200×200 pixels and bottle images about 300×400 pixels on a white background work best.
 
+## User accounts
+
+On GitHub Pages or any plain host, the site saves each visitor's answers in their browser only. To give visitors real accounts (sign up, sign in, profile on every device), run the site on your own server with PocketBase. The full guide and a one-command setup script are in `server/README.md`.
+
 ## Updating the catalog
 
 Download a newer `perfumes.db.gz` from the Decant showcase, unzip it, then run:
