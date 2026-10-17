@@ -58,7 +58,8 @@ Restart=always
 RestartSec=5
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 WorkingDirectory=$APP
-ExecStart=$APP/pocketbase serve $DOMAIN --dir $APP/pb_data --publicDir $APP/public --migrationsDir $APP/repo/server/pb_migrations --automigrate=false
+Environment=SCENTDNA_DOMAIN=$DOMAIN
+ExecStart=$APP/pocketbase serve $DOMAIN --dir $APP/pb_data --publicDir $APP/public --migrationsDir $APP/repo/server/pb_migrations --hooksDir $APP/repo/server/pb_hooks --automigrate=false
 
 [Install]
 WantedBy=multi-user.target
@@ -74,7 +75,7 @@ ufw --force enable
 echo "==> Creating your admin login"
 read -rp "Admin email: " ADMIN_EMAIL
 read -rsp "Admin password (at least 10 characters): " ADMIN_PASS; echo
-sudo -u scentdna "$APP/pocketbase" migrate up --dir "$APP/pb_data" --migrationsDir "$APP/repo/server/pb_migrations" >/dev/null
+sudo -u scentdna env SCENTDNA_DOMAIN="$DOMAIN" "$APP/pocketbase" migrate up --dir "$APP/pb_data" --migrationsDir "$APP/repo/server/pb_migrations" >/dev/null
 sudo -u scentdna "$APP/pocketbase" superuser upsert "$ADMIN_EMAIL" "$ADMIN_PASS" --dir "$APP/pb_data"
 
 systemctl daemon-reload

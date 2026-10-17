@@ -29,7 +29,7 @@
 /* Layout: a fragrance counter. The Scent DNA profile is the dark object on the glass; questions and matches sit beside it. */
 :root{
   --ground:#E3EAE7; --raise:#F6F9F8; --sunk:#D5DFDB; --ink:#10231F; --ink-2:#4F625D; --rule:#C3D0CB;
-  --vetiver:#0E6E5A; --vetiver-ink:#F3FBF8; --vetiver-soft:#CFE5DE; --warn:#A8322B; --tile:#FFFFFF;
+  --vetiver:#0E6E5A; --vetiver-ink:#F3FBF8; --vetiver-soft:#CFE5DE; --warn:#A8322B; --tile:#FFFFFF; --star:#C48A1E;
   --dna:#0D2621; --dna-2:#17463B; --dna-ink:#E9F4F0; --dna-muted:#8FB8AB; --dna-rule:#24493F;
   --f-body:"Albert Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-display:"Cormorant","Cormorant Garamond","Iowan Old Style",Georgia,serif;
@@ -37,10 +37,10 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --ground:#0B1815; --raise:#12231F; --sunk:#0E1D1A; --ink:#E2EEE9; --ink-2:#91A7A0; --rule:#22382F;
-  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; color-scheme:dark}}
+  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; --star:#EBBB55; color-scheme:dark}}
 :root[data-theme="dark"]{
   --ground:#0B1815; --raise:#12231F; --sunk:#0E1D1A; --ink:#E2EEE9; --ink-2:#91A7A0; --rule:#22382F;
-  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; color-scheme:dark}
+  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; --star:#EBBB55; color-scheme:dark}
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -141,6 +141,7 @@ button,input{font:inherit;color:inherit}
 .auth .switch{font-size:15px;color:var(--ink-2)}
 .auth .switch a{color:var(--vetiver);font-weight:600;text-underline-offset:3px}
 .auth .ok{color:var(--vetiver);font-size:15px;min-height:1.2em}
+.auth .ok a{color:var(--vetiver);font-weight:650;text-underline-offset:3px}
 .savebar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;padding:16px 20px;border-radius:16px;background:var(--vetiver-soft)}
 .savebar p{font-size:16px}
 .savebar p b{display:block}
@@ -352,13 +353,144 @@ button,input{font:inherit;color:inherit}
   .steps button{font-size:12px}
   .sw{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+/* ---------- shared: stars, links to perfumes ---------- */
+.stars{position:relative;display:inline-block;justify-self:start;width:max-content;line-height:1;letter-spacing:2px;color:var(--rule);font-size:18px;white-space:nowrap;font-family:system-ui,sans-serif}
+.stars::before{content:"★★★★★"}
+.stars::after{content:"★★★★★";position:absolute;left:0;top:0;overflow:hidden;color:var(--star);width:calc(var(--v) / 5 * 100%)}
+.plink{color:inherit;text-decoration:none;display:grid;gap:12px}
+.plink:hover .n{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px}
+.rank .pn a{color:inherit;text-decoration:none}
+.rank .pn a:hover{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1.5px}
+.rank .bta{display:block}
+.pfav .cr{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2)}
+.pfav .cr .stars{font-size:15px}
+.back{justify-self:start;text-decoration:none;padding-left:0}
+.notice{border-radius:16px;padding:18px 20px;background:var(--sunk);color:var(--ink-2);font-size:16px}
+.notice b{color:var(--ink);display:block;font-size:17px}
+.secsub{color:var(--ink-2);font-size:15px;margin-top:-8px}
+
+/* ---------- perfume page ---------- */
+.pp{padding-block:8px 24px;display:grid;gap:56px}
+.pphero{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:center}
+.pphero .bt.xl{max-width:320px;border-radius:20px}
+.ppinfo{display:grid;gap:18px;align-content:center}
+.ppinfo .kick{font-size:15px;font-weight:650;color:var(--ink-2)}
+.ppinfo h1{font-size:clamp(46px,7vw,88px);letter-spacing:-.015em;line-height:.92;overflow-wrap:anywhere}
+.ppinfo .meta{color:var(--ink-2);font-size:17px}
+.ppstats{display:flex;flex-wrap:wrap;gap:16px 40px;padding-block:16px;border-block:1.5px solid var(--rule)}
+.ppstats div{display:grid;gap:4px}
+.ppstats dt{font-size:13px;color:var(--ink-2)}
+.ppstats dd{margin:0;font-weight:650;font-size:17px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ppstats dd .stars{font-size:17px}
+.ppstats .mt{color:var(--vetiver);font-weight:800}
+.toggle[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.ppcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px}
+.accbars{display:grid;gap:10px}
+.accbars div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;align-items:center}
+.accbars span{font-weight:600;font-size:15px;text-transform:capitalize}
+.accbars i{display:block;height:26px;border-radius:8px;background:var(--c);width:var(--w);min-width:18px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.pyr{display:grid;gap:22px}
+.pyr h4{margin:0 0 10px;font-size:14px;font-weight:650;color:var(--ink-2)}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 5px;border-radius:999px;background:var(--raise);border:1.5px solid var(--rule);font-weight:550;font-size:15px}
+.chip.mine{border-color:var(--vetiver);background:var(--vetiver-soft)}
+.chip .ti{width:34px;height:34px;border-radius:50%;overflow:hidden;background:var(--sunk);flex:none;display:grid;place-items:center;font-family:var(--f-display);font-size:17px;color:var(--ink-2)}
+.chip .ti img{width:100%;height:100%;object-fit:cover}
+.wear{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 40px}
+.meterrow{display:grid;gap:8px}
+.meterrow .lab{display:flex;justify-content:space-between;gap:12px;font-size:15px}
+.meterrow .lab span{color:var(--ink-2)}
+.meterrow .lab b{font-weight:650}
+.segs{display:flex;gap:4px}
+.segs i{flex:1;height:12px;border-radius:4px;background:var(--sunk)}
+.segs i.on{background:var(--vetiver)}
+.seasons{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;align-items:end}
+.seasons div{display:grid;gap:8px;justify-items:center;font-size:13px;color:var(--ink-2)}
+.seasons .bar{width:100%;height:84px;border-radius:10px;background:var(--sunk);display:flex;align-items:flex-end;overflow:hidden}
+.seasons .bar i{display:block;width:100%;background:var(--c,var(--vetiver));border-radius:10px 10px 0 0}
+
+/* ---------- reviews ---------- */
+.revtop{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(24px,5vw,56px);align-items:start}
+.revsum{display:grid;gap:8px;align-content:start}
+.revsum .big{font-family:var(--f-display);font-weight:600;font-size:76px;line-height:.9}
+.revsum .stars{font-size:22px}
+.revsum .cnt{color:var(--ink-2);font-size:15px}
+.dist{display:grid;gap:6px;margin-top:14px}
+.dist div{display:grid;grid-template-columns:18px minmax(0,1fr) 28px;gap:10px;align-items:center;font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.dist s{display:block;height:8px;border-radius:4px;background:var(--sunk);overflow:hidden;text-decoration:none}
+.dist s i{display:block;height:100%;background:var(--star)}
+.revform{display:grid;gap:16px;padding:22px;border-radius:20px;background:var(--raise);border:1.5px solid var(--rule)}
+.revform h4{margin:0;font-family:var(--f-display);font-size:28px;font-weight:600}
+.starpick{display:flex;gap:4px}
+.starpick button{width:46px;height:46px;border:0;background:none;padding:0;font-size:34px;line-height:1;color:var(--rule);cursor:pointer;border-radius:10px;font-family:system-ui,sans-serif}
+.starpick button.on{color:var(--star)}
+.starpick button:hover{transform:scale(1.08)}
+.starword{font-size:15px;color:var(--ink-2);min-height:1.3em}
+textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;font-size:17px}
+.formfoot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px}
+.formfoot small{color:var(--ink-2);font-size:13px;max-width:40ch}
+.revlist{display:grid}
+.rev{display:grid;gap:10px;padding:22px 0;border-bottom:1px solid var(--rule)}
+.rev.own{padding:22px;border:1.5px solid var(--vetiver);border-radius:20px;background:var(--vetiver-soft)}
+.revhd{display:flex;align-items:center;gap:12px}
+.rav{width:44px;height:44px;border-radius:50%;overflow:hidden;flex:none;background:var(--vetiver-soft);color:var(--vetiver);display:grid;place-items:center;font-weight:700;font-size:16px;text-decoration:none}
+.rev.own .rav{background:var(--raise)}
+.rav img{width:100%;height:100%;object-fit:cover}
+.revhd .who{min-width:0;display:grid;gap:1px}
+.revhd .who a{color:var(--ink);font-weight:650;text-decoration:none}
+.revhd .who a:hover{text-decoration:underline;text-underline-offset:3px}
+.revhd .who small{color:var(--ink-2);font-size:13px}
+.rev .stars{font-size:16px}
+.rev .txt{white-space:pre-line;overflow-wrap:anywhere;max-width:72ch;font-size:16px}
+.rev .forp{display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none;padding:8px 12px 8px 8px;border-radius:14px;background:var(--raise);justify-self:start;max-width:100%}
+.rev .forp:hover{outline:1.5px solid var(--rule)}
+.rev .forp b{font-weight:650;display:block;line-height:1.2}
+.rev .forp small{color:var(--ink-2);font-size:13px}
+.revact{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px}
+.revact .textbtn{text-decoration:none;font-size:14px;display:inline-flex;align-items:center;gap:6px;min-height:36px}
+.revact .textbtn:hover{color:var(--ink)}
+.revact .like[aria-pressed="true"]{color:var(--warn)}
+.revact .ask{font-size:14px;color:var(--ink-2);display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
+.revact .done{font-size:14px;color:var(--vetiver)}
+.replies{display:grid;gap:12px;margin-left:56px;padding-left:16px;border-left:2px solid var(--rule)}
+.reply{display:grid;gap:4px}
+.reply .revhd .rav{width:32px;height:32px;font-size:13px}
+.reply .txt{font-size:15px}
+.replyform{display:grid;gap:10px}
+.replyform textarea.inp{min-height:72px;font-size:16px}
+.replyform .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* ---------- community ---------- */
+.com{padding-block:16px 24px;display:grid;gap:56px}
+.comhead h1{font-size:clamp(52px,9vw,104px);letter-spacing:-.02em;line-height:.9}
+.comhead p{color:var(--ink-2);font-size:var(--s1);margin-top:16px;max-width:46ch}
+.comsearch{display:grid;gap:10px;max-width:640px;margin-top:28px}
+.memhead{display:flex;align-items:center;gap:24px}
+.memhead .pav{width:110px;height:110px;font-size:44px}
+.memhead h1{font-size:clamp(40px,6vw,64px)}
+.memhead p{color:var(--ink-2);margin-top:8px;font-size:17px}
+
+@media (max-width:860px){
+  .pphero,.ppcols,.revtop{grid-template-columns:1fr}
+  .pphero .bt.xl{max-width:260px;justify-self:center}
+}
+@media (max-width:560px){
+  .pp,.com{gap:44px}
+  .accbars div{grid-template-columns:96px minmax(0,1fr)}
+  .wear{grid-template-columns:1fr}
+  .seasons{gap:6px}
+  .replies{margin-left:8px}
+  .revsum .big{font-size:60px}
+  .memhead{gap:16px}
+  .memhead .pav{width:80px;height:80px;font-size:32px}
+  .lim4 > .pfav:nth-child(n+5){display:none}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <header class="top wrap">
   <button class="mark" id="homeBtn" type="button"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 2c0 7 12 8 12 11S7 17 7 24M19 2c0 7-12 8-12 11s12 4 12 11"/><path d="M9 6h8M9 20h8" stroke-width="1.6"/></svg>Scent DNA</button>
-  <nav class="views" id="viewNav" aria-label="Your pages" hidden><a href="#profile" data-view="profile">Profile</a><a href="#matches" data-view="matches">Matches</a></nav>
+  <nav class="views" id="viewNav" aria-label="Pages"><a href="#profile" data-view="profile" id="navProfile">Profile</a><a href="#matches" data-view="matches" id="navMatches">Matches</a><a href="#community" data-view="community">Community</a></nav>
   <div class="acctwrap">
     <div class="status" id="status" role="status"><b></b><span id="statusTxt">Loading 48,531 perfumes</span></div>
     <button class="acct" id="acctBtn" type="button" hidden aria-haspopup="true" aria-expanded="false">Sign in</button>
@@ -513,6 +645,10 @@ button,input{font:inherit;color:inherit}
     <div class="ptype" id="pType"></div>
     <section class="psec"><header><h3>Perfumes you love</h3><span id="pFavCount"></span></header><div class="pfavs" id="pFavs"></div></section>
     <section class="psec"><header><h3>Try these next</h3><a href="#matches" class="seeall">See all matches</a></header><div class="pfavs" id="pNext"></div></section>
+    <section class="psec"><header><h3>Your collection</h3>
+        <div class="seg" role="group" aria-label="Collection" id="colSeg"><button type="button" data-c="wish" aria-pressed="true">Want to try</button><button type="button" data-c="own" aria-pressed="false">I own</button></div></header>
+      <div class="pfavs" id="pCol"></div></section>
+    <section class="psec" id="pRevSec" hidden><header><h3>Your reviews</h3><span id="pRevCount"></span></header><div class="revlist" id="pRevs"></div></section>
     <section class="psec"><header><h3>Your main accords</h3></header><div class="pacc" id="pAcc"></div>
       <div id="pAccMoreWrap" hidden><div class="grouphead" style="margin-top:8px">More accords you like</div><div class="minipills big" id="pAccMore" style="margin-top:12px"></div></div></section>
     <section class="psec"><header><h3>Your notes</h3><span id="pNoteCount"></span></header><div class="pnotes" id="pNotes"></div></section>
@@ -523,6 +659,33 @@ button,input{font:inherit;color:inherit}
     </section>
     <div class="confirm"><button class="textbtn" id="pReset" type="button">Start over</button>
       <span id="pResetAsk" hidden> This deletes your answers from this device. <button class="textbtn" id="pResetYes" type="button">Delete</button> <button class="textbtn" id="pResetNo" type="button">Keep</button></span></div>
+  </section>
+
+  <section id="vPerfume" class="pp" hidden></section>
+  <section id="vCommunity" class="com" hidden>
+    <div class="comhead">
+      <h1>Community</h1>
+      <p>Ratings and reviews from people who actually wear them. Open any perfume to rate it.</p>
+      <div class="comsearch"><label for="comSearch" style="font-weight:600;font-size:15px">Find a perfume</label>
+        <input class="inp" id="comSearch" type="search" autocomplete="off" placeholder="Khamrah, Sauvage, Baccarat Rouge 540"><div class="list" id="comHits" hidden></div></div>
+    </div>
+    <div class="notice" id="comSoon" hidden><b>Ratings and reviews are coming soon</b>You can already look up any perfume, see how it wears and add it to your collection.</div>
+    <section class="psec" id="comTopSec" hidden><header><h3>Top rated here</h3><span>Rated by at least two people</span></header><div class="pfavs" id="comTop"></div></section>
+    <section class="psec" id="comFeedSec" hidden><header><h3>Latest reviews</h3><span id="comCount"></span></header><div class="revlist" id="comFeed"></div>
+      <div><button class="quiet" id="comMore" type="button" hidden>Show more reviews</button></div></section>
+    <section class="psec" id="comMostSec" hidden><header><h3>Most reviewed</h3></header><div class="pfavs" id="comMost"></div></section>
+    <section class="psec"><header><h3>Most worn worldwide</h3><span>By Fragrantica votes</span></header><div class="pfavs lim4" id="comPop"></div></section>
+  </section>
+  <section id="vMember" class="com" hidden></section>
+  <section id="vReset" class="auth" hidden>
+    <div><h2>Choose a new password</h2><p class="sub">Use at least 8 characters.</p></div>
+    <form id="resetForm" novalidate>
+      <div class="field"><label for="resetPass">New password</label><input class="inp" id="resetPass" type="password" autocomplete="new-password" minlength="8" required></div>
+      <div class="field"><label for="resetPass2">Type it again</label><input class="inp" id="resetPass2" type="password" autocomplete="new-password" minlength="8" required></div>
+      <div class="err" id="resetErr" role="alert"></div>
+      <button class="go" id="resetSubmit" type="submit">Save new password</button>
+    </form>
+    <div class="ok" id="resetOk" role="status"></div>
   </section>
 
   <section id="vAuth" class="auth" hidden>
@@ -548,12 +711,15 @@ button,input{font:inherit;color:inherit}
     <h3>With an account</h3>
     <ul>
       <li>We store your email address, your password (encrypted, we can't read it), your name, birthday, profile photo if you add one, and the perfumes, accords and notes you picked.</li>
-      <li>Your profile is private. Only you can see it when you're signed in.</li>
+      <li>Your profile is private. Only you can see it when you're signed in. That includes your birthday, your favorites, accords and notes, and your "Want to try" and "I own" lists.</li>
+      <li>Reviews and replies you post are public. They show your name, profile photo and scent type, and anyone can open your member page to see your reviews.</li>
+      <li>Likes are counted, but nobody else can see which reviews you liked.</li>
+      <li>If you report a review, only the site owner sees the report. A review or reply reported by three different people is hidden until the site owner checks it.</li>
       <li>We use your data only to show your profile and recommendations. We don't sell it or share it with advertisers.</li>
       <li>If you sign in with Google, Google tells us your email address and name.</li>
     </ul>
     <h3>Deleting your data</h3>
-    <p>Open the account menu at the top of the page and choose "Delete my account". Your account, profile and photo are deleted right away.</p>
+    <p>Open the account menu at the top of the page and choose "Delete my account". Your account, profile, photo, reviews, replies and likes are deleted right away. To remove a single review, open it and choose Delete.</p>
     <h3>Perfume data</h3>
     <p>Perfume information comes from the Decant dataset of Fragrantica community data. Bottle and note photos are from Fragrantica.</p>
     <p><a href="#profile" class="textbtn" style="padding:0">Back to Scent DNA</a></p>
@@ -643,8 +809,9 @@ const KEY = "scentDNA.v1", OLDKEY = "scentPassport.v1";
 const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || localStorage.getItem(OLDKEY) || "null"); } catch { return null; } };
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} if (typeof schedulePush === "function") schedulePush(); };
 const wipe = () => { try { localStorage.removeItem(KEY); localStorage.removeItem(OLDKEY); } catch {} };
-const blank = () => ({name:"", dob:"", photo:"", favs:[], accords:[], notes:[], issued:"", accTouched:false});
+const blank = () => ({name:"", dob:"", photo:"", favs:[], accords:[], notes:[], issued:"", accTouched:false, wish:[], own:[]});
 let S = Object.assign(blank(), load() || {});
+if (!Array.isArray(S.wish)) S.wish = []; if (!Array.isArray(S.own)) S.own = [];
 let D = null;
 
 /* ---------- data ---------- */
@@ -674,7 +841,7 @@ function prepare(raw){
     const acc = []; for (let i = 0; i < r[8].length; i += 2) acc.push([r[8][i], r[8][i + 1] / 100]);
     const notes = []; for (let i = 0; i < r[9].length; i += 3) notes.push([r[9][i], r[9][i + 1], r[9][i + 2] / 100]);
     let n2 = 0; for (const [, s] of acc) n2 += s * s;
-    return {id:r[0], name:r[1], brand:r[2] >= 0 ? raw.brands[r[2]] : "", year:r[3], g:r[4], rating:r[5] / 100, votes:r[6], acc, notes, accNorm:Math.sqrt(n2) || 1, clone:r[12], cloneScore:r[13]};
+    return {id:r[0], name:r[1], brand:r[2] >= 0 ? raw.brands[r[2]] : "", year:r[3], g:r[4], rating:r[5] / 100, votes:r[6], seasons:r[7], acc, notes, accNorm:Math.sqrt(n2) || 1, lon:r[10] / 10, sil:r[11] / 10, clone:r[12], cloneScore:r[13]};
   });
   for (const p of P) p.key = norm(p.name + " " + p.brand);
   const accFreq = new Array(raw.accords.length).fill(0);
@@ -789,22 +956,34 @@ function card(m){
 $("#sampleCard").append(card(SAMPLE));
 
 /* ---------- views ---------- */
-const V = {landing:$("#vLanding"), builder:$("#vBuilder"), result:$("#vResult"), profile:$("#vProfile"), auth:$("#vAuth"), privacy:$("#vPrivacy"), loading:$("#vLoading")};
+const V = {landing:$("#vLanding"), builder:$("#vBuilder"), result:$("#vResult"), profile:$("#vProfile"), perfume:$("#vPerfume"), community:$("#vCommunity"),
+  member:$("#vMember"), reset:$("#vReset"), auth:$("#vAuth"), privacy:$("#vPrivacy"), loading:$("#vLoading")};
+const NAVOF = {result:"matches", profile:"profile", landing:"profile", community:"community", perfume:"community", member:"community"};
 function show(v){
   for (const [k, e] of Object.entries(V)) e.hidden = k !== v;
-  $("#viewNav").hidden = !(S.issued && S.name);
-  $$("#viewNav a").forEach(a => { const on = (a.dataset.view === "matches" && v === "result") || (a.dataset.view === "profile" && v === "profile"); if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  document.title = "Scent DNA";
+  const has = !!(S.issued && S.name);
+  $("#navMatches").hidden = !has; $("#navProfile").textContent = has ? "Profile" : "Home";
+  $$("#viewNav a").forEach(a => { if (a.dataset.view === NAVOF[v]) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   window.scrollTo(0, 0);
 }
-// #matches and #profile are real addresses, so the back button and shared links work
+// every page has its own address (#matches, #p/75805, #community, ...), so the back button and shared links work
+let navDepth = 0;
 function route(){
-  if (location.hash === "#privacy") return show("privacy");
-  if (location.hash === "#account") return openAuth();
+  const h = location.hash;
+  if (h === "#privacy") return show("privacy");
+  if (h === "#account") return openAuth();
+  if (h === "#community") return openCommunity();
+  let m;
+  if ((m = h.match(/^#p\/(\d+)/))) return openPerfume(+m[1]);
+  if ((m = h.match(/^#u\/([a-z0-9]+)$/))) return openMember(m[1]);
+  if ((m = h.match(/^#reset\/(.+)$/))) return openReset(m[1]);
   if (!(S.issued && S.name)) return show("landing");
-  return location.hash === "#matches" ? openResult() : openProfile();
+  return h === "#matches" ? openResult() : openProfile();
 }
 function goView(v){ if (location.hash === "#" + v) route(); else location.hash = v; }
-window.addEventListener("hashchange", route);
+window.addEventListener("hashchange", () => { navDepth++; route(); });
+const goBack = fallback => navDepth > 0 ? history.back() : goView(fallback);
 async function needData(){ if (!D) { show("loading"); await dataPromise; } }
 $("#homeBtn").addEventListener("click", () => S.issued ? goView("profile") : show("landing"));
 $("#startBtn").addEventListener("click", () => openBuilder(0));
@@ -1014,9 +1193,9 @@ function row(r, i){
   }
   return el("li", {},
     el("span", {class:"pos", text:String(i + 1)}),
-    bottle(p, "m"),
-    el("div", {}, el("div", {class:"pn", text:p.name}), el("div", {class:"pb", text:[p.brand, p.year || null, gName[p.g]].filter(Boolean).join(", ")}), why, spec,
-      el("a", {href:`https://www.fragrantica.com/perfume/${slug(p.brand)}/${slug(p.name)}-${p.id}.html`, target:"_blank", rel:"noopener", text:"Open on Fragrantica"})),
+    el("a", {href:`#p/${p.id}`, class:"bta", "aria-hidden":"true", tabindex:"-1"}, bottle(p, "m")),
+    el("div", {}, el("div", {class:"pn"}, el("a", {href:`#p/${p.id}`, text:p.name})), el("div", {class:"pb", text:[p.brand, p.year || null, gName[p.g]].filter(Boolean).join(", ")}), why, spec,
+      el("a", {href:`#p/${p.id}`, text:"Reviews and details"})),
     el("div", {class:"score"},
       el("div", {class:"pct"}, String(r.match), el("small", {text:"%"})),
       el("div", {class:"meta", text:`Rated ${p.rating.toFixed(2)}`}), el("div", {class:"meta", text:`${fmt(p.votes)} votes`})));
@@ -1050,7 +1229,7 @@ async function openResult(){
 
 $("#resetBtn").addEventListener("click", () => $("#resetAsk").hidden = false);
 $("#resetNo").addEventListener("click", () => $("#resetAsk").hidden = true);
-function startOver(){ wipe(); S = blank(); if (Acc.user) push(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; history.replaceState(null, "", location.pathname + location.search); show("landing"); }
+function startOver(){ const keep = {wish:S.wish, own:S.own}; wipe(); S = Object.assign(blank(), keep); save(); if (Acc.user) push(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; history.replaceState(null, "", location.pathname + location.search); show("landing"); }
 $("#resetYes").addEventListener("click", startOver);
 
 /* ---------- profile ---------- */
@@ -1075,12 +1254,9 @@ async function openProfile(){
     helixSVG(m.accs.slice(0, 6)));
   // favourites
   $("#pFavCount").textContent = `${m.favs.length} ${m.favs.length === 1 ? "perfume" : "perfumes"}`;
-  $("#pFavs").replaceChildren(...m.favs.map(p => el("article", {class:"pfav"},
-    bottle(p, "xl"),
-    el("div", {}, el("div", {class:"n", text:p.name}), el("div", {class:"b", text:[p.brand, p.year || null, gName[p.g]].filter(Boolean).join(", ")})),
+  $("#pFavs").replaceChildren(...m.favs.map(p => pcard(p,
     el("div", {class:"r", text:`Rated ${p.rating.toFixed(2)} out of 5 by ${fmt(p.votes)} people`}),
-    el("div", {class:"minipills"}, ...p.acc.slice(0, 4).map(([a]) => { const n = D.accords[a], c = accColor(n); return el("span", {style:`--c:${c};--t:${textOn(c)}`, text:n}); })),
-    el("a", {href:`https://www.fragrantica.com/perfume/${slugF(p.brand)}/${slugF(p.name)}-${p.id}.html`, target:"_blank", rel:"noopener", text:"Open on Fragrantica"}))));
+    el("div", {class:"minipills"}, ...p.acc.slice(0, 4).map(([a]) => { const n = D.accords[a], c = accColor(n); return el("span", {style:`--c:${c};--t:${textOn(c)}`, text:n}); })))));
   // accords
   $("#pAcc").replaceChildren(...m.accs.slice(0, MAINACC).map(a => { const c = accColor(a.name); return el("div", {style:`--c:${c};--t:${textOn(c)}`}, el("b", {text:a.name})); }));
   const extra = m.accs.slice(MAINACC);
@@ -1094,14 +1270,13 @@ async function openProfile(){
     for (const f of m.favs) for (const [nid, tier] of f.notes) if (nid === id) { const t = TIER[tier] || "note"; (where[t] ||= []).push(f.name); }
     const desc = Object.entries(where).map(([t, fs]) => `${t === "note" ? "In" : cap(t) + " note in"} ${listJoin([...new Set(fs)])}`).join(". ") || "Your own pick";
     return el("div", {class:"pnote"}, noteImg(n.name, n.img, "ni"), el("b", {text:n.name}), el("small", {text:desc}));
-  }) : [el("p", {class:"empty", text:"You haven't picked any notes. Add some with Edit answers."})]));
+  }) : [el("p", {class:"empty", style:"grid-column:1/-1", text:"You haven't picked any notes. Add some with Edit answers."})]));
   RECS = recommend();
-  $("#pNext").replaceChildren(...diversify(RECS, 4).map(r => { const p = r.p; return el("article", {class:"pfav"},
-    bottle(p, "xl"),
-    el("div", {}, el("div", {class:"n", text:p.name}), el("div", {class:"b", text:[p.brand, p.year || null, gName[p.g]].filter(Boolean).join(", ")})),
+  $("#pNext").replaceChildren(...diversify(RECS, 4).map(r => { const p = r.p; return pcard(p,
     el("div", {class:"mt", text:`${r.match}% match`}),
     el("div", {class:"minipills"}, ...p.acc.slice(0, 3).map(([a]) => { const n = D.accords[a], c = accColor(n); return el("span", {style:`--c:${c};--t:${textOn(c)}`, text:n}); }))); }));
   $("#pCard").replaceChildren(card(m));
+  drawCollection(); drawMyReviews();
   ["#pMsg", "#pMsg2"].forEach(x => $(x).textContent = ""); $("#pResetAsk").hidden = true;
 }
 $("#pEdit").addEventListener("click", () => openBuilder(0));
@@ -1227,7 +1402,7 @@ async function initAccounts(){
     const j = r.ok ? await r.json() : null;
     if (!j || j.code !== 200) return;
     await loadScript("vendor/pocketbase.umd.js");
-    Acc.pb = new PocketBase(baseURL); Acc.on = true;
+    Acc.pb = new PocketBase(baseURL); Acc.pb.autoCancellation(false); Acc.on = true;
     if (Acc.pb.authStore.isValid) {
       try { await Acc.pb.collection("users").authRefresh(); Acc.user = Acc.pb.authStore.record; await afterSignIn(false); }
       catch { Acc.pb.authStore.clear(); Acc.user = null; }
@@ -1241,15 +1416,18 @@ function recordToState(rec){
     favs:(rec.favorites || []).filter(id => D.byId.has(id)),
     accords:(rec.accords || []).map(n => D.accords.indexOf(n)).filter(i => i >= 0),
     notes:(rec.notes || []).map(n => D.notes.indexOf(n)).filter(i => i >= 0),
-    issued:rec.profile_made || "", photo:rec.avatar ? Acc.pb.files.getURL(rec, rec.avatar) : "", accTouched:true, photoDirty:false};
+    issued:rec.profile_made || "", photo:rec.avatar ? Acc.pb.files.getURL(rec, rec.avatar) : "", accTouched:true, photoDirty:false,
+    wish:(rec.wishlist || []).filter(id => D.byId.has(id)), own:(rec.owned || []).filter(id => D.byId.has(id))};
 }
 async function afterSignIn(fresh){
   await dataPromise;
   const rec = Acc.user;
   if (rec.profile_made) {               // the account already has a profile: it wins
     Object.assign(S, blank(), recordToState(rec)); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {}
-  } else if (S.issued) {                // first sign-in: move this browser's profile into the account
-    S.photoDirty = !!S.photo; await push(true);
+  } else {                              // first sign-in: move this browser's profile and lists into the account
+    const union = (a, b) => [...new Set([...(a || []), ...(b || [])])].filter(id => D.byId.has(id));
+    S.wish = union(rec.wishlist, S.wish); S.own = union(rec.owned, S.own);
+    if (S.issued || S.wish.length || S.own.length) { S.photoDirty = !!S.photo; await push(true); }
   }
   if (S.issued) { $("#resumeBtn").hidden = false; $("#startBtn").hidden = true; }
   drawAcct();
@@ -1259,7 +1437,9 @@ function schedulePush(){ if (!Acc.user) return; clearTimeout(Acc.pushT); Acc.pus
 async function push(){
   if (!Acc.user || !D) return;
   const fd = new FormData();
-  fd.append("name", S.name || ""); fd.append("birthday", toDate(S.dob));
+  fd.append("name", S.name || Acc.user.name || ""); fd.append("birthday", toDate(S.dob));
+  fd.append("wishlist", JSON.stringify(S.wish)); fd.append("owned", JSON.stringify(S.own));
+  fd.append("scent_type", S.issued ? (model().type?.name || "") : "");
   fd.append("favorites", JSON.stringify(S.favs)); fd.append("accords", JSON.stringify(S.accords.map(i => D.accords[i])));
   fd.append("notes", JSON.stringify(S.notes.map(i => D.notes[i]))); fd.append("profile_made", S.issued || "");
   if (S.photoDirty) { if (S.photo && S.photo.startsWith("data:")) fd.append("avatar", dataURLtoBlob(S.photo), "photo.jpg"); else fd.append("avatar", ""); }
@@ -1285,7 +1465,7 @@ $("#acctBtn").addEventListener("click", () => {
   const m = $("#acctMenu"); m.hidden = !m.hidden; $("#acctBtn").setAttribute("aria-expanded", String(!m.hidden)); $("#delAsk").hidden = true;
 });
 document.addEventListener("click", e => { if (!e.target.closest(".acctwrap")) $("#acctMenu").hidden = true; });
-function signedOutReset(){ Acc.pb.authStore.clear(); Acc.user = null; wipe(); S = blank(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; $("#acctMenu").hidden = true; drawAcct(); history.replaceState(null, "", location.pathname + location.search); show("landing"); }
+function signedOutReset(){ Acc.pb.authStore.clear(); Acc.user = null; LIKED.clear(); wipe(); S = blank(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; $("#acctMenu").hidden = true; drawAcct(); history.replaceState(null, "", location.pathname + location.search); show("landing"); }
 $("#signOutBtn").addEventListener("click", async () => { clearTimeout(Acc.pushT); if (Acc.user) await push(); signedOutReset(); });
 $("#delAcctBtn").addEventListener("click", () => $("#delAsk").hidden = false);
 $("#delNo").addEventListener("click", () => $("#delAsk").hidden = true);
@@ -1350,6 +1530,415 @@ $("#forgotBtn").addEventListener("click", async () => {
 async function oauth(provider){
   try { await Acc.pb.collection("users").authWithOAuth2({provider}); Acc.user = Acc.pb.authStore.record; await afterSignIn(true); goView("profile"); }
   catch (e) { $("#authErr").textContent = "Signing in with that service didn't finish. Try again."; }
+}
+
+/* ---------- shared bits for perfume pages and the community ---------- */
+const meta = p => [p.brand, p.year || null, gName[p.g]].filter(Boolean).join(", ");
+// a perfume card that opens the perfume's own page
+function pcard(p, ...extra){
+  return el("article", {class:"pfav"},
+    el("a", {class:"plink", href:`#p/${p.id}`}, bottle(p, "xl"), el("div", {}, el("div", {class:"n", text:p.name}), el("div", {class:"b", text:meta(p)}))), ...extra);
+}
+const starsEl = (v, label) => el("span", {class:"stars", style:`--v:${v}`, role:"img", "aria-label":label || `${(+v).toFixed(1)} out of 5 stars`});
+const STARWORD = ["", "Didn't like it", "It's okay", "Liked it", "Really liked it", "Loved it"];
+const initialsOf = n => (n || "").trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join("").toUpperCase() || "?";
+const plural = (n, one, many) => `${fmt(n)} ${n === 1 ? one : many}`;
+function ago(iso){
+  if (!iso) return "";
+  const d = new Date(iso.replace(" ", "T")), s = (Date.now() - d) / 1000;
+  if (s < 60) return "just now";
+  if (s < 3600) return `${Math.floor(s / 60)} min ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)} h ago`;
+  if (s < 86400 * 7) return plural(Math.floor(s / 86400), "day", "days") + " ago";
+  return d.toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"});
+}
+const memberName = u => (u && u.name) || "Scent DNA member";
+function avatarLink(u){
+  const url = u && u.avatar ? Acc.pb.files.getURL(u, u.avatar) : "";
+  return el("a", {class:"rav", href:u ? `#u/${u.id}` : null, "aria-hidden":"true", tabindex:"-1"}, url ? el("img", {src:url, alt:"", loading:"lazy"}) : initialsOf(memberName(u)));
+}
+const whoLine = (u, ...bits) => el("div", {class:"who"}, el("a", {href:u ? `#u/${u.id}` : null, text:memberName(u)}), el("small", {text:[u && u.scent_type, ...bits].filter(Boolean).join(" · ")}));
+const backBtn = fallback => el("button", {class:"textbtn back", type:"button", text:"← Back", onclick:() => goBack(fallback)});
+const noticeEl = (title, text) => el("div", {class:"notice"}, el("b", {text:title}), text);
+
+// which of the reviews on screen you've marked helpful: review id -> like id
+const LIKED = new Map();
+async function loadLikes(items){
+  if (!Acc.user || !items.length) return;
+  const f = items.map(r => Acc.pb.filter("review = {:id}", {id:r.id})).join(" || ");
+  try { for (const l of await Acc.pb.collection("review_likes").getFullList({filter:Acc.pb.filter("user = {:u}", {u:Acc.user.id}) + ` && (${f})`})) LIKED.set(l.review, l.id); } catch {}
+}
+function confirmInline(btn, question, yesText, onYes){
+  const ask = el("span", {class:"ask"}, question,
+    el("button", {class:"textbtn danger", type:"button", text:yesText, onclick:async () => { try { await onYes(); } catch { ask.replaceWith(el("span", {class:"done", text:"That didn't work. Check your connection and try again."})); } }}),
+    el("button", {class:"textbtn", type:"button", text:"Cancel", onclick:() => ask.replaceWith(btn)}));
+  btn.replaceWith(ask);
+}
+function reportFlow(btn, target){
+  if (!Acc.user) return goView("account");
+  const done = t => ask.replaceWith(el("span", {class:"done", text:t}));
+  const ask = el("span", {class:"ask"}, "Report it as",
+    ...["Spam", "Offensive", "Not about the perfume"].map(reason => el("button", {class:"textbtn", type:"button", text:reason, onclick:async () => {
+      try { await Acc.pb.collection("reports").create({user:Acc.user.id, ...target, reason}); done("Thanks. We'll take a look."); }
+      catch (e) { done(/already/.test(e?.response?.message || "") ? "You already reported this." : "That didn't go through. Try again."); } }})),
+    el("button", {class:"textbtn", type:"button", text:"Cancel", onclick:() => ask.replaceWith(btn)}));
+  btn.replaceWith(ask);
+}
+
+// one review; opt: {mine, showPerfume, onEdit, onDeleted}
+function reviewEl(r, opt = {}){
+  const u = r.expand && r.expand.user, own = !!(Acc.user && r.user === Acc.user.id);
+  const edited = r.updated && r.created && r.updated.slice(0, 16) !== r.created.slice(0, 16);
+  const p = opt.showPerfume ? D.byId.get(r.perfume) : null;
+  const act = el("div", {class:"revact"}), reps = el("div", {class:"replies", hidden:""});
+  // helpful
+  if (!own) {
+    const like = el("button", {class:"textbtn like", type:"button"});
+    const paint = () => { const on = LIKED.has(r.id); like.setAttribute("aria-pressed", String(on)); like.replaceChildren(on ? "♥" : "♡", " Helpful", r.likes ? ` · ${r.likes}` : "");
+      like.setAttribute("aria-label", "Helpful" + (r.likes ? `, ${plural(r.likes, "person", "people")} found this helpful` : "")); };
+    like.addEventListener("click", async () => {
+      if (!Acc.user) return goView("account");
+      like.disabled = true;
+      try {
+        if (LIKED.has(r.id)) { await Acc.pb.collection("review_likes").delete(LIKED.get(r.id)); LIKED.delete(r.id); r.likes = Math.max(0, (r.likes || 0) - 1); }
+        else { const l = await Acc.pb.collection("review_likes").create({user:Acc.user.id, review:r.id}); LIKED.set(r.id, l.id); r.likes = (r.likes || 0) + 1; }
+      } catch {}
+      like.disabled = false; paint();
+    });
+    paint(); act.append(like);
+  } else if (r.likes) act.append(el("span", {class:"done", style:"color:var(--ink-2)", text:`♥ ${plural(r.likes, "person", "people")} found this helpful`}));
+  // replies
+  const repBtn = el("button", {class:"textbtn", type:"button", "aria-expanded":"false"});
+  const paintRep = () => repBtn.textContent = r.replies ? plural(r.replies, "reply", "replies") : "Reply";
+  paintRep(); repBtn.addEventListener("click", () => toggleReplies(r, reps, repBtn, paintRep)); act.append(repBtn);
+  // report, or edit and delete for your own
+  if (!own) { const rb = el("button", {class:"textbtn", type:"button", text:"Report"}); rb.addEventListener("click", () => reportFlow(rb, {review:r.id})); act.append(rb); }
+  else {
+    if (opt.onEdit) act.append(el("button", {class:"textbtn", type:"button", text:"Edit", onclick:opt.onEdit}));
+    else act.append(el("a", {class:"textbtn", href:`#p/${r.perfume}`, text:"Edit"}));
+    const del = el("button", {class:"textbtn danger", type:"button", text:"Delete"});
+    del.addEventListener("click", () => confirmInline(del, "Delete your review?", "Delete", async () => { await Acc.pb.collection("reviews").delete(r.id); if (opt.onDeleted) opt.onDeleted(); }));
+    act.append(del);
+  }
+  return el("article", {class:"rev" + (opt.mine ? " own" : "")},
+    el("div", {class:"revhd"}, avatarLink(u), whoLine(u, opt.mine ? "Your review" : null, ago(r.created), edited ? "edited" : null)),
+    p ? el("a", {class:"forp", href:`#p/${p.id}`}, bottle(p, "s"), el("span", {}, el("b", {text:p.name}), el("small", {text:p.brand}))) : null,
+    starsEl(r.rating, `${r.rating} out of 5 stars`),
+    r.text ? el("p", {class:"txt", text:r.text}) : null,
+    act, reps);
+}
+async function toggleReplies(r, box, btn, paintRep){
+  box.hidden = !box.hidden; btn.setAttribute("aria-expanded", String(!box.hidden));
+  if (box.hidden) return;
+  box.replaceChildren(el("p", {class:"empty", text:"Loading replies…"}));
+  let list = [];
+  try { if (r.replies) list = await Acc.pb.collection("review_replies").getFullList({filter:Acc.pb.filter("review = {:id}", {id:r.id}), sort:"created", expand:"user"}); }
+  catch { box.replaceChildren(el("p", {class:"empty", text:"Replies didn't load. Try again."})); return; }
+  const draw = () => box.replaceChildren(...list.map(x => replyEl(x, () => { list = list.filter(y => y !== x); r.replies = list.length; paintRep(); draw(); })), replyForm());
+  function replyForm(){
+    if (!Acc.user) return el("div", {}, el("a", {class:"textbtn", href:"#account", style:"padding:0", text:"Sign in to reply"}));
+    const ta = el("textarea", {class:"inp", maxlength:"800", "aria-label":"Your reply", placeholder:"Write a reply"}), err = el("div", {class:"err", role:"alert"});
+    const go = el("button", {class:"quiet", type:"submit", text:"Post reply"});
+    const f = el("form", {class:"replyform", novalidate:""}, ta, err, el("div", {class:"row"}, go));
+    f.addEventListener("submit", async ev => {
+      ev.preventDefault(); const text = ta.value.trim(); if (!text) { err.textContent = "Write something first."; return; }
+      go.disabled = true;
+      try { const x = await Acc.pb.collection("review_replies").create({user:Acc.user.id, review:r.id, text}, {expand:"user"}); list.push(x); r.replies = list.length; paintRep(); draw(); }
+      catch (e) { err.textContent = e?.status === 429 ? "You're posting too fast. Wait a few seconds and try again." : "Your reply couldn't be posted. Try again."; go.disabled = false; }
+    });
+    return f;
+  }
+  draw();
+}
+function replyEl(x, onDeleted){
+  const u = x.expand && x.expand.user, own = !!(Acc.user && x.user === Acc.user.id), act = el("div", {class:"revact"});
+  const b = el("button", {class:own ? "textbtn danger" : "textbtn", type:"button", text:own ? "Delete" : "Report"});
+  b.addEventListener("click", () => own ? confirmInline(b, "Delete your reply?", "Delete", async () => { await Acc.pb.collection("review_replies").delete(x.id); onDeleted(); }) : reportFlow(b, {reply:x.id}));
+  act.append(b);
+  return el("div", {class:"reply"}, el("div", {class:"revhd"}, avatarLink(u), whoLine(u, ago(x.created))), el("p", {class:"txt", text:x.text}), act);
+}
+
+/* ---------- perfume page ---------- */
+const LON = ["Very weak", "Weak", "Moderate", "Long lasting", "Very long lasting"], SIL = ["Soft", "Moderate", "Strong", "Very strong"];
+const wordFor = (v, words) => words[Math.min(words.length - 1, Math.max(0, Math.round(v) - 1))];
+const segs = (v, n) => el("div", {class:"segs", "aria-hidden":"true"}, ...Array.from({length:n}, (_, i) => el("i", {class:i < Math.round(v) ? "on" : ""})));
+const SEASONS = [["Winter", "#7FA9C9"], ["Spring", "#8DBF6A"], ["Summer", "#E2B13C"], ["Fall", "#C97B3D"], ["Day", "#E9C64F"], ["Night", "#5A68A0"]];
+function similar(p, n = 8){
+  D.pool ??= D.P.filter(x => x.votes >= 250);
+  const pm = new Map(p.acc), pn = new Set(p.notes.map(x => x[0])), first = norm(p.name).split(/\s+/)[0], out = [];
+  for (const q of D.pool) {
+    if (q.id === p.id) continue;
+    let dot = 0; for (const [a, s] of q.acc) { const v = pm.get(a); if (v) dot += v * s; }
+    const sim = dot / (p.accNorm * q.accNorm); if (sim < .6) continue;
+    let nh = 0; for (const [nn] of q.notes) if (pn.has(nn)) nh++;
+    const nsim = pn.size && q.notes.length ? nh / Math.sqrt(pn.size * q.notes.length) : 0;
+    out.push([q, sim * .62 + nsim * .28 + Math.min(1, Math.log10(q.votes) / 4.3) * .1]);
+  }
+  out.sort((a, b) => b[1] - a[1]);
+  const perBrand = new Map(), res = [];
+  for (const [q] of out) {
+    if (q.brand === p.brand && norm(q.name).split(/\s+/)[0] === first) continue;   // skip flankers of the same line
+    const k = perBrand.get(q.brand) || 0; if (k >= 2) continue;
+    perBrand.set(q.brand, k + 1); res.push(q); if (res.length >= n) break;
+  }
+  return res;
+}
+function bestFor(p){
+  const [wi, sp, su, au, day, night] = p.seasons || [], s = [["winter", wi], ["spring", sp], ["summer", su], ["fall", au]].filter(x => x[1] >= 80).map(x => x[0]);
+  const t = day >= 80 && night >= 80 ? "day or night" : day > night ? "in the daytime" : "at night";
+  return s.length === 4 ? `Worn all year, ${t}.` : s.length ? `Best in ${listJoin(s)}, ${t}.` : "";
+}
+let curP = null, revSort = "-created";
+async function openPerfume(id){
+  await needData(); show("perfume");
+  const p = D.byId.get(id), box = $("#vPerfume");
+  if (!p) { curP = null; box.replaceChildren(backBtn("community"), noticeEl("We couldn't find that perfume", "It may not be in the catalog. Search for it on the Community page.")); return; }
+  curP = p; document.title = `${p.name} by ${p.brand} · Scent DNA`;
+  // your lists
+  const tog = (list, label) => {
+    const b = el("button", {class:"quiet toggle", type:"button"});
+    b.paint = () => { const on = S[list].includes(p.id); b.setAttribute("aria-pressed", String(on)); b.textContent = (on ? "✓ " : "") + label; };
+    b.addEventListener("click", () => {
+      if (S[list].includes(p.id)) S[list] = S[list].filter(x => x !== p.id);
+      else { S[list] = [p.id, ...S[list]].slice(0, 300); if (list === "own") S.wish = S.wish.filter(x => x !== p.id); }
+      save(); wishB.paint(); ownB.paint();
+    });
+    b.paint(); return b;
+  };
+  const wishB = tog("wish", "Want to try"), ownB = tog("own", "I own it");
+  // how it fits you
+  let forYou = null;
+  if (S.favs.includes(p.id)) forYou = "One of your favorites";
+  else if (S.issued && S.name) { RECS ??= recommend(); const r = RECS.find(x => x.p.id === p.id); forYou = r ? el("span", {class:"mt", text:`${r.match}% match`}) : "Not a close match"; }
+  const stat = (k, ...v) => el("div", {}, el("dt", {text:k}), el("dd", {}, ...v));
+  const tiers = [[0, "Top notes"], [1, "Heart notes"], [2, "Base notes"], [3, "Notes"]];
+  const chips = t => p.notes.filter(n => n[1] === t).map(([n]) => el("span", {class:"chip" + (S.notes.includes(n) ? " mine" : "")}, noteImg(D.notes[n], D.noteImg[n], "ti"), D.notes[n]));
+  const anyMine = p.notes.some(([n]) => S.notes.includes(n));
+  const sim = similar(p);
+  const best = bestFor(p), smax = Math.max(1, ...(p.seasons || [1]));
+  box.replaceChildren(
+    backBtn("community"),
+    el("div", {class:"pphero"}, bottle(p, "xl"),
+      el("div", {class:"ppinfo"},
+        el("div", {class:"kick", text:p.brand}), el("h1", {text:p.name}),
+        el("div", {class:"meta", text:[p.year || null, gName[p.g]].filter(Boolean).join(" · ")}),
+        el("dl", {class:"ppstats"},
+          stat("Rating here", el("span", {id:"ppComm", text:"…"})),
+          stat("On Fragrantica", `${p.rating.toFixed(2)} from ${fmt(p.votes)} votes`),
+          forYou && stat("For you", forYou)),
+        el("div", {class:"actions"}, wishB, ownB,
+          el("button", {class:"go", type:"button", text:"Rate and review", onclick:() => $("#ppRev").scrollIntoView({behavior:reduce ? "auto" : "smooth"})})),
+        el("a", {class:"textbtn", style:"justify-self:start;padding:0", href:`https://www.fragrantica.com/perfume/${slugF(p.brand)}/${slugF(p.name)}-${p.id}.html`, target:"_blank", rel:"noopener", text:"Open on Fragrantica"}))),
+    el("div", {class:"ppcols"},
+      el("section", {class:"psec"}, el("header", {}, el("h3", {text:"Main accords"})),
+        el("div", {class:"accbars"}, ...p.acc.slice(0, 10).map(([a, s]) => { const n = D.accords[a], c = accColor(n); return el("div", {}, el("span", {text:n}), el("i", {style:`--c:${c};--w:${Math.round(s * 100)}%`})); }))),
+      el("section", {class:"psec"}, el("header", {}, el("h3", {text:"Notes"})),
+        anyMine ? el("p", {class:"secsub", text:"Notes outlined in green are ones you picked."}) : null,
+        p.notes.length ? el("div", {class:"pyr"}, ...tiers.map(([t, l]) => { const c = chips(t); return c.length ? el("div", {}, el("h4", {text:l}), el("div", {class:"tags"}, ...c)) : null; }))
+                       : el("p", {class:"empty", text:"No notes are listed for this perfume."}))),
+    el("section", {class:"psec"}, el("header", {}, el("h3", {text:"How it wears"}), el("span", {text:"From Fragrantica votes"})),
+      el("div", {class:"wear"},
+        el("div", {style:"display:grid;gap:24px;align-content:start"},
+          el("div", {class:"meterrow"}, el("div", {class:"lab"}, el("span", {text:"Lasts"}), el("b", {text:wordFor(p.lon, LON)})), segs(p.lon, 5)),
+          el("div", {class:"meterrow"}, el("div", {class:"lab"}, el("span", {text:"Projection"}), el("b", {text:wordFor(p.sil, SIL)})), segs(p.sil, 4)),
+          best ? el("p", {style:"font-size:17px", text:best}) : null),
+        el("div", {class:"seasons", role:"img", "aria-label":best || "When people wear it"},
+          ...SEASONS.map(([l, c], i) => el("div", {}, el("span", {class:"bar"}, el("i", {style:`--c:${c};height:${Math.round((p.seasons?.[i] || 0) / smax * 100)}%`})), l))))),
+    sim.length ? el("section", {class:"psec"}, el("header", {}, el("h3", {text:"If you like this, try"}), el("span", {text:"Similar accords and notes"})),
+      el("div", {class:"pfavs lim4"}, ...sim.map(q => pcard(q, el("div", {class:"minipills"}, ...q.acc.slice(0, 3).map(([a]) => { const n = D.accords[a], c = accColor(n); return el("span", {style:`--c:${c};--t:${textOn(c)}`, text:n}); })))))) : null,
+    el("section", {class:"psec", id:"ppRev"}, el("header", {}, el("h3", {text:"Reviews"})), el("p", {class:"empty", text:"Loading reviews…"})));
+  drawReviews(p);
+}
+async function drawReviews(p){
+  const head = el("header", {}, el("h3", {text:"Reviews"}));
+  await Acc.ready;
+  const sec = $("#ppRev"); if (curP !== p || !sec) return;
+  if (!Acc.on) { $("#ppComm").textContent = "Coming soon"; sec.replaceChildren(head, noticeEl("Reviews are coming soon", "Soon you'll be able to rate this perfume and read what other people think of it.")); return; }
+  const C = Acc.pb;
+  const [st, mine] = await Promise.all([
+    C.collection("perfume_stats").getOne(String(p.id)).catch(() => null),
+    Acc.user ? C.collection("reviews").getFirstListItem(C.filter("perfume = {:p} && user = {:u}", {p:p.id, u:Acc.user.id}), {expand:"user"}).catch(() => null) : null]);
+  if (curP !== p) return;
+  $("#ppComm").replaceChildren(...(st ? [starsEl(st.avg), `${st.avg.toFixed(1)} from ${plural(st.reviews, "review", "reviews")}`] : ["No reviews yet"]));
+  const sum = el("div", {class:"revsum"});
+  if (st) sum.append(el("div", {class:"big", text:st.avg.toFixed(1)}), starsEl(st.avg), el("div", {class:"cnt", text:plural(st.reviews, "review", "reviews")}),
+    el("div", {class:"dist"}, ...[5, 4, 3, 2, 1].map(k => el("div", {"aria-label":`${k} stars: ${st["s" + k]}`}, el("span", {text:k + "★", "aria-hidden":"true"}),
+      el("s", {"aria-hidden":"true"}, el("i", {style:`width:${st["s" + k] / st.reviews * 100}%`})), el("span", {text:String(st["s" + k]), "aria-hidden":"true"})))));
+  else sum.append(el("div", {class:"big", text:"–"}), starsEl(0, "No ratings yet"), el("div", {class:"cnt", text:"No reviews yet. Be the first."}));
+  const side = el("div", {});
+  if (!Acc.user) side.append(el("div", {class:"revform"}, el("h4", {text:"What do you think of it?"}),
+    el("p", {class:"secsub", style:"margin:0", text:"Sign in or create a free account to rate this perfume and write a review."}),
+    el("div", {}, el("a", {class:"go", href:"#account", style:"text-decoration:none", text:"Sign in to review"}))));
+  else if (mine) side.append(reviewEl(mine, {mine:true, onEdit:() => side.replaceChildren(reviewForm(p, mine)), onDeleted:() => drawReviews(p)}));
+  else side.append(reviewForm(p, null));
+  // everyone else's reviews
+  const list = el("div", {class:"revlist"}), more = el("button", {class:"quiet", type:"button", text:"Show more reviews", hidden:""});
+  const filter = C.filter("perfume = {:p}", {p:p.id}) + (Acc.user ? " && " + C.filter("user != {:u}", {u:Acc.user.id}) : "");
+  let page = 0;
+  const load = async reset => {
+    if (reset) { page = 0; list.replaceChildren(); }
+    page++; let res;
+    try { res = await C.collection("reviews").getList(page, 10, {filter, sort:revSort, expand:"user"}); }
+    catch { list.append(el("p", {class:"empty", text:"Reviews didn't load. Check your connection and reload the page."})); return; }
+    await loadLikes(res.items);
+    if (curP !== p) return;
+    list.append(...res.items.map(r => reviewEl(r)));
+    if (!res.totalItems) list.append(el("p", {class:"empty", style:"padding-top:16px", text:mine ? "No one else has reviewed it yet." : "No reviews yet."}));
+    more.hidden = page >= res.totalPages;
+  };
+  more.addEventListener("click", () => load(false));
+  const others = st ? st.reviews - (mine && !mine.hidden ? 1 : 0) : 0;
+  const sorts = [["-created", "Newest"], ["-likes,-created", "Most helpful"], ["-rating,-created", "Highest"], ["rating,-created", "Lowest"]];
+  const seg = el("div", {class:"seg", role:"group", "aria-label":"Sort reviews"});
+  for (const [k, l] of sorts) { const b = el("button", {type:"button", "aria-pressed":String(revSort === k), text:l}); b.addEventListener("click", () => { revSort = k; [...seg.children].forEach(x => x.setAttribute("aria-pressed", String(x === b))); load(true); }); seg.append(b); }
+  sec.replaceChildren(head, el("div", {class:"revtop"}, sum, side), others > 1 ? el("div", {class:"controls", style:"margin-top:8px"}, seg) : null, list, el("div", {}, more));
+  load(true);
+}
+function reviewForm(p, ex){
+  let rating = ex ? ex.rating : 0;
+  const word = el("div", {class:"starword", "aria-live":"polite"}), err = el("div", {class:"err", role:"alert"});
+  const pick = el("div", {class:"starpick", role:"radiogroup", "aria-label":"Your rating"});
+  const btns = [1, 2, 3, 4, 5].map(k => el("button", {type:"button", role:"radio", "aria-label":`${k} ${k === 1 ? "star" : "stars"}: ${STARWORD[k]}`, text:"★"}));
+  const paint = v => btns.forEach((b, i) => { b.classList.toggle("on", i < v); b.setAttribute("aria-checked", String(i + 1 === rating)); });
+  btns.forEach((b, i) => { b.addEventListener("click", () => { rating = i + 1; paint(rating); word.textContent = STARWORD[rating]; err.textContent = ""; }); b.addEventListener("mouseenter", () => paint(i + 1)); });
+  pick.addEventListener("mouseleave", () => paint(rating)); pick.append(...btns);
+  const ta = el("textarea", {class:"inp", id:"revText", maxlength:"1500", placeholder:"How does it smell on you? How long does it last? When do you wear it?"}); ta.value = ex ? ex.text || "" : "";
+  const nameIn = !(Acc.user.name || S.name) ? el("input", {class:"inp", id:"revName", maxlength:"40", autocomplete:"name"}) : null;
+  const submit = el("button", {class:"go", type:"submit", text:ex ? "Save changes" : "Post review"});
+  const f = el("form", {class:"revform", novalidate:""},
+    el("h4", {text:ex ? "Edit your review" : "Rate this perfume"}),
+    el("div", {class:"field"}, el("span", {style:"font-weight:600;font-size:15px", text:"Your rating"}), pick, word),
+    el("div", {class:"field"}, el("label", {for:"revText", text:"Your review, if you want to write one"}), ta),
+    nameIn && el("div", {class:"field"}, el("label", {for:"revName", text:"Your name, shown with your review"}), nameIn),
+    err,
+    el("div", {class:"formfoot"}, el("div", {class:"actions"}, submit, ex ? el("button", {class:"textbtn", type:"button", text:"Cancel", onclick:() => drawReviews(p)}) : null),
+      el("small", {text:"Your name, photo and scent type appear with your review."})));
+  paint(rating); if (rating) word.textContent = STARWORD[rating];
+  f.addEventListener("submit", async ev => {
+    ev.preventDefault();
+    if (!rating) { err.textContent = "Choose a star rating first."; btns[0].focus(); return; }
+    if (nameIn && nameIn.value.trim().length < 2) { err.textContent = "Add your name. It's shown with your review."; nameIn.focus(); return; }
+    submit.disabled = true;
+    try {
+      if (nameIn) { Acc.user = await Acc.pb.collection("users").update(Acc.user.id, {name:nameIn.value.trim()}); drawAcct(); }
+      const body = {rating, text:ta.value.trim()};
+      if (ex) await Acc.pb.collection("reviews").update(ex.id, body);
+      else await Acc.pb.collection("reviews").create({...body, user:Acc.user.id, perfume:p.id});
+      drawReviews(p);
+    } catch (e) {
+      err.textContent = e?.status === 0 ? "We couldn't reach the server. Check your connection and try again."
+        : e?.status === 429 ? "You're posting too fast. Wait a few seconds and try again." : "Your review couldn't be saved. Reload the page and try again.";
+      submit.disabled = false;
+    }
+  });
+  return f;
+}
+
+/* ---------- community ---------- */
+let comPage = 0;
+async function openCommunity(){
+  await needData(); show("community");
+  $("#comPop").replaceChildren(...D.P.slice(0, 8).map(p => pcard(p, el("div", {class:"r", text:`Rated ${p.rating.toFixed(2)} by ${fmt(p.votes)} people`}))));
+  await Acc.ready;
+  $("#comSoon").hidden = Acc.on;
+  for (const s of ["#comTopSec", "#comFeedSec", "#comMostSec"]) $(s).hidden = true;
+  if (!Acc.on) return;
+  const C = Acc.pb.collection("perfume_stats");
+  const statCard = st => { const p = D.byId.get(st.perfume); return p ? pcard(p, el("div", {class:"cr"}, starsEl(st.avg), `${st.avg.toFixed(1)} · ${plural(st.reviews, "review", "reviews")}`)) : null; };
+  const [top, most] = await Promise.all([C.getList(1, 8, {filter:"reviews >= 2", sort:"-avg,-reviews"}).catch(() => null), C.getList(1, 8, {sort:"-reviews,-avg"}).catch(() => null)]);
+  const ti = (top ? top.items : []).map(statCard).filter(Boolean), mi = (most ? most.items : []).map(statCard).filter(Boolean);
+  $("#comTop").replaceChildren(...ti); $("#comTopSec").hidden = !ti.length;
+  $("#comMost").replaceChildren(...mi); $("#comMostSec").hidden = !mi.length;
+  $("#comFeedSec").hidden = false; comPage = 0; $("#comFeed").replaceChildren(); loadFeed();
+}
+async function loadFeed(){
+  comPage++; let res;
+  try { res = await Acc.pb.collection("reviews").getList(comPage, 10, {sort:"-created", expand:"user"}); }
+  catch { $("#comFeed").append(el("p", {class:"empty", text:"Reviews didn't load. Check your connection and reload the page."})); return; }
+  await loadLikes(res.items);
+  if (!res.totalItems) $("#comFeed").replaceChildren(el("p", {class:"empty", style:"padding-top:16px", text:"No reviews yet. Open any perfume and be the first to rate it."}));
+  $("#comFeed").append(...res.items.filter(r => D.byId.has(r.perfume)).map(r => reviewEl(r, {showPerfume:true, onDeleted:openCommunity})));
+  $("#comCount").textContent = res.totalItems ? plural(res.totalItems, "review", "reviews") + " so far" : "";
+  $("#comMore").hidden = comPage >= res.totalPages;
+}
+$("#comMore").addEventListener("click", loadFeed);
+let comT;
+$("#comSearch").addEventListener("input", e => { clearTimeout(comT); comT = setTimeout(() => {
+  const q = e.target.value.trim(), box = $("#comHits"); box.hidden = !q; if (!q || !D) return;
+  const list = searchPerfumes(q, 8);
+  box.replaceChildren(...(list.length ? list.map(p => el("a", {class:"hit", href:`#p/${p.id}`, style:"text-decoration:none;color:inherit"},
+      bottle(p, "s"), el("div", {}, el("div", {class:"n", text:p.name}), el("div", {class:"b", text:meta(p)})), el("span", {class:"add", text:"Open"})))
+    : [el("p", {class:"empty", style:"padding:14px 6px", text:`Nothing matches "${q}". Try the brand name or a shorter word.`})]));
+}, 90); });
+
+/* ---------- member page: what other people see ---------- */
+async function openMember(uid){
+  await needData(); show("member");
+  const box = $("#vMember"); box.replaceChildren(backBtn("community"), el("p", {class:"empty", text:"Loading…"}));
+  await Acc.ready;
+  if (!Acc.on) { box.replaceChildren(backBtn("community"), noticeEl("Member pages are coming soon", "")); return; }
+  let u = null; try { u = await Acc.pb.collection("users").getOne(uid); } catch {}
+  if (!u) { box.replaceChildren(backBtn("community"), noticeEl("This member isn't here any more", "They may have deleted their account.")); return; }
+  document.title = `${memberName(u)} · Scent DNA`;
+  const url = u.avatar ? Acc.pb.files.getURL(u, u.avatar) : "", list = el("div", {class:"revlist"}), cnt = el("span");
+  const more = el("button", {class:"quiet", type:"button", text:"Show more reviews", hidden:""});
+  let page = 0;
+  const load = async () => {
+    page++; let res;
+    try { res = await Acc.pb.collection("reviews").getList(page, 10, {filter:Acc.pb.filter("user = {:u}", {u:uid}), sort:"-created", expand:"user"}); } catch { return; }
+    await loadLikes(res.items);
+    list.append(...res.items.filter(r => D.byId.has(r.perfume)).map(r => reviewEl(r, {showPerfume:true, onDeleted:() => openMember(uid)})));
+    if (!res.totalItems) list.append(el("p", {class:"empty", text:"No reviews yet."}));
+    cnt.textContent = res.totalItems ? plural(res.totalItems, "review", "reviews") : "";
+    more.hidden = page >= res.totalPages;
+  };
+  more.addEventListener("click", load);
+  const self = Acc.user && Acc.user.id === u.id;
+  box.replaceChildren(backBtn("community"),
+    el("div", {class:"memhead"}, el("div", {class:"pav"}, url ? el("img", {src:url, alt:""}) : initialsOf(memberName(u))),
+      el("div", {}, el("h1", {text:memberName(u)}), el("p", {text:[u.scent_type, self ? "This is how other people see you" : null].filter(Boolean).join(" · ")}))),
+    el("section", {class:"psec"}, el("header", {}, el("h3", {text:"Reviews"}), cnt), list, el("div", {}, more)));
+  load();
+}
+
+/* ---------- choose a new password (the reset email links here) ---------- */
+let resetToken = "";
+function openReset(tok){ resetToken = decodeURIComponent(tok); show("reset"); $("#resetErr").textContent = ""; $("#resetOk").replaceChildren(); $("#resetForm").hidden = false; }
+$("#resetForm").addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const a = $("#resetPass").value, b = $("#resetPass2").value, err = $("#resetErr");
+  if (a.length < 8) { err.textContent = "Use a password of at least 8 characters."; return; }
+  if (a !== b) { err.textContent = "The two passwords don't match."; return; }
+  await Acc.ready;
+  if (!Acc.on) { err.textContent = "Password reset isn't available on this version of the site."; return; }
+  $("#resetSubmit").disabled = true;
+  try {
+    await Acc.pb.collection("users").confirmPasswordReset(resetToken, a, b);
+    $("#resetForm").hidden = true; err.textContent = "";
+    $("#resetOk").replaceChildren("Your password is changed. ", el("a", {href:"#account", text:"Sign in with it now"}), ".");
+  } catch { err.textContent = "This reset link has expired or was already used. Ask for a new one from the sign-in page."; }
+  finally { $("#resetSubmit").disabled = false; }
+});
+
+/* ---------- profile: collection and your reviews ---------- */
+let colTab = "wish";
+function drawCollection(){
+  $$("#colSeg button").forEach(b => { const k = b.dataset.c, n = S[k].length; b.textContent = (k === "wish" ? "Want to try" : "I own") + (n ? ` (${n})` : ""); b.setAttribute("aria-pressed", String(k === colTab)); });
+  const ids = S[colTab].filter(id => D.byId.has(id));
+  $("#pCol").replaceChildren(...(ids.length ? ids.map(id => { const p = D.byId.get(id);
+      return pcard(p, el("button", {class:"textbtn", type:"button", style:"justify-self:start;padding:0", text:"Remove", "aria-label":`Remove ${p.name}`,
+        onclick:() => { S[colTab] = S[colTab].filter(x => x !== id); save(); drawCollection(); }})); })
+    : [el("p", {class:"empty", style:"grid-column:1/-1", text:colTab === "wish" ? "Nothing here yet. Open any perfume and choose Want to try." : "Nothing here yet. Open any perfume and choose I own it."})]));
+}
+$$("#colSeg button").forEach(b => b.addEventListener("click", () => { colTab = b.dataset.c; drawCollection(); }));
+async function drawMyReviews(){
+  const sec = $("#pRevSec"); await Acc.ready;
+  if (!Acc.user) { sec.hidden = true; return; }
+  let res; try { res = await Acc.pb.collection("reviews").getList(1, 50, {filter:Acc.pb.filter("user = {:u}", {u:Acc.user.id}), sort:"-created", expand:"user"}); } catch { sec.hidden = true; return; }
+  sec.hidden = false; $("#pRevCount").textContent = res.totalItems ? `${fmt(res.totalItems)} written` : "";
+  const items = res.items.filter(r => D.byId.has(r.perfume));
+  $("#pRevs").replaceChildren(...(items.length ? items.map(r => reviewEl(r, {showPerfume:true, onDeleted:drawMyReviews}))
+    : [el("p", {class:"empty", text:"You haven't reviewed anything yet. Open any perfume to rate it."})]));
 }
 
 /* ---------- boot ---------- */

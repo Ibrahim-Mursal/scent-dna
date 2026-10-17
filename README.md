@@ -1,6 +1,11 @@
 # Scent DNA
 
-A static website: people pick the perfumes they love, choose accords and notes, and get their Scent DNA (scent type, accord mix, favorite bottles) plus a ranked list of perfumes to try next. Everything runs in the browser. There is no server code, database or build step.
+A website where people pick the perfumes they love, choose accords and notes, and get their Scent DNA (scent type, accord mix, favorite bottles) plus a ranked list of perfumes to try next. Every perfume has its own page (accords, notes pyramid, how long it lasts, seasons, similar perfumes), and people can keep a "Want to try" and "I own" list.
+
+It runs in two ways:
+
+- **On any static host** (GitHub Pages, Netlify, cPanel): everything works in the browser and is saved on the visitor's device. The Community page and reviews show "coming soon".
+- **On your own server with PocketBase** (see `server/README.md`): visitors also get accounts, and the Community page comes alive with star ratings, reviews, replies, "helpful" votes and reports.
 
 ## What's in this folder
 
@@ -57,15 +62,28 @@ The page must be opened through a web address. Opening `index.html` straight fro
 - **Photos** come from your `images/` folder first, then from Fragrantica's image server, and if both fail the site draws a bottle (or a letter for notes). The photos belong to Fragrantica and the brands. That's fine for a showcase, but for a commercial site, ask them or use your own photos.
 - **Saved images** (the "Save as image" button) include photos only from your own `images/` folder. Fragrantica's server doesn't allow its photos to be copied into a generated image, so without your copies the saved image uses drawn bottles.
 - **Data** comes from the Decant dataset (Fragrantica community data). Check the dataset's license on Kaggle before commercial use.
-- **Privacy:** answers and photos are saved only in the visitor's own browser. Nothing is sent anywhere.
+- **Privacy:** on a static host, answers, photos and lists are saved only in the visitor's own browser. Nothing is sent anywhere. With accounts, see the Privacy page on the site.
 
 ## Replacing photos with your own
 
 After running the download script, replace any file in `images/perfumes/` or `images/notes/` with your own photo, keeping the same file name and format. Bottle files are named by perfume ID (the number at the end of its Fragrantica address) and note files by the note's image ID, for example `images/notes/55.webp` is Saffron. Square note images around 200×200 pixels and bottle images about 300×400 pixels on a white background work best.
 
-## User accounts
+## User accounts and the community
 
-On GitHub Pages or any plain host, the site saves each visitor's answers in their browser only. To give visitors real accounts (sign up, sign in, profile on every device), run the site on your own server with PocketBase. The full guide and a one-command setup script are in `server/README.md`.
+On GitHub Pages or any plain host, the site saves each visitor's answers in their browser only. To give visitors real accounts (profile on every device) and turn on reviews, run the site on your own server with PocketBase. The full guide and a one-command setup script are in `server/README.md`.
+
+## Page addresses
+
+| Address | Page |
+|---|---|
+| `#profile` | Your profile (the main page) |
+| `#matches` | Your ranked matches |
+| `#community` | Community: search, top rated, latest reviews |
+| `#p/75805` | A perfume's page (the number is its Fragrantica ID) |
+| `#u/<id>` | A member's public page (name, photo, scent type, reviews) |
+| `#account` | Sign in or create an account |
+| `#reset/<token>` | Choose a new password (linked from the reset email) |
+| `#privacy` | Privacy |
 
 ## Updating the catalog
 

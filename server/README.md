@@ -3,7 +3,7 @@
 The website works in two ways:
 
 - **Without a server** (GitHub Pages, today): everything is saved in each visitor's browser. No accounts.
-- **On your own server** (for example Contabo): visitors can create an account, and their Scent DNA is saved to your database and opens on any device. The site notices the server automatically; there's nothing to switch on in the code.
+- **On your own server** (for example Contabo): visitors can create an account, and their Scent DNA is saved to your database and opens on any device. The Community page turns on too: members rate perfumes with stars, write reviews, reply, mark reviews as helpful and report bad ones. The site notices the server automatically; there's nothing to switch on in the code.
 
 The server runs **PocketBase**, a single program that provides the accounts, the database and profile photo storage, plus an admin dashboard. It also serves the website itself and gets a free HTTPS certificate for your domain.
 
@@ -65,7 +65,16 @@ The "Continue with Google" button appears on the sign-in page automatically once
 
 In the dashboard: **Settings → Backups**. Turn on automatic backups (for example daily at 03:00) and keep at least 7. For extra safety, also take a Contabo snapshot now and then from their control panel.
 
-Also recommended: **Settings → Application → Rate limiting**, turn it on. It slows down anyone trying to guess passwords.
+Rate limiting is already turned on by the setup (it slows down password guessing and spam). You can adjust it in **Settings → Application → Rate limiting**.
+
+## Looking after the community
+
+You're the moderator. Everything is in the dashboard (`https://scentdna.owlava.com/_/`):
+
+- **Reports:** open the **reports** collection to see what people reported and why. Each report links to the review or reply.
+- **Automatic hiding:** when 3 different people report the same review or reply, it's hidden from everyone except its author. To bring it back, open it in **reviews** (or **review_replies**) and untick **hidden**. To remove it for good, delete it.
+- **Removing a review or a member:** open **reviews** or **users**, select the record and delete it. Deleting a member also deletes their reviews, replies and likes.
+- Members can't like their own reviews, can review each perfume once (they can edit it), and can't see which reviews other people liked.
 
 ## Updating the site later
 
@@ -88,9 +97,18 @@ The photos are already in the GitHub repository, so the setup script copies them
 | Live log | `journalctl -u scentdna -f` |
 | Reset an admin password | `sudo -u scentdna /opt/scentdna/pocketbase superuser upsert EMAIL NEWPASSWORD --dir /opt/scentdna/pb_data` |
 
-## What's stored for each account
+## What's stored
 
-The built-in `users` collection holds email, password (hashed), name, photo (`avatar`), plus these Scent DNA fields: `birthday`, `favorites` (perfume IDs), `accords` and `notes` (names), `profile_made` (date). Each person can only read and change their own record. Deleting an account from the site removes the record and the photo.
+| Collection | What it holds | Who can see it |
+|---|---|---|
+| `users` | Email, password (hashed), name, photo (`avatar`), `scent_type`, `birthday`, `favorites` (perfume IDs), `accords` and `notes` (names), `wishlist` and `owned` (perfume IDs), `profile_made` (date) | Name, photo and scent type are public (shown with reviews). Everything else only the member. |
+| `reviews` | Member, perfume ID, stars (1 to 5), text, like and reply counts, `hidden` | Everyone, unless hidden |
+| `review_replies` | Member, review, text, `hidden` | Everyone, unless hidden |
+| `review_likes` | Member, review | Only the member who liked |
+| `reports` | Member, review or reply, reason | Only you |
+| `perfume_stats` | Average stars, review count and star spread per perfume, worked out automatically from `reviews` | Everyone |
+
+Deleting an account from the site removes the member, their photo, reviews, replies, likes and reports.
 
 Photo files are served from addresses with a random part in the name, so they can't be guessed, but anyone who has a photo's exact address can open it.
 
@@ -100,4 +118,5 @@ Photo files are served from addresses with a random part in the name, so they ca
 |---|---|
 | `setup.sh` | One-time server setup |
 | `update.sh` | Pulls the latest site from GitHub and restarts |
-| `pb_migrations/` | Adds the Scent DNA fields and privacy rules to the database. Runs automatically. |
+| `pb_migrations/` | Creates the Scent DNA fields, the community collections and their privacy rules. Runs automatically. |
+| `pb_hooks/` | Server rules the database can't express on its own: hiding private profile fields from other people, like and reply counts, and hiding posts after 3 reports. |
