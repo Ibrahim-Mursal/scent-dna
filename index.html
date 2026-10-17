@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scent DNA</title>
+<meta name="description" content="Pick the perfumes you love and get your Scent DNA: your scent type, your accord mix, and a ranked list of perfumes to try next from 48,000+ fragrances.">
+<meta name="theme-color" content="#0D2621">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/cormorant-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/albert-sans-latin-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="perfumes.json" as="fetch" crossorigin>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Scent DNA">
+<meta property="og:description" content="Find your scent type and the perfumes you should try next.">
+<meta property="og:image" content="https://ibrahim-mursal.github.io/scent-dna/og-image.png">
+<meta property="og:url" content="https://ibrahim-mursal.github.io/scent-dna/">
+<meta name="twitter:card" content="summary_large_image">
+<style>[hidden]{display:none!important}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+<style>
+@font-face{font-family:"Cormorant";font-style:normal;font-display:swap;font-weight:300 700;src:url(fonts/cormorant-latin-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Cormorant";font-style:normal;font-display:swap;font-weight:300 700;src:url(fonts/cormorant-latin-ext-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Cormorant";font-style:italic;font-display:swap;font-weight:300 700;src:url(fonts/cormorant-latin-italic.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Cormorant";font-style:italic;font-display:swap;font-weight:300 700;src:url(fonts/cormorant-latin-ext-italic.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Albert Sans";font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/albert-sans-latin-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Albert Sans";font-style:normal;font-display:swap;font-weight:100 900;src:url(fonts/albert-sans-latin-ext-normal.woff2) format("woff2");unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+</style>
+<style>
+/* Layout: a fragrance counter. The Scent DNA profile is the dark object on the glass; questions and matches sit beside it. */
+:root{
+  --ground:#E3EAE7; --raise:#F6F9F8; --sunk:#D5DFDB; --ink:#10231F; --ink-2:#4F625D; --rule:#C3D0CB;
+  --vetiver:#0E6E5A; --vetiver-ink:#F3FBF8; --vetiver-soft:#CFE5DE; --warn:#A8322B; --tile:#FFFFFF;
+  --dna:#0D2621; --dna-2:#17463B; --dna-ink:#E9F4F0; --dna-muted:#8FB8AB; --dna-rule:#24493F;
+  --f-body:"Albert Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Cormorant","Cormorant Garamond","Iowan Old Style",Georgia,serif;
+  --s-1:13px; --s0:16px; --s1:20px; --s2:25px; --s3:32px; --s4:44px; --s5:clamp(52px,9vw,112px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0B1815; --raise:#12231F; --sunk:#0E1D1A; --ink:#E2EEE9; --ink-2:#91A7A0; --rule:#22382F;
+  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ground:#0B1815; --raise:#12231F; --sunk:#0E1D1A; --ink:#E2EEE9; --ink-2:#91A7A0; --rule:#22382F;
+  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--f-body);font-size:var(--s0);line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground)}
+h1,h2,h3{margin:0;font-family:var(--f-display);font-weight:600;text-wrap:balance;line-height:1}
+p{margin:0}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--vetiver);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto}
+
+/* top */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:18px}
+.mark{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:24px;letter-spacing:0}
+.mark svg{width:26px;height:26px;color:var(--vetiver)}
+.status{font-size:var(--s-1);color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.status b{width:8px;height:8px;border-radius:50%;background:var(--rule);display:inline-block}
+.status.ok b{background:var(--vetiver)}
+
+/* buttons */
+.go{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;border:0;background:var(--vetiver);color:var(--vetiver-ink);font-weight:650;font-size:17px;cursor:pointer}
+.go:hover{filter:brightness(1.07)}
+.go:disabled{opacity:.4;cursor:not-allowed;filter:none}
+.quiet{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--rule);background:transparent;font-weight:600;cursor:pointer}
+.quiet:hover{border-color:var(--ink)}
+.textbtn{background:none;border:0;padding:8px 2px;color:var(--ink-2);font-weight:550;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- bottle photos ---------- */
+.bt{display:grid;place-items:center;background:var(--tile);border-radius:10px;overflow:hidden;flex:none}
+.bt img{width:100%;height:100%;object-fit:contain;display:block}
+.bt.fb{background:transparent}
+.bt .vial{width:70%;height:auto;color:var(--ink)}
+.bt.s{width:44px;height:56px}
+.bt.m{width:72px;height:94px;border-radius:12px}
+
+/* ---------- Scent DNA profile ---------- */
+.dnawrap{width:100%;max-width:380px;container-type:inline-size}
+.dna{position:relative;width:100%;border-radius:6cqw;overflow:hidden;color:var(--dna-ink);
+  background:radial-gradient(120% 70% at 50% 46%,var(--dna-2) 0%,var(--dna) 60%,#091C18 100%);
+  padding:7cqw 7cqw 6.5cqw;display:flex;flex-direction:column;
+  box-shadow:0 30px 60px -28px rgba(8,30,25,.6),0 4px 14px -6px rgba(8,30,25,.3)}
+.dna .hd{display:flex;align-items:center;gap:4cqw}
+.dna .av{width:15cqw;height:15cqw;border-radius:50%;overflow:hidden;flex:none;background:#1F4A40;display:grid;place-items:center;font-weight:700;font-size:5.6cqw;color:var(--dna-muted);box-shadow:0 0 0 .7cqw rgba(233,244,240,.15)}
+.dna .av img{width:100%;height:100%;object-fit:cover}
+.dna .who{min-width:0;flex:1}
+.dna .nm{font-family:var(--f-display);font-weight:600;font-size:7cqw;line-height:1;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dna .nm.empty{color:var(--dna-muted)}
+.dna .sg{font-size:3.3cqw;color:var(--dna-muted);margin-top:.8cqw}
+.dna .brand{align-self:flex-start;font-size:3cqw;font-weight:650;color:var(--dna-muted);display:flex;align-items:center;gap:1.4cqw;white-space:nowrap}
+.dna .brand svg{width:4cqw;height:4cqw}
+.dna .k{font-size:3.1cqw;color:var(--dna-muted)}
+.dna .tp{margin-top:6cqw}
+.dna .type{font-family:var(--f-display);font-style:italic;font-weight:600;font-size:13.5cqw;line-height:.95;letter-spacing:-.01em;margin-top:.6cqw}
+.dna .type.empty{color:#3F6A5F}
+.dna .helix{display:block;width:100%;height:auto;margin-block:3cqw 2cqw}
+.dna .pills{display:flex;flex-wrap:wrap;gap:1.8cqw}
+.dna .pill{padding:1.3cqw 3cqw;border-radius:99px;background:var(--c);color:var(--t);font-size:3.4cqw;font-weight:650;text-transform:capitalize;line-height:1.2}
+.dna .wears{margin-top:5cqw}
+.dna .fv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3cqw;margin-top:1.6cqw}
+.dna .fv .bt{width:100%;height:auto;aspect-ratio:3/4;border-radius:2.6cqw;background:#F4F6F5}
+.dna .fv .bt.fb{background:#1F4A40}
+.dna .fv .bt .vial{color:#E9F4F0}
+.dna .fv p{font-size:2.8cqw;line-height:1.2;margin-top:1.2cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dna .ft{margin-top:5cqw;padding-top:3.6cqw;border-top:.3cqw solid var(--dna-rule)}
+.dna .nt{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2.6cqw;margin-top:1.8cqw}
+.dna .nt .ni{width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;background:#1F4A40;display:grid;place-items:center;font-family:var(--f-display);font-size:6cqw;color:var(--dna-muted)}
+.dna .nt .ni img{width:100%;height:100%;object-fit:cover}
+.dna .nt p{font-size:2.7cqw;line-height:1.2;margin-top:1.2cqw;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dna .ln{font-size:3.3cqw;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dna .ln b{color:var(--dna-muted);font-weight:500}
+.dna .sample{position:absolute;top:7.5cqw;right:7cqw;font-size:2.8cqw;font-weight:700;letter-spacing:.2em;color:var(--dna-muted);opacity:.7}
+
+/* ---------- landing ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(32px,6vw,90px);align-items:center;padding-block:clamp(24px,6vw,72px) 32px}
+.hero h1{font-size:clamp(58px,10vw,128px);font-weight:600;letter-spacing:-.02em;line-height:.9}
+.hero h1 i{font-weight:500}
+.hero .lede{font-size:var(--s1);line-height:1.45;color:var(--ink-2);max-width:34ch;margin-top:26px}
+.hero .row{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:34px}
+.hero .note{font-size:var(--s-1);color:var(--ink-2)}
+.hero .dnawrap{width:min(360px,82vw)}
+.strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;border-top:1.5px solid var(--rule);padding-top:24px;margin-top:24px}
+.strip div{font-size:15px;color:var(--ink-2);max-width:30ch}
+.strip strong{display:block;color:var(--ink);font-family:var(--f-display);font-size:26px;font-weight:600;line-height:1.1;margin-bottom:6px}
+
+/* ---------- builder ---------- */
+.builder{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:start;padding-block:12px 24px}
+.builder .preview{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px)}
+.steps{display:flex;gap:6px;margin-bottom:28px}
+.steps button{flex:1;display:grid;gap:8px;text-align:left;background:none;border:0;padding:0;font-size:var(--s-1);font-weight:600;color:var(--ink-2);cursor:pointer}
+.steps button::before{content:"";height:5px;border-radius:3px;background:var(--rule)}
+.steps button[aria-current="step"]{color:var(--ink)}
+.steps button.done::before,.steps button[aria-current="step"]::before{background:var(--vetiver)}
+.steps button:disabled{cursor:default}
+.pane h2{font-size:52px;letter-spacing:-.01em}
+.pane .sub{color:var(--ink-2);margin-top:10px;max-width:52ch;font-size:17px}
+.pane .body{margin-top:28px;display:grid;gap:20px}
+.navr{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:32px;padding-top:20px;border-top:1.5px solid var(--rule)}
+.field{display:grid;gap:8px}
+.field label{font-weight:600;font-size:15px}
+.inp{width:100%;min-width:0;min-height:54px;padding:0 18px;border-radius:14px;border:1.5px solid var(--rule);background:var(--raise);font-size:18px}
+.inp:focus{outline:none;border-color:var(--vetiver);box-shadow:0 0 0 4px var(--vetiver-soft)}
+.err{color:var(--warn);font-size:15px;min-height:1.2em}
+.photo{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.photo .thumb{width:76px;height:76px;border-radius:50%;background:var(--sunk);border:1.5px dashed var(--rule);display:grid;place-items:center;overflow:hidden;color:var(--ink-2);font-size:24px}
+.photo .thumb img{width:100%;height:100%;object-fit:cover}
+.photo .txt{display:grid;gap:6px}
+.photo .txt small{color:var(--ink-2);font-size:14px}
+.photo .btns{display:flex;gap:8px;flex-wrap:wrap}
+
+.chosen{display:grid;gap:8px}
+.chosen .item{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:8px 10px 8px 8px;border-radius:14px;background:var(--vetiver-soft)}
+.chosen .item .n,.hit .n{font-weight:650;line-height:1.2}
+.chosen .item .b,.hit .b{font-size:14px;color:var(--ink-2)}
+.chosen .x{width:36px;height:36px;border-radius:50%;border:0;background:var(--raise);cursor:pointer;font-size:18px;line-height:1;color:var(--ink-2)}
+.list{display:grid;border-top:1.5px solid var(--rule)}
+.hit{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 6px;border:0;border-bottom:1px solid var(--rule);background:none;text-align:left;cursor:pointer;width:100%}
+.hit:hover{background:var(--raise)}
+.hit .add{font-size:14px;font-weight:650;color:var(--vetiver)}
+.hit[aria-disabled="true"]{opacity:.5;cursor:default}
+.listhead{font-size:14px;color:var(--ink-2);margin-bottom:6px}
+
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+.swatch{position:relative;min-height:84px;border-radius:14px;border:0;padding:10px 12px;text-align:left;display:flex;align-items:flex-end;cursor:pointer;font-weight:650;font-size:15px;line-height:1.15;text-transform:capitalize;
+  background:var(--c);color:var(--t);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);transition:transform .15s}
+.swatch:hover{transform:translateY(-2px)}
+.swatch[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ground),0 0 0 5.5px var(--ink)}
+.swatch[aria-pressed="true"]::after{content:"✓";position:absolute;top:8px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--t);color:var(--c);display:grid;place-items:center;font-size:13px;font-weight:800}
+.swatch small{position:absolute;top:10px;left:12px;font-size:12px;font-weight:550;opacity:.85;text-transform:none}
+.grouphead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:650;font-size:15px}
+.grouphead span{color:var(--ink-2);font-weight:500;font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 5px;border-radius:999px;border:1.5px solid var(--rule);background:var(--raise);cursor:pointer;font-weight:550;font-size:15px}
+.tag:hover{border-color:var(--ink)}
+.tag[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.tag .ti{width:34px;height:34px;border-radius:50%;overflow:hidden;background:var(--sunk);flex:none;display:grid;place-items:center;font-family:var(--f-display);font-size:17px;color:var(--ink-2)}
+.tag .ti img{width:100%;height:100%;object-fit:cover}
+.empty{color:var(--ink-2);font-size:15px}
+
+/* ---------- result ---------- */
+.result{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:start;padding-block:12px 24px}
+.result .side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:grid;gap:18px}
+.typeblurb{font-size:16px;color:var(--ink-2);max-width:42ch}
+.typeblurb strong{color:var(--ink)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.msg{font-size:15px;color:var(--vetiver);min-height:1.3em}
+.msg img{display:block;width:180px;border-radius:10px;margin-top:10px}
+.confirm{font-size:15px;color:var(--ink-2)}
+.matches h2{font-size:52px;letter-spacing:-.01em}
+.matches .sub{color:var(--ink-2);margin-top:10px;max-width:56ch;font-size:17px}
+.controls{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:flex-start;align-items:center;margin-top:24px;padding-bottom:14px;border-bottom:1.5px solid var(--ink)}
+.seg{display:inline-flex;flex-wrap:wrap;padding:4px;border-radius:22px;background:var(--sunk);gap:2px}
+.seg button{min-height:38px;padding:0 16px;border-radius:999px;border:0;background:none;font-weight:600;font-size:15px;cursor:pointer;color:var(--ink-2)}
+.seg button[aria-pressed="true"],.seg button[aria-selected="true"]{background:var(--raise);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.rank{list-style:none;margin:0;padding:0}
+.rank li{display:grid;grid-template-columns:40px 72px minmax(0,1fr) 100px;gap:18px;align-items:start;padding:20px 0;border-bottom:1px solid var(--rule)}
+.rank .pos{font-family:var(--f-display);font-weight:600;font-size:40px;line-height:.9;font-variant-numeric:lining-nums tabular-nums;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.rank .pn{font-family:var(--f-display);font-weight:600;font-size:30px;line-height:1.05}
+.rank .pb{color:var(--ink-2);font-size:15px;margin-top:3px}
+.rank .why{font-size:15px;margin-top:10px;max-width:58ch}
+.rank .why em{font-style:normal;font-weight:650}
+.rank .spec{display:flex;height:6px;border-radius:3px;overflow:hidden;gap:2px;margin-top:12px;max-width:260px}
+.rank .spec i{display:block}
+.rank a{font-size:14px;color:var(--ink-2);text-underline-offset:3px;display:inline-block;margin-top:8px}
+.rank .score{text-align:right}
+.rank .pct{font-weight:800;font-size:var(--s3);line-height:1;color:var(--vetiver);font-variant-numeric:tabular-nums}
+.rank .pct small{font-size:16px;font-weight:700}
+.rank .pct.word{font-size:20px}
+.rank .meta{font-size:13px;color:var(--ink-2);margin-top:6px;font-variant-numeric:tabular-nums}
+.more{margin-top:24px}
+.fine{margin-top:40px;font-size:14px;color:var(--ink-2);max-width:70ch}
+
+.loading{display:grid;place-items:center;text-align:center;gap:16px;padding-block:18vh;color:var(--ink-2)}
+.meter{width:240px;height:5px;border-radius:3px;background:var(--rule);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--vetiver);transition:width .2s}
+.pvnote{display:none;font-size:15px;color:var(--ink-2)}
+.pvnote strong{display:block;color:var(--ink);font-size:17px}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr}
+  .hero .dnawrap{justify-self:center}
+  .builder,.result{grid-template-columns:1fr}
+  .builder .preview{position:static;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center}
+  .builder .preview .dnawrap{width:120px}
+  .pvnote{display:block}
+  .result .side{position:static;justify-items:center;text-align:left}
+  .result .side .dnawrap{width:min(340px,86vw)}
+  .strip{grid-template-columns:1fr;gap:16px}
+}
+@media (max-width:560px){
+  .rank li{grid-template-columns:56px minmax(0,1fr) 60px;gap:12px}
+  .rank .pos{display:none}
+  .rank .bt.m{width:56px;height:74px}
+  .rank .pct{font-size:26px}
+  .pane h2,.matches h2{font-size:40px}
+  .steps button{font-size:12px}
+  .sw{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top wrap">
+  <button class="mark" id="homeBtn" type="button"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 2c0 7 12 8 12 11S7 17 7 24M19 2c0 7-12 8-12 11s12 4 12 11"/><path d="M9 6h8M9 20h8" stroke-width="1.6"/></svg>Scent DNA</button>
+  <div class="status" id="status" role="status"><b></b><span id="statusTxt">Loading 48,531 perfumes</span></div>
+</header>
+
+<main class="wrap">
+  <section id="vLanding">
+    <div class="hero">
+      <div>
+        <h1>What's in your <i>scent&nbsp;DNA?</i></h1>
+        <p class="lede">Tell us the perfumes you love and the accords and notes you reach for. We map your scent type and rank the perfumes you should try next.</p>
+        <div class="row">
+          <button class="go" id="startBtn" type="button">Find my scent DNA</button>
+          <button class="go" id="resumeBtn" type="button" hidden>Open my scent DNA</button>
+          <span class="note">Takes about two minutes. Your answers stay on this device.</span>
+        </div>
+      </div>
+      <div class="dnawrap" id="sampleCard"></div>
+    </div>
+    <div class="strip">
+      <div><strong>Start from your favorites</strong>Pick perfumes you own or love, from 48,531 in the catalog.</div>
+      <div><strong>Down to the notes</strong>Choose the accords and notes you reach for. We pre-fill them from your favorites.</div>
+      <div><strong>Every match explained</strong>Each suggestion says which accords and notes it shares with you.</div>
+    </div>
+  </section>
+
+  <section id="vBuilder" class="builder" hidden>
+    <div class="preview">
+      <div class="dnawrap" id="liveCard"></div>
+      <p class="pvnote"><strong>Your scent DNA so far</strong>It fills in as you answer.</p>
+    </div>
+    <div>
+      <nav class="steps" aria-label="Steps">
+        <button type="button" data-step="0">Details</button>
+        <button type="button" data-step="1">Favorites</button>
+        <button type="button" data-step="2">Accords</button>
+        <button type="button" data-step="3">Notes</button>
+      </nav>
+
+      <div class="pane" data-pane="0">
+        <h2>First, who are you?</h2>
+        <p class="sub">Your name goes on your profile. Your birthday sets your star sign, which nudges your matches a little.</p>
+        <div class="body">
+          <div class="field"><label for="nameInput">Name</label><input class="inp" id="nameInput" type="text" maxlength="40" autocomplete="name" placeholder="Ibrahim Mursal"></div>
+          <div class="field"><label for="dobInput">Birthday</label><input class="inp" id="dobInput" type="date" min="1920-01-01"></div>
+          <div class="field">
+            <label for="photoPick">Photo, if you want one</label>
+            <div class="photo">
+              <div class="thumb" id="photoThumb" aria-hidden="true">+</div>
+              <div class="txt">
+                <div class="btns"><button class="quiet" id="photoPick" type="button">Choose photo</button><button class="textbtn" id="photoRemove" type="button" hidden>Remove</button></div>
+                <small>Without a photo, your profile shows your initials.</small>
+              </div>
+              <input type="file" id="photoInput" accept="image/*" hidden>
+            </div>
+          </div>
+          <div class="err" id="err0" role="alert"></div>
+        </div>
+      </div>
+
+      <div class="pane" data-pane="1" hidden>
+        <h2>Which perfumes do you love?</h2>
+        <p class="sub">Add between one and six. They shape everything after this.</p>
+        <div class="body">
+          <div class="chosen" id="chosen"></div>
+          <div class="field"><label for="favSearch">Search by perfume or brand</label><input class="inp" id="favSearch" type="search" autocomplete="off" placeholder="Khamrah, Sauvage, Baccarat Rouge 540"></div>
+          <div><div class="listhead" id="listHead"></div><div class="list" id="hits"></div></div>
+        </div>
+      </div>
+
+      <div class="pane" data-pane="2" hidden>
+        <h2>Which accords feel like you?</h2>
+        <p class="sub">We picked the strongest ones in your favorites. Keep them, swap them, or add more, up to eight.</p>
+        <div class="body">
+          <div class="grouphead">In your favorites <span id="accCount"></span></div>
+          <div class="sw" id="accFav"></div>
+          <div class="grouphead">Other accords</div>
+          <div class="sw" id="accRest"></div>
+          <div><button class="textbtn" id="accMore" type="button">Show all accords</button></div>
+        </div>
+      </div>
+
+      <div class="pane" data-pane="3" hidden>
+        <h2>And the notes you reach for?</h2>
+        <p class="sub">Pick up to ten, or skip this. Start with the notes in your favorites, or search more than 1,600.</p>
+        <div class="body">
+          <div class="grouphead">Your notes <span id="noteCount"></span></div>
+          <div class="tags" id="notePicked"></div>
+          <div class="grouphead">In your favorites</div>
+          <div class="tags" id="noteFav"></div>
+          <div class="field"><label for="noteSearch">Search notes</label><input class="inp" id="noteSearch" type="search" autocomplete="off" placeholder="saffron, oud, bergamot"></div>
+          <div class="tags" id="noteHits"></div>
+        </div>
+      </div>
+
+      <div class="navr">
+        <button class="textbtn" id="backBtn" type="button">Back</button>
+        <button class="go" id="nextBtn" type="button">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="vResult" class="result" hidden>
+    <div class="side">
+      <div class="dnawrap" id="finalCard"></div>
+      <p class="typeblurb" id="typeBlurb"></p>
+      <div class="actions">
+        <button class="go" id="saveImg" type="button">Save as image</button>
+        <button class="quiet" id="editBtn" type="button">Edit answers</button>
+      </div>
+      <div class="msg" id="msg" role="status"></div>
+      <div class="confirm"><button class="textbtn" id="resetBtn" type="button">Start over</button>
+        <span id="resetAsk" hidden> This deletes your answers from this device. <button class="textbtn" id="resetYes" type="button">Delete</button> <button class="textbtn" id="resetNo" type="button">Keep</button></span></div>
+    </div>
+    <div class="matches">
+      <h2 id="resTitle">Perfumes to try next</h2>
+      <p class="sub" id="resSub"></p>
+      <div class="controls">
+        <div class="seg" role="group" aria-label="Style" id="gSeg">
+          <button aria-pressed="true" data-g="all" type="button">All</button>
+          <button aria-pressed="false" data-g="0" type="button">Female</button>
+          <button aria-pressed="false" data-g="1" type="button">Male</button>
+          <button aria-pressed="false" data-g="2" type="button">Unisex</button>
+        </div>
+      </div>
+      <ol class="rank" id="rank"></ol>
+      <div class="more"><button class="quiet" id="moreBtn" type="button">Show 10 more</button></div>
+      <p class="fine">Perfume data comes from the Decant dataset, built from Fragrantica community ratings, votes, accords and notes. Bottle and note photos are from Fragrantica.</p>
+    </div>
+  </section>
+
+  <section id="vLoading" class="loading" hidden>
+    <p id="loadTxt">Opening the catalog of 48,531 perfumes</p>
+    <div class="meter"><i id="meter"></i></div>
+  </section>
+</main>
+
+<script>
+(() => {
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const el = (tag, attrs = {}, ...kids) => {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v == null) continue;
+    if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else if (k === "html") e.innerHTML = v;
+    else if (k === "style") e.style.cssText = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v);
+  }
+  for (const k of kids) if (k != null && k !== false) e.append(k);
+  return e;
+};
+const fmt = n => n.toLocaleString("en-US");
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const cap = s => s.replace(/\b\w/g, c => c.toUpperCase());
+const listJoin = a => a.length < 2 ? (a[0] || "") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+/* Photos: your own copies in images/ (listed in images/manifest.json by tools/download_images.py) are used first;
+   anything not there loads from Fragrantica; if that fails too, a bottle or letter is drawn. */
+const LOCAL = {ext:"webp", p:new Set(), n:new Set()};
+const manifestReady = fetch("images/manifest.json").then(r => r.ok ? r.json() : null)
+  .then(m => { if (m) { LOCAL.ext = m.ext || "webp"; LOCAL.p = new Set(m.perfumes || []); LOCAL.n = new Set(m.notes || []); } }).catch(() => {});
+const REMOTE_NIMG = id => `https://fimgs.net/mdimg/sastojci/t.${id}.jpg`;
+const REMOTE_IMG = (id, big) => `https://fimgs.net/mdimg/perfume/${big ? "375x500" : "m"}.${id}.jpg`;
+const NIMG = id => LOCAL.n.has(id) ? `images/notes/${id}.${LOCAL.ext}` : REMOTE_NIMG(id);
+const IMG = (id, big) => LOCAL.p.has(id) ? `images/perfumes/${id}.${LOCAL.ext}` : REMOTE_IMG(id, big);
+
+/* ---------- accord colours ---------- */
+const ACC = {"woody":"#8A6744","citrus":"#F2D54A","sweet":"#EE93B4","fruity":"#F07B6A","aromatic":"#7FA67A","powdery":"#E2CBE0","amber":"#D98A3A","warm spicy":"#C4513A","white floral":"#F1EBDC","floral":"#EC86B0","fresh spicy":"#93BD7C","vanilla":"#F1DDAE","musky":"#CDBFB8","rose":"#D9506F","green":"#5FA35A","fresh":"#A4DCDD","leather":"#7A4A35","patchouli":"#7E6847","earthy":"#8E7A57","oud":"#5A3B29","iris":"#A39ED0","lavender":"#B3A0DD","aquatic":"#56A9D1","violet":"#9672BC","yellow floral":"#F2C84B","tropical":"#F7A94E","soft spicy":"#D79E70","ozonic":"#B4DDEC","animalic":"#9B6C4F","smoky":"#7E7977","balsamic":"#A0683F","marine":"#3E8FB5","tobacco":"#9E6E3C","mossy":"#6E7D45","caramel":"#C8833F","coconut":"#F2E8D3","tuberose":"#F0DDE8","almond":"#E8CFA7","honey":"#E7B444","herbal":"#80AE6D","cherry":"#B8293F","metallic":"#AEB7BC","salty":"#BFD8DB","mineral":"#A3AEB0","coffee":"#6A4630","whiskey":"#B8743A","rum":"#9C5628","chocolate":"#5A3424","cacao":"#5A3424","aldehydic":"#DCE6EF","conifer":"#4A7A57","lactonic":"#F4ECDA","nutty":"#B78B5C","wine":"#8C2847","beeswax":"#E3C267","camphor":"#BAD8C9","sour":"#D7E05E","bitter":"#6F7D51"};
+const hueOf = s => { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h % 360; };
+const accColor = n => ACC[n] || `hsl(${hueOf(n)} 35% 58%)`;
+function textOn(col){
+  if (!col.startsWith("#")) return "#10231F";
+  const n = parseInt(col.slice(1), 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
+  return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? "#10231F" : "#FFFFFF";
+}
+
+/* ---------- scent families → scent type ---------- */
+const FAM = {
+  Gourmand:["sweet","vanilla","caramel","chocolate","cacao","coffee","honey","almond","nutty","lactonic","coconut","cherry","beeswax"],
+  Amber:["amber","warm spicy","soft spicy","balsamic","oud","tobacco","whiskey","rum"],
+  Woods:["woody","patchouli","earthy","mossy","conifer"],
+  Fresh:["citrus","aquatic","marine","ozonic","fresh","fresh spicy","green","salty","aldehydic","mineral","metallic"],
+  Floral:["floral","white floral","rose","yellow floral","tuberose","iris","violet","powdery","musky"],
+  Aromatic:["aromatic","lavender","herbal","camphor"],
+  Fruity:["fruity","tropical","sour","wine"],
+  Leather:["leather","smoky","animalic","bitter"],
+};
+const ADJ = {Gourmand:"Sweet", Amber:"Warm", Woods:"Woody", Fresh:"Fresh", Floral:"Floral", Aromatic:"Aromatic", Fruity:"Fruity", Leather:"Smoky"};
+const BLURB = {
+  Gourmand:"You like perfume you could almost eat: vanilla, caramel and sweet notes that wear warm and close.",
+  Amber:"You reach for warmth and depth: amber, spice and resins that glow on skin and last into the night.",
+  Woods:"You like a dry, grounded base: woods, patchouli and earthy notes that feel calm and polished.",
+  Fresh:"You like clean air and brightness: citrus, water and green notes that feel easy to wear every day.",
+  Floral:"You're drawn to flowers and soft skin scents: rose, white florals, iris and musk.",
+  Aromatic:"You like herbs and lavender: the crisp, barbershop side of perfume.",
+  Fruity:"You like juicy, bright openings: fruits and tropical notes with a playful feel.",
+  Leather:"You like texture and edge: leather, smoke and animalic notes with real character.",
+};
+const ACC2FAM = {}; for (const [f, list] of Object.entries(FAM)) for (const a of list) ACC2FAM[a] = f;
+function scentType(accs){
+  if (!accs.length) return null;
+  const sc = {}; accs.forEach((a, i) => { const f = ACC2FAM[a.name]; if (f) sc[f] = (sc[f] || 0) + a.v * (1 + (accs.length - i) * .05); });
+  const rank = Object.entries(sc).sort((a, b) => b[1] - a[1]);
+  if (!rank.length) return {name:cap(accs[0].name), fam:null};
+  const [f1] = rank[0], f2 = rank[1] && rank[1][1] > rank[0][1] * .35 ? rank[1][0] : null;
+  return {name:f2 ? `${ADJ[f2]} ${f1}` : `Pure ${f1}`, fam:f1};
+}
+
+/* ---------- star sign ---------- */
+const ZOD = [["Capricorn",1,19,"Earth"],["Aquarius",2,18,"Air"],["Pisces",3,20,"Water"],["Aries",4,19,"Fire"],["Taurus",5,20,"Earth"],["Gemini",6,20,"Air"],["Cancer",7,22,"Water"],["Leo",8,22,"Fire"],["Virgo",9,22,"Earth"],["Libra",10,22,"Air"],["Scorpio",11,21,"Water"],["Sagittarius",12,21,"Fire"],["Capricorn",12,31,"Earth"]];
+const ELEMENT_ACC = {Fire:["warm spicy","amber","leather","smoky"],Earth:["woody","earthy","patchouli","mossy"],Air:["citrus","aromatic","fresh spicy","green"],Water:["aquatic","musky","powdery","marine"]};
+const zodiac = dob => { const [, m, d] = dob.split("-").map(Number); for (const z of ZOD) if (m < z[1] || (m === z[1] && d <= z[2])) return {sign:z[0], element:z[3]}; return {sign:"Capricorn", element:"Earth"}; };
+
+/* ---------- storage ---------- */
+const KEY = "scentDNA.v1", OLDKEY = "scentPassport.v1";
+const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || localStorage.getItem(OLDKEY) || "null"); } catch { return null; } };
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
+const wipe = () => { try { localStorage.removeItem(KEY); localStorage.removeItem(OLDKEY); } catch {} };
+const blank = () => ({name:"", dob:"", photo:"", favs:[], accords:[], notes:[], issued:"", accTouched:false});
+let S = Object.assign(blank(), load() || {});
+let D = null;
+
+/* ---------- data ---------- */
+let dataReady; const dataPromise = new Promise(r => dataReady = r);
+async function loadData(){
+  try {
+    const res = await fetch("perfumes.json");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const total = +res.headers.get("content-length") || 9650000;
+    const reader = res.body.getReader(); const chunks = []; let got = 0;
+    for (;;) { const {done, value} = await reader.read(); if (done) break; chunks.push(value); got += value.length;
+      const pct = Math.min(99, Math.round(got / Math.max(total, got) * 100)); $("#meter").style.width = pct + "%"; $("#statusTxt").textContent = `Loading perfumes, ${pct}%`; }
+    const buf = new Uint8Array(got); let o = 0; for (const c of chunks) { buf.set(c, o); o += c.length; }
+    prepare(JSON.parse(new TextDecoder().decode(buf)));
+    await manifestReady;
+    SAMPLE.favs = SAMPLE.favs.map(f => D.byId.get(f.id) || f); $("#sampleCard").replaceChildren(card(SAMPLE));
+    $("#status").classList.add("ok"); $("#statusTxt").textContent = `${fmt(D.P.length)} perfumes ready`; $("#meter").style.width = "100%";
+    dataReady();
+  } catch (e) {
+    console.error(e);
+    $("#statusTxt").textContent = "Catalog didn't load";
+    $("#loadTxt").textContent = "The perfume catalog didn't load. Check your connection, then reload the page.";
+  }
+}
+function prepare(raw){
+  const P = raw.p.map(r => {
+    const acc = []; for (let i = 0; i < r[8].length; i += 2) acc.push([r[8][i], r[8][i + 1] / 100]);
+    const notes = []; for (let i = 0; i < r[9].length; i += 3) notes.push([r[9][i], r[9][i + 1], r[9][i + 2] / 100]);
+    let n2 = 0; for (const [, s] of acc) n2 += s * s;
+    return {id:r[0], name:r[1], brand:r[2] >= 0 ? raw.brands[r[2]] : "", year:r[3], g:r[4], rating:r[5] / 100, votes:r[6], acc, notes, accNorm:Math.sqrt(n2) || 1, clone:r[12], cloneScore:r[13]};
+  });
+  for (const p of P) p.key = norm(p.name + " " + p.brand);
+  const accFreq = new Array(raw.accords.length).fill(0);
+  for (const p of P) for (const [a, s] of p.acc) if (s >= .5) accFreq[a]++;
+  D = {P, byId:new Map(P.map(p => [p.id, p])), accords:raw.accords, notes:raw.notes, noteCount:raw.noteCount, noteImg:raw.noteImg || [], noteKey:raw.notes.map(norm), accFreq};
+}
+
+/* ---------- bottle images with drawn fallback ---------- */
+function vial(p){
+  const cols = D && p.acc ? p.acc.slice(0, 3).map(a => accColor(D.accords[a[0]])) : []; while (cols.length < 3) cols.push(cols[0] || "#C9D3D0");
+  return `<svg class="vial" viewBox="0 0 28 40" aria-hidden="true"><rect x="10" y="1" width="8" height="6" rx="1.5" fill="currentColor" opacity=".8"/><rect x="3" y="8" width="22" height="31" rx="5" fill="${cols[2]}"/><rect x="3" y="18" width="22" height="21" fill="${cols[1]}"/><path d="M3 27h22v7a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5z" fill="${cols[0]}"/><rect x="3" y="8" width="22" height="31" rx="5" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2"/></svg>`;
+}
+function noteImg(name, imgId, cls){
+  const box = el("span", {class:cls}, (name || "?")[0]);
+  if (imgId) { const img = el("img", {src:NIMG(imgId), alt:"", loading:"lazy", decoding:"async", referrerpolicy:"no-referrer"});
+    img.style.display = "none";
+    img.addEventListener("load", () => { img.style.display = ""; box.replaceChildren(img); }, {once:true});
+    img.addEventListener("error", () => { if (!img.src.includes("fimgs.net")) img.src = REMOTE_NIMG(imgId); });
+    box.append(img); }
+  return box;
+}
+function bottle(p, size){
+  const box = el("span", {class:"bt " + size});
+  const img = el("img", {src:IMG(p.id, size !== "s"), alt:"", loading:"lazy", decoding:"async", referrerpolicy:"no-referrer"});
+  img.addEventListener("error", () => { if (!img.src.includes("fimgs.net")) { img.src = REMOTE_IMG(p.id, size !== "s"); return; } box.classList.add("fb"); box.innerHTML = vial(p); });
+  box.append(img); return box;
+}
+
+/* ---------- helix ---------- */
+// Returns rungs (x, y1, y2, depth, colour) and two strand polylines for a twisting double helix.
+function helixGeom(W, H, cols, phase){
+  const mid = H / 2, A = H * .42, turns = 2.25, k = Math.PI * 2 * turns / W, n = 30, pad = W * .03;
+  const s1 = [], s2 = [];
+  for (let x = 0; x <= W; x += W / 120) { const t = k * x + phase; s1.push([x, mid + A * Math.sin(t), Math.cos(t)]); s2.push([x, mid - A * Math.sin(t), -Math.cos(t)]); }
+  const rungs = [];
+  for (let i = 0; i < n; i++) { const x = pad + (W - 2 * pad) * i / (n - 1), t = k * x + phase; rungs.push({x, y1:mid + A * Math.sin(t), y2:mid - A * Math.sin(t), d:Math.abs(Math.cos(t)), c:cols[i % cols.length]}); }
+  return {s1, s2, rungs};
+}
+function rungColours(accs, n = 30){
+  if (!accs.length) return ["#3F6A5F", "#2F5A4F"];
+  const tot = accs.reduce((s, a) => s + a.v, 0), out = [], counts = accs.map(a => Math.max(1, Math.round(n * a.v / tot)));
+  let left = counts.slice(); // interleave so colours spread along the strand
+  while (out.length < n && left.some(c => c > 0)) for (let i = 0; i < accs.length && out.length < n; i++) if (left[i] > 0) { out.push(accColor(accs[i].name)); left[i]--; }
+  while (out.length < n) out.push(accColor(accs[0].name));
+  return out;
+}
+const SVGNS = "http://www.w3.org/2000/svg";
+function helixSVG(accs){
+  const W = 300, H = 92, svg = document.createElementNS(SVGNS, "svg");
+  svg.setAttribute("viewBox", `0 -6 ${W} ${H + 12}`); svg.setAttribute("class", "helix"); svg.setAttribute("aria-hidden", "true");
+  svg._cols = rungColours(accs); svg._W = W; svg._H = H;
+  drawHelixSVG(svg, 0); return svg;
+}
+function drawHelixSVG(svg, phase){
+  const {s1, s2, rungs} = helixGeom(svg._W, svg._H, svg._cols, phase);
+  let html = "";
+  for (const r of rungs) html += `<line x1="${r.x.toFixed(1)}" y1="${r.y1.toFixed(1)}" x2="${r.x.toFixed(1)}" y2="${r.y2.toFixed(1)}" stroke="${r.c}" stroke-width="${(3.2 + 1.6 * r.d).toFixed(2)}" stroke-linecap="round" opacity="${(.45 + .55 * r.d).toFixed(2)}"/>`;
+  const seg = (pts, front) => { let d = "", on = false; for (const [x, y, z] of pts) { const vis = front ? z >= 0 : z < 0; if (vis) { d += (on ? "L" : "M") + x.toFixed(1) + " " + y.toFixed(1); on = true; } else on = false; } return d; };
+  for (const s of [s1, s2]) { html = `<path d="${seg(s, false)}" fill="none" stroke="#E9F4F0" stroke-opacity=".28" stroke-width="2.4" stroke-linecap="round"/>` + html; }
+  for (const s of [s1, s2]) html += `<path d="${seg(s, true)}" fill="none" stroke="#E9F4F0" stroke-opacity=".95" stroke-width="3" stroke-linecap="round"/>`;
+  for (const r of rungs) { html += `<circle cx="${r.x.toFixed(1)}" cy="${r.y1.toFixed(1)}" r="${(1.6 + 1.6 * r.d).toFixed(2)}" fill="#E9F4F0" opacity="${(.4 + .6 * r.d).toFixed(2)}"/><circle cx="${r.x.toFixed(1)}" cy="${r.y2.toFixed(1)}" r="${(1.6 + 1.6 * r.d).toFixed(2)}" fill="#E9F4F0" opacity="${(.4 + .6 * r.d).toFixed(2)}"/>`; }
+  svg.innerHTML = html;
+}
+// one slow, continuous twist for every visible helix: the page's single ambient motion
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let phase = 0, last = 0;
+function spin(t){
+  if (!document.hidden && t - last > 33) { phase += .018; last = t; for (const s of $$("svg.helix")) if (s.isConnected && s.getBoundingClientRect().width) drawHelixSVG(s, phase); }
+  requestAnimationFrame(spin);
+}
+if (!reduce) requestAnimationFrame(spin);
+
+/* ---------- profile model + card ---------- */
+const fmtDate = iso => iso ? new Date(iso + "T00:00:00").toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"}) : "";
+function model(){
+  const favs = D ? S.favs.map(id => D.byId.get(id)).filter(Boolean) : [];
+  let accs = [];
+  if (D) {
+    for (const i of S.accords) { let s = 0; for (const f of favs) { const h = f.acc.find(a => a[0] === i); if (h) s += h[1]; } accs.push({name:D.accords[i], v:favs.length ? Math.max(.3, s / favs.length) : .5}); }
+    accs.sort((a, b) => b.v - a.v);
+  }
+  return {name:S.name, dob:S.dob, photo:S.photo, sign:S.dob ? zodiac(S.dob) : null, accs, type:scentType(accs), notes:D ? S.notes.map(i => ({name:D.notes[i], img:D.noteImg[i]})) : [], favs};
+}
+const SAMPLE = {name:"Layla Rahman", dob:"1999-08-14", photo:"", sign:{sign:"Leo", element:"Fire"}, sample:true,
+  accs:[{name:"amber",v:.92},{name:"vanilla",v:.74},{name:"warm spicy",v:.66},{name:"oud",v:.5},{name:"rose",v:.4},{name:"sweet",v:.36}],
+  notes:[{name:"Saffron",img:55},{name:"Rose",img:105},{name:"Vanilla",img:74},{name:"Agarwood (Oud)",img:114},{name:"Amberwood",img:691}], favs:[{id:75805, name:"Khamrah"},{id:33519, name:"Baccarat Rouge 540"},{id:1825, name:"Tobacco Vanille"},{id:25324, name:"Black Opium"}]};
+SAMPLE.type = scentType(SAMPLE.accs);
+
+function card(m){
+  const initials = (m.name || "").trim().split(/\s+/).filter(Boolean).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+  const top6 = m.accs.slice(0, 6);
+  const comp = el("div", {class:"pills"}, ...top6.map(a => { const col = accColor(a.name); return el("span", {class:"pill", style:`--c:${col};--t:${textOn(col)}`, text:a.name}); }));
+  const c = el("div", {class:"dna", role:"img", "aria-label":m.name ? `Scent DNA for ${m.name}${m.type ? ": " + m.type.name : ""}` : "Scent DNA profile"},
+    el("div", {class:"hd"},
+      el("div", {class:"av"}, m.photo ? el("img", {src:m.photo, alt:""}) : (initials || "?")),
+      el("div", {class:"who"}, el("div", {class:"nm" + (m.name ? "" : " empty"), text:m.name || "Your name"}),
+        el("div", {class:"sg", text:m.sign ? `${m.sign.sign}, born ${fmtDate(m.dob)}` : "Birthday not added"})),
+      m.sample ? null : el("div", {class:"brand", html:`<svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 2c0 7 12 8 12 11S7 17 7 24M19 2c0 7-12 8-12 11s12 4 12 11"/></svg>Scent DNA`})),
+    el("div", {class:"tp"}, el("div", {class:"k", text:"Scent type"}), el("div", {class:"type" + (m.type ? "" : " empty"), text:m.type ? m.type.name : "Pick favorites to reveal it"})),
+    helixSVG(m.accs.slice(0, 6)),
+    top6.length ? comp : null,
+    el("div", {class:"wears"}, el("div", {class:"k", text:"Wears"}),
+      m.favs.length ? el("div", {class:"fv"}, ...m.favs.slice(0, 4).map(fv => el("div", {}, bottle(fv, "l"), el("p", {text:fv.name}))))
+                    : el("p", {class:"ln", style:"margin-top:1.4cqw", text:"Add favorites to see them here"})),
+    el("div", {class:"ft"}, el("div", {class:"k", text:"Key notes"}),
+      m.notes.length ? el("div", {class:"nt"}, ...m.notes.slice(0, 5).map(n => el("div", {}, noteImg(n.name, n.img, "ni"), el("p", {text:n.name}))))
+                     : el("p", {class:"ln", style:"margin-top:1.4cqw", text:"None chosen yet"})));
+  if (m.sample) c.append(el("div", {class:"sample", text:"EXAMPLE"}));
+  return c;
+}
+$("#sampleCard").append(card(SAMPLE));
+
+/* ---------- views ---------- */
+const V = {landing:$("#vLanding"), builder:$("#vBuilder"), result:$("#vResult"), loading:$("#vLoading")};
+function show(v){ for (const [k, e] of Object.entries(V)) e.hidden = k !== v; window.scrollTo(0, 0); }
+async function needData(){ if (!D) { show("loading"); await dataPromise; } }
+$("#homeBtn").addEventListener("click", () => S.issued ? openResult() : show("landing"));
+$("#startBtn").addEventListener("click", () => openBuilder(0));
+$("#resumeBtn").addEventListener("click", () => openResult());
+
+/* ---------- builder ---------- */
+let step = 0;
+const refreshLive = () => $("#liveCard").replaceChildren(card(model()));
+async function openBuilder(n){ if (n > 0) await needData(); show("builder"); setStep(n); }
+const canReach = i => i === 0 || !!(S.name && S.dob && D && (i === 1 || (S.favs.length && (i === 2 || S.accords.length))));
+function setStep(n){
+  step = n;
+  $$(".pane").forEach(p => p.hidden = +p.dataset.pane !== n);
+  $$(".steps button").forEach(b => { const i = +b.dataset.step;
+    if (i === n) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+    b.classList.toggle("done", i < n); b.disabled = !canReach(i); });
+  $("#backBtn").textContent = n === 0 ? "Cancel" : "Back";
+  $("#nextBtn").textContent = n === 3 ? "Show my scent DNA" : "Continue";
+  [paneDetails, paneFavs, paneAccords, paneNotes][n]();
+  refreshLive(); updateNext(); window.scrollTo(0, 0);
+}
+function updateNext(){ $("#nextBtn").disabled = (step === 1 && !S.favs.length) || (step === 2 && !S.accords.length); }
+$$(".steps button").forEach(b => b.addEventListener("click", async () => { const i = +b.dataset.step; if (i === step || !canReach(i)) return; if (i > 0) await needData(); show("builder"); setStep(i); }));
+$("#backBtn").addEventListener("click", () => step === 0 ? (S.issued ? openResult() : show("landing")) : setStep(step - 1));
+$("#nextBtn").addEventListener("click", async () => {
+  if (step === 0) { if (!validateDetails()) return; await needData(); show("builder"); setStep(1); }
+  else if (step < 3) setStep(step + 1);
+  else { if (!S.issued) S.issued = new Date().toISOString().slice(0, 10); save(); openResult(); }
+});
+
+function paneDetails(){ $("#nameInput").value = S.name; $("#dobInput").value = S.dob; $("#dobInput").max = new Date().toISOString().slice(0, 10); drawThumb(); }
+function drawThumb(){
+  $("#photoThumb").replaceChildren(S.photo ? el("img", {src:S.photo, alt:""}) : "+");
+  $("#photoRemove").hidden = !S.photo; $("#photoPick").textContent = S.photo ? "Change photo" : "Choose photo";
+}
+$("#nameInput").addEventListener("input", e => { S.name = e.target.value.replace(/\s+/g, " ").trimStart(); save(); refreshLive(); });
+$("#dobInput").addEventListener("input", e => { S.dob = e.target.value; save(); refreshLive(); });
+$("#photoPick").addEventListener("click", () => $("#photoInput").click());
+$("#photoRemove").addEventListener("click", () => { S.photo = ""; save(); drawThumb(); refreshLive(); });
+$("#photoInput").addEventListener("change", e => {
+  const f = e.target.files[0]; if (!f) return; e.target.value = "";
+  const fr = new FileReader();
+  fr.onload = () => { const im = new Image();
+    im.onload = () => { const W = 360, c = document.createElement("canvas"); c.width = W; c.height = W; const g = c.getContext("2d");
+      const s = Math.max(W / im.width, W / im.height); g.drawImage(im, (W - im.width * s) / 2, (W - im.height * s) / 2, im.width * s, im.height * s);
+      S.photo = c.toDataURL("image/jpeg", .85); save(); drawThumb(); refreshLive(); $("#err0").textContent = ""; };
+    im.onerror = () => $("#err0").textContent = "That file can't be read as an image. Choose a JPG or PNG.";
+    im.src = fr.result; };
+  fr.readAsDataURL(f);
+});
+function validateDetails(){
+  const err = $("#err0"); S.name = S.name.trim();
+  if (S.name.length < 2) { err.textContent = "Add your name. It goes on your profile."; $("#nameInput").focus(); return false; }
+  if (!S.dob) { err.textContent = "Add your birthday."; $("#dobInput").focus(); return false; }
+  const d = new Date(S.dob + "T00:00:00"); if (isNaN(d) || d > new Date() || d.getFullYear() < 1920) { err.textContent = "That birthday isn't a past date. Check the year."; $("#dobInput").focus(); return false; }
+  err.textContent = ""; save(); return true;
+}
+
+/* favourites */
+const MAXFAV = 6, gName = ["Female", "Male", "Unisex"];
+function paneFavs(){ drawChosen(); $("#favSearch").value = ""; drawHits(""); }
+function favChanged(){ S.accTouched = false; save(); drawChosen(); refreshLive(); updateNext(); }
+function drawChosen(){
+  const box = $("#chosen"); box.replaceChildren();
+  for (const id of S.favs) { const p = D.byId.get(id); if (!p) continue;
+    box.append(el("div", {class:"item"}, bottle(p, "s"), el("div", {}, el("div", {class:"n", text:p.name}), el("div", {class:"b", text:p.brand})),
+      el("button", {class:"x", type:"button", "aria-label":`Remove ${p.name}`, text:"×", onclick:() => { S.favs = S.favs.filter(x => x !== id); favChanged(); drawHits($("#favSearch").value); }}))); }
+  if (!S.favs.length) box.append(el("p", {class:"empty", text:"Nothing added yet. Search below, or tap one of the most-loved perfumes."}));
+}
+function searchPerfumes(q, limit = 8){
+  const toks = norm(q).split(/\s+/).filter(Boolean); const out = [];
+  for (const p of D.P) { if (toks.every(t => p.key.includes(t))) { out.push([p, (norm(p.name).startsWith(toks[0]) ? 1e7 : 0) + p.votes]); if (out.length > 400) break; } }
+  return out.sort((a, b) => b[1] - a[1]).slice(0, limit).map(x => x[0]);
+}
+let favT; $("#favSearch").addEventListener("input", e => { clearTimeout(favT); favT = setTimeout(() => drawHits(e.target.value), 90); });
+function drawHits(q){
+  const box = $("#hits"), has = q.trim();
+  const list = has ? searchPerfumes(q) : D.P.slice(0, 8);
+  $("#listHead").textContent = has ? (list.length ? "Matches" : "") : "Most loved on Fragrantica";
+  box.replaceChildren();
+  if (has && !list.length) { box.append(el("p", {class:"empty", style:"padding:14px 6px", text:`Nothing matches "${has}". Try the brand name or a shorter word.`})); return; }
+  for (const p of list) {
+    const taken = S.favs.includes(p.id), full = S.favs.length >= MAXFAV;
+    box.append(el("button", {class:"hit", type:"button", "aria-disabled":String(taken || full), onclick:() => {
+        if (taken || full) return; S.favs.push(p.id); favChanged(); $("#favSearch").value = ""; drawHits(""); $("#favSearch").focus(); }},
+      bottle(p, "s"),
+      el("div", {}, el("div", {class:"n", text:p.name}), el("div", {class:"b", text:[p.brand, p.year || null, gName[p.g]].filter(Boolean).join(", ")})),
+      el("span", {class:"add", text:taken ? "Added" : full ? "Six max" : "Add"})));
+  }
+}
+
+/* accords */
+const MAXACC = 8; let accAll = false;
+function favAccRank(){ const m = new Map(); for (const id of S.favs) { const p = D.byId.get(id); if (p) for (const [a, s] of p.acc) m.set(a, (m.get(a) || 0) + s); } return [...m.entries()].sort((a, b) => b[1] - a[1]).map(x => x[0]); }
+function paneAccords(){ if (!S.accTouched || !S.accords.length) { S.accords = favAccRank().slice(0, 5); save(); } drawAccords(); }
+function swatch(i, hint){
+  const name = D.accords[i], col = accColor(name), on = S.accords.includes(i);
+  return el("button", {class:"swatch", type:"button", "aria-pressed":String(on), style:`--c:${col};--t:${textOn(col)}`, onclick:() => {
+      if (on) S.accords = S.accords.filter(x => x !== i); else if (S.accords.length < MAXACC) S.accords.push(i);
+      else { $("#accCount").textContent = "Eight is the limit. Remove one first."; return; }
+      S.accTouched = true; save(); drawAccords(); refreshLive(); updateNext(); }},
+    hint ? el("small", {text:hint}) : null, name);
+}
+function drawAccords(){
+  const fav = favAccRank().slice(0, 12);
+  const favCount = new Map(); for (const id of S.favs) { const p = D.byId.get(id); if (p) for (const [a, s] of p.acc) if (s >= .4) favCount.set(a, (favCount.get(a) || 0) + 1); }
+  $("#accFav").replaceChildren(...fav.map(i => swatch(i, favCount.get(i) ? `in ${favCount.get(i)} of ${S.favs.length}` : null)));
+  const rest = D.accords.map((_, i) => i).filter(i => !fav.includes(i)).sort((a, b) => D.accFreq[b] - D.accFreq[a]);
+  $("#accRest").replaceChildren(...(accAll ? rest : rest.slice(0, 12)).map(i => swatch(i)));
+  $("#accMore").hidden = accAll;
+  $("#accCount").textContent = `${S.accords.length} of ${MAXACC} chosen`;
+}
+$("#accMore").addEventListener("click", () => { accAll = true; drawAccords(); });
+
+/* notes */
+const MAXNOTE = 10;
+function favNoteRank(){ const m = new Map(); for (const id of S.favs) { const p = D.byId.get(id); if (p) for (const [n, , w] of p.notes) m.set(n, (m.get(n) || 0) + .4 + w); } return [...m.entries()].sort((a, b) => b[1] - a[1]).map(x => x[0]); }
+function tag(i){
+  const on = S.notes.includes(i);
+  return el("button", {class:"tag", type:"button", "aria-pressed":String(on), onclick:() => {
+    if (on) S.notes = S.notes.filter(x => x !== i); else if (S.notes.length < MAXNOTE) S.notes.push(i);
+    else { $("#noteCount").textContent = "Ten is the limit. Remove one first."; return; }
+    save(); drawNotes(); refreshLive(); }}, noteImg(D.notes[i], D.noteImg[i], "ti"), D.notes[i]);
+}
+function paneNotes(){ $("#noteSearch").value = ""; drawNotes(); }
+function drawNotes(){
+  const pk = $("#notePicked"); pk.replaceChildren(...S.notes.map(tag));
+  if (!S.notes.length) pk.append(el("p", {class:"empty", text:"None yet. Tap a note below to add it."}));
+  $("#noteFav").replaceChildren(...favNoteRank().filter(i => !S.notes.includes(i)).slice(0, 16).map(tag));
+  drawNoteHits($("#noteSearch").value);
+  $("#noteCount").textContent = `${S.notes.length} of ${MAXNOTE} chosen`;
+}
+function drawNoteHits(q){
+  const t = norm(q.trim()), box = $("#noteHits"); if (!t) { box.replaceChildren(); return; }
+  const hits = D.noteKey.map((k, i) => [i, k]).filter(([i, k]) => k.includes(t) && !S.notes.includes(i))
+    .sort((a, b) => (b[1].startsWith(t) - a[1].startsWith(t)) || D.noteCount[b[0]] - D.noteCount[a[0]]).slice(0, 18).map(x => x[0]);
+  box.replaceChildren(...(hits.length ? hits.map(tag) : [el("p", {class:"empty", text:`No note called "${q.trim()}".`})]));
+}
+$("#noteSearch").addEventListener("input", e => drawNoteHits(e.target.value));
+
+/* ---------- recommendations ---------- */
+function recommend(){
+  const U = new Float32Array(D.accords.length);
+  const favs = S.favs.map(id => D.byId.get(id)).filter(Boolean);
+  for (const f of favs) for (const [a, s] of f.acc) U[a] += .7 * s / favs.length;
+  for (const a of S.accords) U[a] += 1;
+  if (S.dob) for (const n of ELEMENT_ACC[zodiac(S.dob).element]) { const i = D.accords.indexOf(n); if (i >= 0) U[i] += .12; }
+  let un = 0; for (const x of U) un += x * x; un = Math.sqrt(un) || 1;
+  const N = new Map(); for (const n of S.notes) N.set(n, 1);
+  for (const f of favs) for (const [n, , w] of f.notes) if (!S.notes.includes(n)) N.set(n, Math.max(N.get(n) || 0, .25 * w));
+  const nTot = Math.max(S.notes.length, 3);
+  const favIds = new Set(S.favs), favNames = new Set(favs.map(f => norm(f.name + "|" + f.brand)));
+  const favVec = favs.map(f => ({f, m:new Map(f.acc)}));
+  const out = [];
+  for (const p of D.P) {
+    if (p.votes < 250 || favIds.has(p.id) || favNames.has(norm(p.name + "|" + p.brand))) continue;
+    let dot = 0; for (const [a, s] of p.acc) dot += U[a] * s;
+    const accSim = dot / (un * p.accNorm); if (accSim < .45) continue;
+    let nh = 0; const hitNotes = [];
+    for (const [n, , w] of p.notes) { const u = N.get(n); if (u) { nh += u * (.55 + .45 * w); if (u === 1 && !hitNotes.includes(n)) hitNotes.push(n); } }
+    const noteHit = Math.min(1, nh / nTot);
+    let best = null, bestSim = 0;
+    for (const {f, m} of favVec) { let d = 0; for (const [a, s] of p.acc) d += (m.get(a) || 0) * s; const sim = d / (f.accNorm * p.accNorm); if (sim > bestSim) { bestSim = sim; best = f; } }
+    const quality = Math.max(0, Math.min(1, (p.rating - 3.4) / 1)) * .55 + Math.min(1, Math.log10(p.votes) / 4.3) * .45;
+    const dupe = favIds.has(p.clone) ? D.byId.get(p.clone) : null;
+    out.push({p, score:.45 * accSim + .25 * noteHit + .15 * bestSim + .15 * quality + (dupe ? .04 : 0), hitNotes, best, bestSim, dupe});
+  }
+  out.sort((a, b) => b.score - a.score);
+  const top = out.length ? out[0].score : 1;
+  for (const r of out) r.match = Math.max(1, Math.min(98, Math.round(98 * Math.pow(r.score / top, 1.6))));
+  return out;
+}
+function diversify(list, n){
+  const perBrand = new Map(), perFam = new Set(), out = [];
+  for (const r of list) {
+    if ((perBrand.get(r.p.brand) || 0) >= 2) continue;
+    const fam = r.best && r.p.brand === r.best.brand && (norm(r.p.name).includes(norm(r.best.name)) || norm(r.best.name).includes(norm(r.p.name))) ? r.best.id : null;
+    if (fam && perFam.has(fam)) continue;
+    perBrand.set(r.p.brand, (perBrand.get(r.p.brand) || 0) + 1); if (fam) perFam.add(fam);
+    out.push(r); if (out.length >= n) break;
+  }
+  return out;
+}
+
+let gF = "all", shown = 10, RECS = null;
+const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "");
+function row(r, i){
+  const p = r.p;
+  const spec = el("div", {class:"spec", "aria-hidden":"true"}); for (const [a, s] of p.acc.slice(0, 6)) spec.append(el("i", {style:`flex:${s};background:${accColor(D.accords[a])}`}));
+  const why = el("p", {class:"why"});
+  {
+    const shared = p.acc.filter(([a]) => S.accords.includes(a)).slice(0, 3).map(([a]) => D.accords[a]);
+    const notes = [...new Set(r.hitNotes.map(n => D.notes[n].toLowerCase()))].slice(0, 2);
+    const parts = [];
+    if (shared.length) parts.push(`shares ${listJoin(shared)}`);
+    if (notes.length) parts.push(`has ${listJoin(notes)}`);
+    const s1 = parts.join(", and ") || "close to your accord profile";
+    why.append(s1[0].toUpperCase() + s1.slice(1));
+    if (r.dupe) why.append(". The community says it smells like ", el("em", {text:r.dupe.name}), ".");
+    else if (r.best && r.bestSim > .8) why.append(". Closest to your ", el("em", {text:r.best.name}), ".");
+    else why.append(".");
+  }
+  return el("li", {},
+    el("span", {class:"pos", text:String(i + 1)}),
+    bottle(p, "m"),
+    el("div", {}, el("div", {class:"pn", text:p.name}), el("div", {class:"pb", text:[p.brand, p.year || null, gName[p.g]].filter(Boolean).join(", ")}), why, spec,
+      el("a", {href:`https://www.fragrantica.com/perfume/${slug(p.brand)}/${slug(p.name)}-${p.id}.html`, target:"_blank", rel:"noopener", text:"Open on Fragrantica"})),
+    el("div", {class:"score"},
+      el("div", {class:"pct"}, String(r.match), el("small", {text:"%"})),
+      el("div", {class:"meta", text:`Rated ${p.rating.toFixed(2)}`}), el("div", {class:"meta", text:`${fmt(p.votes)} votes`})));
+}
+function drawRank(){
+  RECS ??= recommend();
+  const src = RECS.filter(r => gF === "all" || r.p.g === +gF);
+  const list = diversify(src, shown);
+  const ol = $("#rank"); ol.replaceChildren(...list.map(row));
+  if (!list.length) ol.append(el("li", {style:"display:block"}, el("p", {class:"empty", text:"Nothing matches this style. Choose All to see every match."})));
+  const total = diversify(src, shown + 1).length;
+  $("#moreBtn").hidden = total <= list.length;
+}
+$$("#gSeg button").forEach(b => b.addEventListener("click", () => { gF = b.dataset.g; shown = 10; $$("#gSeg button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); drawRank(); }));
+$("#moreBtn").addEventListener("click", () => { shown += 10; drawRank(); });
+
+/* ---------- result ---------- */
+async function openResult(){
+  if (!S.issued || !S.name) return show("landing");
+  await needData(); show("result");
+  RECS = null; shown = 10;
+  const m = model();
+  $("#finalCard").replaceChildren(card(m));
+  $("#typeBlurb").replaceChildren(...(m.type ? [el("strong", {text:m.type.name + ". "}), m.type.fam ? BLURB[m.type.fam] : ""] : []));
+  $("#resTitle").textContent = `${S.name.split(" ")[0]}, try these next`;
+  const sg = m.sign;
+  $("#resSub").textContent = "Ranked by how closely each perfume matches your favorites, accords and notes, with a boost for well-rated ones." + (sg ? ` As a ${sg.sign}, a ${sg.element.toLowerCase()} sign, ${listJoin(ELEMENT_ACC[sg.element])} get a small extra push.` : "");
+  $("#resumeBtn").hidden = false; $("#startBtn").hidden = true;
+  $("#msg").textContent = ""; $("#resetAsk").hidden = true;
+  drawRank();
+}
+$("#editBtn").addEventListener("click", () => openBuilder(0));
+$("#resetBtn").addEventListener("click", () => $("#resetAsk").hidden = false);
+$("#resetNo").addEventListener("click", () => $("#resetAsk").hidden = true);
+$("#resetYes").addEventListener("click", () => { wipe(); S = blank(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; show("landing"); });
+
+/* ---------- export: 1080x1920 story image ---------- */
+const BODY = "'Albert Sans', system-ui, -apple-system, 'Segoe UI', sans-serif", DISP = "'Cormorant', 'Cormorant Garamond', Georgia, serif";
+function rr(g, x, y, w, h, r){ g.beginPath(); if (g.roundRect) g.roundRect(x, y, w, h, r); else g.rect(x, y, w, h); }
+const loadCors = src => new Promise((res, rej) => { const i = new Image(); i.crossOrigin = "anonymous"; i.referrerPolicy = "no-referrer"; i.onload = () => res(i); i.onerror = rej; setTimeout(rej, 5000); i.src = src; });
+const loadImg = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+function fit(g, t, w){ while (g.measureText(t).width > w && t.length > 1) t = t.slice(0, -2) + "…"; return t; }
+const fb = (g, wt, px) => g.font = `${wt} ${px}px ${BODY}`;
+const fd = (g, wt, px, it) => g.font = `${it ? "italic " : ""}${wt} ${px}px ${DISP}`;
+function wrapLines(g, text, w, max){ const out = []; let line = ""; for (const word of text.split(" ")) { const t = line ? line + " " + word : word; if (g.measureText(t).width > w && line) { out.push(line); line = word; } else line = t; } out.push(line); return out.slice(0, max); }
+async function drawCard(m, cw){
+  // draws the profile onto its own canvas, top to bottom; the card's height follows its content
+  const u = cw / 100, c = document.createElement("canvas"); c.width = cw; c.height = cw * 2.4; const g = c.getContext("2d");
+  const px = 7 * u, iw = cw - 14 * u; let y = 7 * u; g.textBaseline = "top";
+  const av = 15 * u; g.save(); g.beginPath(); g.arc(px + av / 2, y + av / 2, av / 2, 0, 7); g.clip();
+  if (m.photo) g.drawImage(await loadImg(m.photo), px, y, av, av);
+  else { g.fillStyle = "#1F4A40"; g.fillRect(px, y, av, av); g.fillStyle = "#8FB8AB"; fb(g, 700, 5.6 * u); g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(m.name.split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase(), px + av / 2, y + av / 2); g.textAlign = "left"; g.textBaseline = "top"; }
+  g.restore();
+  fd(g, 600, 7 * u); g.fillStyle = "#E9F4F0"; g.fillText(fit(g, m.name, iw - av - 26 * u), px + av + 4 * u, y + 1.8 * u);
+  fb(g, 400, 3.3 * u); g.fillStyle = "#8FB8AB"; g.fillText(m.sign ? `${m.sign.sign}, born ${fmtDate(m.dob)}` : "", px + av + 4 * u, y + 9.4 * u);
+  g.textAlign = "right"; fb(g, 650, 3 * u); g.fillText("Scent DNA", px + iw, y + 1 * u); g.textAlign = "left";
+  y += av + 6 * u; fb(g, 400, 3.1 * u); g.fillStyle = "#8FB8AB"; g.fillText("Scent type", px, y); y += 4.4 * u;
+  fd(g, 600, 13.5 * u, true); g.fillStyle = "#E9F4F0"; const tl = wrapLines(g, m.type ? m.type.name : "", iw, 2); tl.forEach((l, i) => g.fillText(l, px, y + i * 12.6 * u)); y += tl.length * 12.6 * u + 2 * u;
+  // helix
+  const hh = iw * 92 / 300, geo = helixGeom(iw, hh, rungColours(m.accs.slice(0, 6)), .6), sc = iw / 300;
+  g.save(); g.translate(px, y + 2 * u); g.lineCap = "round";
+  const strand = (pts, front, a, w) => { g.strokeStyle = `rgba(233,244,240,${a})`; g.lineWidth = w; g.beginPath(); let on = false; for (const [x, yy, z] of pts) { if (front ? z >= 0 : z < 0) { on ? g.lineTo(x, yy) : g.moveTo(x, yy); on = true; } else on = false; } g.stroke(); };
+  strand(geo.s1, false, .28, 2.4 * sc); strand(geo.s2, false, .28, 2.4 * sc);
+  for (const r of geo.rungs) { g.globalAlpha = .45 + .55 * r.d; g.strokeStyle = r.c; g.lineWidth = (3.2 + 1.6 * r.d) * sc; g.beginPath(); g.moveTo(r.x, r.y1); g.lineTo(r.x, r.y2); g.stroke(); }
+  g.globalAlpha = 1; strand(geo.s1, true, .95, 3 * sc); strand(geo.s2, true, .95, 3 * sc);
+  for (const r of geo.rungs) { g.fillStyle = `rgba(233,244,240,${.4 + .6 * r.d})`; for (const yy of [r.y1, r.y2]) { g.beginPath(); g.arc(r.x, yy, (1.6 + 1.6 * r.d) * sc, 0, 7); g.fill(); } }
+  g.restore(); y += hh + 7 * u;
+  // accord pills
+  fb(g, 650, 3.4 * u); let x = px; const ph = 6.6 * u;
+  for (const a of m.accs.slice(0, 6)) { const t = cap(a.name), w = g.measureText(t).width + 6 * u; if (x + w > px + iw) { x = px; y += ph + 1.8 * u; }
+    const col = accColor(a.name); rr(g, x, y, w, ph, ph / 2); g.fillStyle = col; g.fill(); g.fillStyle = textOn(col); g.fillText(t, x + 3 * u, y + 1.5 * u); x += w + 1.8 * u; }
+  y += ph + 5 * u;
+  // favourites
+  if (m.favs.length) {
+    fb(g, 400, 3.1 * u); g.fillStyle = "#8FB8AB"; g.fillText("Wears", px, y); y += 4.8 * u;
+    const tw = (iw - 9 * u) / 4, th = tw * 4 / 3;
+    for (const [i, fv] of m.favs.slice(0, 4).entries()) {
+      const tx = px + i * (tw + 3 * u); let pic = null; try { pic = await loadCors(IMG(fv.id, true)); } catch {}  // works for your own copies
+      g.save(); rr(g, tx, y, tw, th, 2.6 * u); g.clip();
+      if (pic) { g.fillStyle = "#F4F6F5"; g.fillRect(tx, y, tw, th); const s2 = Math.min(tw / pic.width, th / pic.height); g.drawImage(pic, tx + (tw - pic.width * s2) / 2, y + (th - pic.height * s2) / 2, pic.width * s2, pic.height * s2); }
+      else { g.fillStyle = "#1F4A40"; g.fillRect(tx, y, tw, th); const cols = (fv.acc || []).slice(0, 3).map(a => accColor(D.accords[a[0]])); while (cols.length < 3) cols.push(cols[0] || "#8FB8AB");
+        const bw = tw * .5, bx = tx + (tw - bw) / 2, by = y + th * .3, bh = th * .58; g.fillStyle = "#E9F4F0"; g.fillRect(tx + tw * .4, y + th * .14, tw * .2, th * .12);
+        cols.forEach((col, k) => { g.fillStyle = col; g.fillRect(bx, by + bh * k / 3, bw, bh / 3 + 1); }); }
+      g.restore(); fb(g, 500, 2.8 * u); g.fillStyle = "#E9F4F0"; g.fillText(fit(g, fv.name, tw), tx, y + th + 1.2 * u);
+    }
+    y += th + 1.2 * u + 3.4 * u;
+  }
+  // notes
+  if (m.notes.length) {
+    y += 3 * u; g.fillStyle = "#24493F"; g.fillRect(px, y, iw, .3 * u); y += 3.6 * u;
+    fb(g, 400, 3.1 * u); g.fillStyle = "#8FB8AB"; g.fillText("Key notes", px, y); y += 4.8 * u;
+    const nw = (iw - 4 * 2.6 * u) / 5;
+    for (const [i, n] of m.notes.slice(0, 5).entries()) {
+      const nx = px + i * (nw + 2.6 * u); let pic = null; try { if (n.img) pic = await loadCors(NIMG(n.img)); } catch {}
+      g.save(); g.beginPath(); g.arc(nx + nw / 2, y + nw / 2, nw / 2, 0, 7); g.clip(); g.fillStyle = "#1F4A40"; g.fillRect(nx, y, nw, nw);
+      if (pic) g.drawImage(pic, nx, y, nw, nw); else { fd(g, 600, 6 * u); g.fillStyle = "#8FB8AB"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(n.name[0], nx + nw / 2, y + nw / 2); g.textAlign = "left"; g.textBaseline = "top"; }
+      g.restore(); fb(g, 500, 2.7 * u); g.fillStyle = "#E9F4F0"; g.textAlign = "center"; g.fillText(fit(g, n.name, nw + 2 * u), nx + nw / 2, y + nw + 1.2 * u); g.textAlign = "left";
+    }
+    y += nw + 1.2 * u + 3.2 * u;
+  }
+  return {canvas:c, h:Math.ceil(y + 6.5 * u)};
+}
+async function exportImage(){
+  await document.fonts.ready;
+  try { await Promise.all(["600 40px 'Cormorant'", "italic 600 40px 'Cormorant'", "400 40px 'Albert Sans'", "650 40px 'Albert Sans'", "700 40px 'Albert Sans'"].map(x => document.fonts.load(x))); } catch {}
+  const m = model(), W = 1080, H = 1920, out = document.createElement("canvas"); out.width = W; out.height = H; const g = out.getContext("2d");
+  g.fillStyle = "#E3EAE7"; g.fillRect(0, 0, W, H);
+  const cw = 680, {canvas, h:ch} = await drawCard(m, cw), cx = (W - cw) / 2, cy = 80, u = cw / 100;
+  g.save(); g.shadowColor = "rgba(8,30,25,.45)"; g.shadowBlur = 70; g.shadowOffsetY = 30; rr(g, cx, cy, cw, ch, 6 * u); g.fillStyle = "#0D2621"; g.fill(); g.restore();
+  g.save(); rr(g, cx, cy, cw, ch, 6 * u); g.clip();
+  const rg = g.createRadialGradient(cx + cw / 2, cy + ch * .46, 0, cx + cw / 2, cy + ch * .46, cw * .9); rg.addColorStop(0, "#17463B"); rg.addColorStop(.6, "#0D2621"); rg.addColorStop(1, "#091C18");
+  g.fillStyle = rg; g.fillRect(cx, cy, cw, ch); g.drawImage(canvas, 0, 0, cw, ch, cx, cy, cw, ch); g.restore();
+  const picks = diversify(RECS || recommend(), 3);
+  let py = cy + ch + 80; g.textBaseline = "alphabetic"; fb(g, 650, 28); g.fillStyle = "#0E6E5A"; g.fillText("Next to try", cx, py);
+  picks.forEach((r, i) => { const yy = py + 70 + i * 98; fb(g, 700, 40); g.fillStyle = "#4F625D"; g.fillText(String(i + 1), cx, yy);
+    fd(g, 600, 48); g.fillStyle = "#10231F"; g.fillText(fit(g, r.p.name, cw - 210), cx + 56, yy); fb(g, 500, 25); g.fillStyle = "#4F625D"; g.fillText(fit(g, r.p.brand, cw - 210), cx + 56, yy + 33);
+    g.textAlign = "right"; fb(g, 800, 40); g.fillStyle = "#0E6E5A"; g.fillText(r.match + "%", cx + cw, yy); g.textAlign = "left"; });
+  const host = location.protocol.startsWith("http") && !/claude|localhost|127\.0/.test(location.host) ? location.host.replace(/^www\./, "") : "";
+  fb(g, 500, 25); g.fillStyle = "#4F625D"; g.textAlign = "center"; g.fillText(host ? "Find your scent DNA at " + host : "Made with Scent DNA", W / 2, H - 60); g.textAlign = "left";
+  return new Promise(res => out.toBlob(res, "image/png"));
+}
+$("#saveImg").addEventListener("click", async () => {
+  const msg = $("#msg"); msg.textContent = "Making your image…";
+  try {
+    const blob = await exportImage();
+    const name = `scent-dna-${S.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.png`;
+    const dl = window.claude?.use ? await window.claude.use("downloads") : null;
+    if (dl) { try { await dl.save({filename:name, data:blob}); msg.textContent = "Image saved."; return; } catch (e) { if (e?.code === "declined") { msg.textContent = "Save cancelled."; return; } } }
+    const url = URL.createObjectURL(blob);
+    if (!window.claude) {   // normal website: a plain download link works
+      const a = el("a", {href:url, download:name}); document.body.append(a); a.click(); a.remove();
+      msg.textContent = "Image saved to your downloads."; return;
+    }
+    msg.replaceChildren("Saving isn't available here. Press and hold the image, or right-click it, to save it.", el("img", {src:url, alt:"Your Scent DNA as an image"}));
+  } catch (e) { console.error(e); msg.textContent = "The image couldn't be made. Try again."; }
+});
+
+/* ---------- boot ---------- */
+loadData();
+if (S.issued && S.name) { $("#resumeBtn").hidden = false; $("#startBtn").hidden = true; openResult(); }
+else show("landing");
+})();
+</script>
+</body>
+</html>
