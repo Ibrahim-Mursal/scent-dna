@@ -78,7 +78,7 @@ On GitHub Pages or any plain host, the site saves each visitor's answers in thei
 |---|---|
 | `#profile` | Your profile (the main page) |
 | `#matches` | Your ranked matches |
-| `#community` | Community: search, top rated, latest reviews |
+| `#community` | Community: search, community numbers, top rated, reviews (latest or most helpful), top reviewers, and Discover shelves (most worn, highest rated, new releases, winter and summer favorites) with a Female / Male / Unisex filter |
 | `#p/75805` | A perfume's page (the number is its Fragrantica ID) |
 | `#u/<id>` | A member's public page (name, photo, scent type, reviews) |
 | `#account` | Sign in or create an account |

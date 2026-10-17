@@ -107,6 +107,8 @@ The photos are already in the GitHub repository, so the setup script copies them
 | `review_likes` | Member, review | Only the member who liked |
 | `reports` | Member, review or reply, reason | Only you |
 | `perfume_stats` | Average stars, review count and star spread per perfume, worked out automatically from `reviews` | Everyone |
+| `community_stats` | Total members, reviews and perfumes rated, for the Community page | Everyone |
+| `top_reviewers` | Review and "helpful" counts per member, for the Community page | Everyone |
 
 Deleting an account from the site removes the member, their photo, reviews, replies, likes and reports.
 
