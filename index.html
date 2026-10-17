@@ -151,6 +151,8 @@ button,input{font:inherit;color:inherit}
 .minipills{display:flex;flex-wrap:wrap;gap:6px}
 .minipills span{padding:4px 10px;border-radius:99px;background:var(--c);color:var(--t);font-size:13px;font-weight:600;text-transform:capitalize}
 .pfav a{font-size:14px;color:var(--ink-2);text-underline-offset:3px}
+.pfav .mt{font-weight:800;color:var(--vetiver);font-size:15px}
+.seeall{font-weight:600;color:var(--vetiver);text-underline-offset:3px}
 .pacc{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
 .pacc div{min-height:118px;border-radius:16px;padding:14px 16px;background:var(--c);color:var(--t);display:flex;flex-direction:column;justify-content:space-between;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
 .pacc b{font-family:var(--f-display);font-size:30px;font-weight:600;line-height:1;text-transform:capitalize}
@@ -313,7 +315,7 @@ button,input{font:inherit;color:inherit}
 <body>
 <header class="top wrap">
   <button class="mark" id="homeBtn" type="button"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 2c0 7 12 8 12 11S7 17 7 24M19 2c0 7-12 8-12 11s12 4 12 11"/><path d="M9 6h8M9 20h8" stroke-width="1.6"/></svg>Scent DNA</button>
-  <nav class="views" id="viewNav" aria-label="Your pages" hidden><a href="#matches" data-view="matches">Matches</a><a href="#profile" data-view="profile">Profile</a></nav>
+  <nav class="views" id="viewNav" aria-label="Your pages" hidden><a href="#profile" data-view="profile">Profile</a><a href="#matches" data-view="matches">Matches</a></nav>
   <div class="status" id="status" role="status"><b></b><span id="statusTxt">Loading 48,531 perfumes</span></div>
 </header>
 
@@ -325,7 +327,7 @@ button,input{font:inherit;color:inherit}
         <p class="lede">Tell us the perfumes you love and the accords and notes you reach for. We map your scent type and rank the perfumes you should try next.</p>
         <div class="row">
           <button class="go" id="startBtn" type="button">Find my scent DNA</button>
-          <button class="go" id="resumeBtn" type="button" hidden>Open my scent DNA</button>
+          <button class="go" id="resumeBtn" type="button" hidden>Open my profile</button>
           <span class="note">Takes about two minutes. Your answers stay on this device.</span>
         </div>
       </div>
@@ -353,7 +355,7 @@ button,input{font:inherit;color:inherit}
 
       <div class="pane" data-pane="0">
         <h2>First, who are you?</h2>
-        <p class="sub">Your name goes on your profile. Your birthday sets your star sign, which nudges your matches a little.</p>
+        <p class="sub">Your name and birthday go on your profile.</p>
         <div class="body">
           <div class="field"><label for="nameInput">Name</label><input class="inp" id="nameInput" type="text" maxlength="40" autocomplete="name" placeholder="Ibrahim Mursal"></div>
           <div class="field"><label for="dobInput">Birthday</label><input class="inp" id="dobInput" type="date" min="1920-01-01"></div>
@@ -420,7 +422,7 @@ button,input{font:inherit;color:inherit}
       <p class="typeblurb" id="typeBlurb"></p>
       <div class="actions">
         <button class="go" id="saveImg" type="button">Save as image</button>
-        <a class="quiet" href="#profile" style="text-decoration:none;color:var(--ink)">View my profile</a>
+        <a class="quiet" href="#profile" style="text-decoration:none;color:var(--ink)">Back to my profile</a>
       </div>
       <div class="msg" id="msg" role="status"></div>
       <div class="confirm"><button class="textbtn" id="resetBtn" type="button">Start over</button>
@@ -450,12 +452,13 @@ button,input{font:inherit;color:inherit}
       <div class="pacts">
         <button class="go" id="pSave" type="button">Save card as image</button>
         <button class="quiet" id="pEdit" type="button">Edit answers</button>
-        <a class="quiet" href="#matches">See my matches</a>
+        <a class="quiet" href="#matches">See perfumes to try</a>
         <div class="msg" id="pMsg" role="status"></div>
       </div>
     </div>
     <div class="ptype" id="pType"></div>
     <section class="psec"><header><h3>Perfumes you love</h3><span id="pFavCount"></span></header><div class="pfavs" id="pFavs"></div></section>
+    <section class="psec"><header><h3>Try these next</h3><a href="#matches" class="seeall">See all matches</a></header><div class="pfavs" id="pNext"></div></section>
     <section class="psec"><header><h3>Your accords</h3><span>Strongest first</span></header><div class="pacc" id="pAcc"></div></section>
     <section class="psec"><header><h3>Your notes</h3><span id="pNoteCount"></span></header><div class="pnotes" id="pNotes"></div></section>
     <section class="psec"><header><h3>Your shareable card</h3></header>
@@ -544,10 +547,6 @@ function scentType(accs){
   return {name:f2 ? `${ADJ[f2]} ${f1}` : `Pure ${f1}`, fam:f1};
 }
 
-/* ---------- star sign ---------- */
-const ZOD = [["Capricorn",1,19,"Earth"],["Aquarius",2,18,"Air"],["Pisces",3,20,"Water"],["Aries",4,19,"Fire"],["Taurus",5,20,"Earth"],["Gemini",6,20,"Air"],["Cancer",7,22,"Water"],["Leo",8,22,"Fire"],["Virgo",9,22,"Earth"],["Libra",10,22,"Air"],["Scorpio",11,21,"Water"],["Sagittarius",12,21,"Fire"],["Capricorn",12,31,"Earth"]];
-const ELEMENT_ACC = {Fire:["warm spicy","amber","leather","smoky"],Earth:["woody","earthy","patchouli","mossy"],Air:["citrus","aromatic","fresh spicy","green"],Water:["aquatic","musky","powdery","marine"]};
-const zodiac = dob => { const [, m, d] = dob.split("-").map(Number); for (const z of ZOD) if (m < z[1] || (m === z[1] && d <= z[2])) return {sign:z[0], element:z[3]}; return {sign:"Capricorn", element:"Earth"}; };
 
 /* ---------- storage ---------- */
 const KEY = "scentDNA.v1", OLDKEY = "scentPassport.v1";
@@ -667,9 +666,9 @@ function model(){
     for (const i of S.accords) { let s = 0; for (const f of favs) { const h = f.acc.find(a => a[0] === i); if (h) s += h[1]; } accs.push({name:D.accords[i], v:favs.length ? Math.max(.3, s / favs.length) : .5}); }
     accs.sort((a, b) => b.v - a.v);
   }
-  return {name:S.name, dob:S.dob, photo:S.photo, sign:S.dob ? zodiac(S.dob) : null, accs, type:scentType(accs), notes:D ? S.notes.map(i => ({name:D.notes[i], img:D.noteImg[i]})) : [], favs};
+  return {name:S.name, dob:S.dob, photo:S.photo, accs, type:scentType(accs), notes:D ? S.notes.map(i => ({name:D.notes[i], img:D.noteImg[i]})) : [], favs};
 }
-const SAMPLE = {name:"Layla Rahman", dob:"1999-08-14", photo:"", sign:{sign:"Leo", element:"Fire"}, sample:true,
+const SAMPLE = {name:"Layla Rahman", dob:"1999-08-14", photo:"", sample:true,
   accs:[{name:"amber",v:.92},{name:"vanilla",v:.74},{name:"warm spicy",v:.66},{name:"oud",v:.5},{name:"rose",v:.4},{name:"sweet",v:.36}],
   notes:[{name:"Saffron",img:55},{name:"Rose",img:105},{name:"Vanilla",img:74},{name:"Agarwood (Oud)",img:114},{name:"Amberwood",img:691}], favs:[{id:75805, name:"Khamrah"},{id:33519, name:"Baccarat Rouge 540"},{id:1825, name:"Tobacco Vanille"},{id:25324, name:"Black Opium"}]};
 SAMPLE.type = scentType(SAMPLE.accs);
@@ -682,7 +681,7 @@ function card(m){
     el("div", {class:"hd"},
       el("div", {class:"av"}, m.photo ? el("img", {src:m.photo, alt:""}) : (initials || "?")),
       el("div", {class:"who"}, el("div", {class:"nm" + (m.name ? "" : " empty"), text:m.name || "Your name"}),
-        el("div", {class:"sg", text:m.sign ? `${m.sign.sign}, born ${fmtDate(m.dob)}` : "Birthday not added"})),
+        el("div", {class:"sg", text:m.dob ? `Born ${fmtDate(m.dob)}` : "Birthday not added"})),
       m.sample ? null : el("div", {class:"brand", html:`<svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 2c0 7 12 8 12 11S7 17 7 24M19 2c0 7-12 8-12 11s12 4 12 11"/></svg>Scent DNA`})),
     el("div", {class:"tp"}, el("div", {class:"k", text:"Scent type"}), el("div", {class:"type" + (m.type ? "" : " empty"), text:m.type ? m.type.name : "Pick favorites to reveal it"})),
     helixSVG(m.accs.slice(0, 6)),
@@ -707,13 +706,13 @@ function show(v){
   window.scrollTo(0, 0);
 }
 // #matches and #profile are real addresses, so the back button and shared links work
-function route(){ if (!(S.issued && S.name)) return show("landing"); return location.hash === "#profile" ? openProfile() : openResult(); }
+function route(){ if (!(S.issued && S.name)) return show("landing"); return location.hash === "#matches" ? openResult() : openProfile(); }
 function goView(v){ if (location.hash === "#" + v) route(); else location.hash = v; }
 window.addEventListener("hashchange", route);
 async function needData(){ if (!D) { show("loading"); await dataPromise; } }
-$("#homeBtn").addEventListener("click", () => S.issued ? goView("matches") : show("landing"));
+$("#homeBtn").addEventListener("click", () => S.issued ? goView("profile") : show("landing"));
 $("#startBtn").addEventListener("click", () => openBuilder(0));
-$("#resumeBtn").addEventListener("click", () => goView("matches"));
+$("#resumeBtn").addEventListener("click", () => goView("profile"));
 
 /* ---------- builder ---------- */
 let step = 0;
@@ -727,7 +726,7 @@ function setStep(n){
     if (i === n) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
     b.classList.toggle("done", i < n); b.disabled = !canReach(i); });
   $("#backBtn").textContent = n === 0 ? "Cancel" : "Back";
-  $("#nextBtn").textContent = n === 3 ? "Show my scent DNA" : "Continue";
+  $("#nextBtn").textContent = n === 3 ? "Show my profile" : "Continue";
   [paneDetails, paneFavs, paneAccords, paneNotes][n]();
   refreshLive(); updateNext(); window.scrollTo(0, 0);
 }
@@ -737,7 +736,7 @@ $("#backBtn").addEventListener("click", () => step === 0 ? (S.issued ? route() :
 $("#nextBtn").addEventListener("click", async () => {
   if (step === 0) { if (!validateDetails()) return; await needData(); show("builder"); setStep(1); }
   else if (step < 3) setStep(step + 1);
-  else { if (!S.issued) S.issued = new Date().toISOString().slice(0, 10); save(); goView("matches"); }
+  else { if (!S.issued) S.issued = new Date().toISOString().slice(0, 10); save(); goView("profile"); }
 });
 
 function paneDetails(){ $("#nameInput").value = S.name; $("#dobInput").value = S.dob; $("#dobInput").max = new Date().toISOString().slice(0, 10); drawThumb(); }
@@ -856,7 +855,6 @@ function recommend(){
   const favs = S.favs.map(id => D.byId.get(id)).filter(Boolean);
   for (const f of favs) for (const [a, s] of f.acc) U[a] += .7 * s / favs.length;
   for (const a of S.accords) U[a] += 1;
-  if (S.dob) for (const n of ELEMENT_ACC[zodiac(S.dob).element]) { const i = D.accords.indexOf(n); if (i >= 0) U[i] += .12; }
   let un = 0; for (const x of U) un += x * x; un = Math.sqrt(un) || 1;
   const N = new Map(); for (const n of S.notes) N.set(n, 1);
   for (const f of favs) for (const [n, , w] of f.notes) if (!S.notes.includes(n)) N.set(n, Math.max(N.get(n) || 0, .25 * w));
@@ -942,8 +940,7 @@ async function openResult(){
   $("#finalCard").replaceChildren(card(m));
   $("#typeBlurb").replaceChildren(...(m.type ? [el("strong", {text:m.type.name + ". "}), m.type.fam ? BLURB[m.type.fam] : ""] : []));
   $("#resTitle").textContent = `${S.name.split(" ")[0]}, try these next`;
-  const sg = m.sign;
-  $("#resSub").textContent = "Ranked by how closely each perfume matches your favorites, accords and notes, with a boost for well-rated ones." + (sg ? ` As a ${sg.sign}, a ${sg.element.toLowerCase()} sign, ${listJoin(ELEMENT_ACC[sg.element])} get a small extra push.` : "");
+  $("#resSub").textContent = "Ranked by how closely each perfume matches your favorites, accords and notes, with a boost for well-rated ones.";
   $("#resumeBtn").hidden = false; $("#startBtn").hidden = true;
   $("#msg").textContent = ""; $("#resetAsk").hidden = true;
   drawRank();
@@ -966,13 +963,12 @@ async function openProfile(){
   $("#pName").textContent = S.name;
   const fact = (k, v) => el("div", {}, el("dt", {text:k}), el("dd", {text:v}));
   $("#pFacts").replaceChildren(...[
-    m.sign && fact("Star sign", m.sign.sign), m.sign && fact("Element", m.sign.element),
     S.dob && fact("Birthday", new Date(S.dob + "T00:00:00").toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"})),
     S.dob && fact("Age", String(ageOf(S.dob))), fact("Profile made", fmtDate(S.issued))].filter(Boolean));
   // scent type band
   $("#pType").replaceChildren(
     el("div", {}, el("div", {class:"k", text:"Your scent type"}), el("h2", {text:m.type ? m.type.name : "Not set"}),
-      el("p", {text:(m.type && m.type.fam ? BLURB[m.type.fam] : "") + (m.sign ? ` As a ${m.sign.sign}, your ${m.sign.element.toLowerCase()} element adds a small nudge toward ${listJoin(ELEMENT_ACC[m.sign.element])} in your matches.` : "")})),
+      el("p", {text:m.type && m.type.fam ? BLURB[m.type.fam] : ""})),
     helixSVG(m.accs.slice(0, 6)));
   // favourites
   $("#pFavCount").textContent = `${m.favs.length} ${m.favs.length === 1 ? "perfume" : "perfumes"}`;
@@ -995,6 +991,12 @@ async function openProfile(){
     const desc = Object.entries(where).map(([t, fs]) => `${t === "note" ? "In" : cap(t) + " note in"} ${listJoin([...new Set(fs)])}`).join(". ") || "Your own pick";
     return el("div", {class:"pnote"}, noteImg(n.name, n.img, "ni"), el("b", {text:n.name}), el("small", {text:desc}));
   }) : [el("p", {class:"empty", text:"You haven't picked any notes. Add some with Edit answers."})]));
+  RECS = recommend();
+  $("#pNext").replaceChildren(...diversify(RECS, 4).map(r => { const p = r.p; return el("article", {class:"pfav"},
+    bottle(p, "xl"),
+    el("div", {}, el("div", {class:"n", text:p.name}), el("div", {class:"b", text:[p.brand, p.year || null, gName[p.g]].filter(Boolean).join(", ")})),
+    el("div", {class:"mt", text:`${r.match}% match`}),
+    el("div", {class:"minipills"}, ...p.acc.slice(0, 3).map(([a]) => { const n = D.accords[a], c = accColor(n); return el("span", {style:`--c:${c};--t:${textOn(c)}`, text:n}); }))); }));
   $("#pCard").replaceChildren(card(m));
   ["#pMsg", "#pMsg2"].forEach(x => $(x).textContent = ""); $("#pResetAsk").hidden = true;
 }
@@ -1021,7 +1023,7 @@ async function drawCard(m, cw){
   else { g.fillStyle = "#1F4A40"; g.fillRect(px, y, av, av); g.fillStyle = "#8FB8AB"; fb(g, 700, 5.6 * u); g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(m.name.split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase(), px + av / 2, y + av / 2); g.textAlign = "left"; g.textBaseline = "top"; }
   g.restore();
   fd(g, 600, 7 * u); g.fillStyle = "#E9F4F0"; g.fillText(fit(g, m.name, iw - av - 26 * u), px + av + 4 * u, y + 1.8 * u);
-  fb(g, 400, 3.3 * u); g.fillStyle = "#8FB8AB"; g.fillText(m.sign ? `${m.sign.sign}, born ${fmtDate(m.dob)}` : "", px + av + 4 * u, y + 9.4 * u);
+  fb(g, 400, 3.3 * u); g.fillStyle = "#8FB8AB"; g.fillText(m.dob ? `Born ${fmtDate(m.dob)}` : "", px + av + 4 * u, y + 9.4 * u);
   g.textAlign = "right"; fb(g, 650, 3 * u); g.fillText("Scent DNA", px + iw, y + 1 * u); g.textAlign = "left";
   y += av + 6 * u; fb(g, 400, 3.1 * u); g.fillStyle = "#8FB8AB"; g.fillText("Scent type", px, y); y += 4.4 * u;
   fd(g, 600, 13.5 * u, true); g.fillStyle = "#E9F4F0"; const tl = wrapLines(g, m.type ? m.type.name : "", iw, 2); tl.forEach((l, i) => g.fillText(l, px, y + i * 12.6 * u)); y += tl.length * 12.6 * u + 2 * u;
