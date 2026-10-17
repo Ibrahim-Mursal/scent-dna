@@ -114,6 +114,74 @@ button,input{font:inherit;color:inherit}
 .dna .ln b{color:var(--dna-muted);font-weight:500}
 .dna .sample{position:absolute;top:7.5cqw;right:7cqw;font-size:2.8cqw;font-weight:700;letter-spacing:.2em;color:var(--dna-muted);opacity:.7}
 
+/* ---------- view tabs ---------- */
+.views{display:flex;gap:2px;padding:4px;border-radius:999px;background:var(--sunk)}
+.views a{min-height:38px;display:inline-flex;align-items:center;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;color:var(--ink-2);text-decoration:none}
+.views a:hover{color:var(--ink)}
+.views a[aria-current="page"]{background:var(--raise);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+/* ---------- profile page ---------- */
+.profile{padding-block:16px 24px;display:grid;gap:56px}
+.phead{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:32px;align-items:center}
+.pav{width:148px;height:148px;border-radius:50%;overflow:hidden;background:var(--vetiver-soft);display:grid;place-items:center;font-family:var(--f-display);font-size:60px;font-weight:600;color:var(--vetiver);box-shadow:0 0 0 6px var(--raise),0 0 0 7.5px var(--rule)}
+.pav img{width:100%;height:100%;object-fit:cover}
+.pid h1{font-size:clamp(44px,6vw,72px);letter-spacing:-.01em;line-height:.95}
+.pfacts{display:flex;flex-wrap:wrap;gap:12px 36px;margin:18px 0 0}
+.pfacts div{display:grid;gap:2px}
+.pfacts dt{font-size:13px;color:var(--ink-2)}
+.pfacts dd{margin:0;font-weight:650;font-size:17px}
+.pacts{display:grid;gap:10px;justify-items:stretch;min-width:210px}
+.pacts .quiet{justify-content:center;text-decoration:none;color:var(--ink)}
+.ptype{border-radius:24px;padding:clamp(24px,4vw,44px);color:var(--dna-ink);background:radial-gradient(120% 120% at 70% 40%,var(--dna-2) 0%,var(--dna) 60%,#091C18 100%);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(20px,4vw,48px);align-items:center}
+.ptype .k{font-size:14px;color:var(--dna-muted)}
+.ptype h2{font-style:italic;font-size:clamp(46px,7vw,84px);line-height:.95;margin-top:6px;color:var(--dna-ink)}
+.ptype p{color:#C4DAD2;margin-top:16px;max-width:44ch;font-size:17px}
+.ptype .helix{width:100%;height:auto}
+.psec{display:grid;gap:20px}
+.psec > header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;border-bottom:1.5px solid var(--ink);padding-bottom:12px}
+.psec h3{font-size:38px;line-height:1}
+.psec > header span{color:var(--ink-2);font-size:15px}
+.pfavs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px}
+.pfav{display:grid;gap:12px;align-content:start}
+.bt.xl{width:100%;height:auto;aspect-ratio:3/4;border-radius:16px}
+.pfav .n{font-family:var(--f-display);font-weight:600;font-size:28px;line-height:1.02}
+.pfav .b{color:var(--ink-2);font-size:15px;margin-top:2px}
+.pfav .r{font-size:14px;color:var(--ink-2)}
+.minipills{display:flex;flex-wrap:wrap;gap:6px}
+.minipills span{padding:4px 10px;border-radius:99px;background:var(--c);color:var(--t);font-size:13px;font-weight:600;text-transform:capitalize}
+.pfav a{font-size:14px;color:var(--ink-2);text-underline-offset:3px}
+.pacc{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.pacc div{min-height:118px;border-radius:16px;padding:14px 16px;background:var(--c);color:var(--t);display:flex;flex-direction:column;justify-content:space-between;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.pacc b{font-family:var(--f-display);font-size:30px;font-weight:600;line-height:1;text-transform:capitalize}
+.pacc small{font-size:13px;font-weight:550;opacity:.85}
+.pnotes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:24px 16px}
+.pnote{display:grid;justify-items:center;text-align:center;gap:8px}
+.pnote .ni{width:96px;height:96px;border-radius:50%;overflow:hidden;background:var(--sunk);display:grid;place-items:center;font-family:var(--f-display);font-size:40px;color:var(--ink-2)}
+.pnote .ni img{width:100%;height:100%;object-fit:cover}
+.pnote b{font-weight:650}
+.pnote small{font-size:13px;color:var(--ink-2);max-width:20ch}
+.pshare{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:40px;align-items:center}
+.pshare p{color:var(--ink-2);max-width:46ch;font-size:17px}
+.pshare .actions{margin-top:20px}
+@media (max-width:860px){
+  .phead{grid-template-columns:auto minmax(0,1fr)}
+  .pacts{grid-column:1/-1;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .ptype,.pshare{grid-template-columns:1fr}
+  .pshare .dnawrap{justify-self:center;width:min(340px,86vw)}
+}
+@media (max-width:560px){
+  .phead{grid-template-columns:1fr;justify-items:start;gap:20px}
+  .pav{width:110px;height:110px;font-size:44px}
+  .psec h3{font-size:32px}
+  .pfavs{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .pfav .n{font-size:22px}
+  .pacc{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pnotes{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pnote .ni{width:72px;height:72px}
+  .top .status{display:none}
+}
+
 /* ---------- landing ---------- */
 .hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(32px,6vw,90px);align-items:center;padding-block:clamp(24px,6vw,72px) 32px}
 .hero h1{font-size:clamp(58px,10vw,128px);font-weight:600;letter-spacing:-.02em;line-height:.9}
@@ -245,6 +313,7 @@ button,input{font:inherit;color:inherit}
 <body>
 <header class="top wrap">
   <button class="mark" id="homeBtn" type="button"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 2c0 7 12 8 12 11S7 17 7 24M19 2c0 7-12 8-12 11s12 4 12 11"/><path d="M9 6h8M9 20h8" stroke-width="1.6"/></svg>Scent DNA</button>
+  <nav class="views" id="viewNav" aria-label="Your pages" hidden><a href="#matches" data-view="matches">Matches</a><a href="#profile" data-view="profile">Profile</a></nav>
   <div class="status" id="status" role="status"><b></b><span id="statusTxt">Loading 48,531 perfumes</span></div>
 </header>
 
@@ -351,7 +420,7 @@ button,input{font:inherit;color:inherit}
       <p class="typeblurb" id="typeBlurb"></p>
       <div class="actions">
         <button class="go" id="saveImg" type="button">Save as image</button>
-        <button class="quiet" id="editBtn" type="button">Edit answers</button>
+        <a class="quiet" href="#profile" style="text-decoration:none;color:var(--ink)">View my profile</a>
       </div>
       <div class="msg" id="msg" role="status"></div>
       <div class="confirm"><button class="textbtn" id="resetBtn" type="button">Start over</button>
@@ -372,6 +441,30 @@ button,input{font:inherit;color:inherit}
       <div class="more"><button class="quiet" id="moreBtn" type="button">Show 10 more</button></div>
       <p class="fine">Perfume data comes from the Decant dataset, built from Fragrantica community ratings, votes, accords and notes. Bottle and note photos are from Fragrantica.</p>
     </div>
+  </section>
+
+  <section id="vProfile" class="profile" hidden>
+    <div class="phead">
+      <div class="pav" id="pAvatar"></div>
+      <div class="pid"><h1 id="pName"></h1><dl class="pfacts" id="pFacts"></dl></div>
+      <div class="pacts">
+        <button class="go" id="pSave" type="button">Save card as image</button>
+        <button class="quiet" id="pEdit" type="button">Edit answers</button>
+        <a class="quiet" href="#matches">See my matches</a>
+        <div class="msg" id="pMsg" role="status"></div>
+      </div>
+    </div>
+    <div class="ptype" id="pType"></div>
+    <section class="psec"><header><h3>Perfumes you love</h3><span id="pFavCount"></span></header><div class="pfavs" id="pFavs"></div></section>
+    <section class="psec"><header><h3>Your accords</h3><span>Strongest first</span></header><div class="pacc" id="pAcc"></div></section>
+    <section class="psec"><header><h3>Your notes</h3><span id="pNoteCount"></span></header><div class="pnotes" id="pNotes"></div></section>
+    <section class="psec"><header><h3>Your shareable card</h3></header>
+      <div class="pshare"><div class="dnawrap" id="pCard"></div>
+        <div><p>This is the card people see when you share your Scent DNA. Save it as an image for your Instagram or WhatsApp story. It includes your top three matches.</p>
+          <div class="actions"><button class="go" id="pSave2" type="button">Save card as image</button></div><div class="msg" id="pMsg2" role="status"></div></div></div>
+    </section>
+    <div class="confirm"><button class="textbtn" id="pReset" type="button">Start over</button>
+      <span id="pResetAsk" hidden> This deletes your answers from this device. <button class="textbtn" id="pResetYes" type="button">Delete</button> <button class="textbtn" id="pResetNo" type="button">Keep</button></span></div>
   </section>
 
   <section id="vLoading" class="loading" hidden>
@@ -606,12 +699,21 @@ function card(m){
 $("#sampleCard").append(card(SAMPLE));
 
 /* ---------- views ---------- */
-const V = {landing:$("#vLanding"), builder:$("#vBuilder"), result:$("#vResult"), loading:$("#vLoading")};
-function show(v){ for (const [k, e] of Object.entries(V)) e.hidden = k !== v; window.scrollTo(0, 0); }
+const V = {landing:$("#vLanding"), builder:$("#vBuilder"), result:$("#vResult"), profile:$("#vProfile"), loading:$("#vLoading")};
+function show(v){
+  for (const [k, e] of Object.entries(V)) e.hidden = k !== v;
+  $("#viewNav").hidden = !(S.issued && S.name);
+  $$("#viewNav a").forEach(a => { const on = (a.dataset.view === "matches" && v === "result") || (a.dataset.view === "profile" && v === "profile"); if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  window.scrollTo(0, 0);
+}
+// #matches and #profile are real addresses, so the back button and shared links work
+function route(){ if (!(S.issued && S.name)) return show("landing"); return location.hash === "#profile" ? openProfile() : openResult(); }
+function goView(v){ if (location.hash === "#" + v) route(); else location.hash = v; }
+window.addEventListener("hashchange", route);
 async function needData(){ if (!D) { show("loading"); await dataPromise; } }
-$("#homeBtn").addEventListener("click", () => S.issued ? openResult() : show("landing"));
+$("#homeBtn").addEventListener("click", () => S.issued ? goView("matches") : show("landing"));
 $("#startBtn").addEventListener("click", () => openBuilder(0));
-$("#resumeBtn").addEventListener("click", () => openResult());
+$("#resumeBtn").addEventListener("click", () => goView("matches"));
 
 /* ---------- builder ---------- */
 let step = 0;
@@ -631,11 +733,11 @@ function setStep(n){
 }
 function updateNext(){ $("#nextBtn").disabled = (step === 1 && !S.favs.length) || (step === 2 && !S.accords.length); }
 $$(".steps button").forEach(b => b.addEventListener("click", async () => { const i = +b.dataset.step; if (i === step || !canReach(i)) return; if (i > 0) await needData(); show("builder"); setStep(i); }));
-$("#backBtn").addEventListener("click", () => step === 0 ? (S.issued ? openResult() : show("landing")) : setStep(step - 1));
+$("#backBtn").addEventListener("click", () => step === 0 ? (S.issued ? route() : show("landing")) : setStep(step - 1));
 $("#nextBtn").addEventListener("click", async () => {
   if (step === 0) { if (!validateDetails()) return; await needData(); show("builder"); setStep(1); }
   else if (step < 3) setStep(step + 1);
-  else { if (!S.issued) S.issued = new Date().toISOString().slice(0, 10); save(); openResult(); }
+  else { if (!S.issued) S.issued = new Date().toISOString().slice(0, 10); save(); goView("matches"); }
 });
 
 function paneDetails(){ $("#nameInput").value = S.name; $("#dobInput").value = S.dob; $("#dobInput").max = new Date().toISOString().slice(0, 10); drawThumb(); }
@@ -846,10 +948,60 @@ async function openResult(){
   $("#msg").textContent = ""; $("#resetAsk").hidden = true;
   drawRank();
 }
-$("#editBtn").addEventListener("click", () => openBuilder(0));
+
 $("#resetBtn").addEventListener("click", () => $("#resetAsk").hidden = false);
 $("#resetNo").addEventListener("click", () => $("#resetAsk").hidden = true);
-$("#resetYes").addEventListener("click", () => { wipe(); S = blank(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; show("landing"); });
+function startOver(){ wipe(); S = blank(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; history.replaceState(null, "", location.pathname + location.search); show("landing"); }
+$("#resetYes").addEventListener("click", startOver);
+
+/* ---------- profile ---------- */
+const TIER = ["top", "heart", "base", ""];
+const ageOf = dob => { const b = new Date(dob + "T00:00:00"), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n < new Date(n.getFullYear(), b.getMonth(), b.getDate())) a--; return a; };
+const slugF = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "");
+async function openProfile(){
+  if (!S.issued || !S.name) return show("landing");
+  await needData(); show("profile");
+  const m = model(), initials = S.name.split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+  $("#pAvatar").replaceChildren(S.photo ? el("img", {src:S.photo, alt:""}) : initials);
+  $("#pName").textContent = S.name;
+  const fact = (k, v) => el("div", {}, el("dt", {text:k}), el("dd", {text:v}));
+  $("#pFacts").replaceChildren(...[
+    m.sign && fact("Star sign", m.sign.sign), m.sign && fact("Element", m.sign.element),
+    S.dob && fact("Birthday", new Date(S.dob + "T00:00:00").toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"})),
+    S.dob && fact("Age", String(ageOf(S.dob))), fact("Profile made", fmtDate(S.issued))].filter(Boolean));
+  // scent type band
+  $("#pType").replaceChildren(
+    el("div", {}, el("div", {class:"k", text:"Your scent type"}), el("h2", {text:m.type ? m.type.name : "Not set"}),
+      el("p", {text:(m.type && m.type.fam ? BLURB[m.type.fam] : "") + (m.sign ? ` As a ${m.sign.sign}, your ${m.sign.element.toLowerCase()} element adds a small nudge toward ${listJoin(ELEMENT_ACC[m.sign.element])} in your matches.` : "")})),
+    helixSVG(m.accs.slice(0, 6)));
+  // favourites
+  $("#pFavCount").textContent = `${m.favs.length} ${m.favs.length === 1 ? "perfume" : "perfumes"}`;
+  $("#pFavs").replaceChildren(...m.favs.map(p => el("article", {class:"pfav"},
+    bottle(p, "xl"),
+    el("div", {}, el("div", {class:"n", text:p.name}), el("div", {class:"b", text:[p.brand, p.year || null, gName[p.g]].filter(Boolean).join(", ")})),
+    el("div", {class:"r", text:`Rated ${p.rating.toFixed(2)} out of 5 by ${fmt(p.votes)} people`}),
+    el("div", {class:"minipills"}, ...p.acc.slice(0, 4).map(([a]) => { const n = D.accords[a], c = accColor(n); return el("span", {style:`--c:${c};--t:${textOn(c)}`, text:n}); })),
+    el("a", {href:`https://www.fragrantica.com/perfume/${slugF(p.brand)}/${slugF(p.name)}-${p.id}.html`, target:"_blank", rel:"noopener", text:"Open on Fragrantica"}))));
+  // accords
+  const favCount = new Map(); for (const f of m.favs) for (const [a, s2] of f.acc) if (s2 >= .4) favCount.set(D.accords[a], (favCount.get(D.accords[a]) || 0) + 1);
+  $("#pAcc").replaceChildren(...m.accs.map(a => { const c = accColor(a.name), n = favCount.get(a.name);
+    return el("div", {style:`--c:${c};--t:${textOn(c)}`}, el("small", {text:n ? `In ${n} of ${m.favs.length} favorites` : "Your own pick"}), el("b", {text:a.name})); }));
+  // notes, with where they sit in the favourites
+  $("#pNoteCount").textContent = m.notes.length ? `${m.notes.length} chosen` : "";
+  const noteIdx = S.notes;
+  $("#pNotes").replaceChildren(...(m.notes.length ? m.notes.map((n, k) => {
+    const id = noteIdx[k], where = {};
+    for (const f of m.favs) for (const [nid, tier] of f.notes) if (nid === id) { const t = TIER[tier] || "note"; (where[t] ||= []).push(f.name); }
+    const desc = Object.entries(where).map(([t, fs]) => `${t === "note" ? "In" : cap(t) + " note in"} ${listJoin([...new Set(fs)])}`).join(". ") || "Your own pick";
+    return el("div", {class:"pnote"}, noteImg(n.name, n.img, "ni"), el("b", {text:n.name}), el("small", {text:desc}));
+  }) : [el("p", {class:"empty", text:"You haven't picked any notes. Add some with Edit answers."})]));
+  $("#pCard").replaceChildren(card(m));
+  ["#pMsg", "#pMsg2"].forEach(x => $(x).textContent = ""); $("#pResetAsk").hidden = true;
+}
+$("#pEdit").addEventListener("click", () => openBuilder(0));
+$("#pReset").addEventListener("click", () => $("#pResetAsk").hidden = false);
+$("#pResetNo").addEventListener("click", () => $("#pResetAsk").hidden = true);
+$("#pResetYes").addEventListener("click", startOver);
 
 /* ---------- export: 1080x1920 story image ---------- */
 const BODY = "'Albert Sans', system-ui, -apple-system, 'Segoe UI', sans-serif", DISP = "'Cormorant', 'Cormorant Garamond', Georgia, serif";
@@ -936,8 +1088,8 @@ async function exportImage(){
   fb(g, 500, 25); g.fillStyle = "#4F625D"; g.textAlign = "center"; g.fillText(host ? "Find your scent DNA at " + host : "Made with Scent DNA", W / 2, H - 60); g.textAlign = "left";
   return new Promise(res => out.toBlob(res, "image/png"));
 }
-$("#saveImg").addEventListener("click", async () => {
-  const msg = $("#msg"); msg.textContent = "Making your image…";
+async function saveImage(msg){
+  msg.textContent = "Making your image…";
   try {
     const blob = await exportImage();
     const name = `scent-dna-${S.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.png`;
@@ -950,12 +1102,15 @@ $("#saveImg").addEventListener("click", async () => {
     }
     msg.replaceChildren("Saving isn't available here. Press and hold the image, or right-click it, to save it.", el("img", {src:url, alt:"Your Scent DNA as an image"}));
   } catch (e) { console.error(e); msg.textContent = "The image couldn't be made. Try again."; }
-});
+}
+$("#saveImg").addEventListener("click", () => saveImage($("#msg")));
+$("#pSave").addEventListener("click", () => saveImage($("#pMsg")));
+$("#pSave2").addEventListener("click", () => saveImage($("#pMsg2")));
 
 /* ---------- boot ---------- */
 loadData();
-if (S.issued && S.name) { $("#resumeBtn").hidden = false; $("#startBtn").hidden = true; openResult(); }
-else show("landing");
+if (S.issued && S.name) { $("#resumeBtn").hidden = false; $("#startBtn").hidden = true; }
+route();
 })();
 </script>
 </body>
