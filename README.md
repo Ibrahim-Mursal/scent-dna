@@ -12,6 +12,7 @@ It runs in two ways:
 | File | What it is |
 |---|---|
 | `index.html` | The whole app (layout, styles and code) |
+| `featured.json` | Hand-picked shelves on the Community page, like "Famous in Kurdistan". Edit it to change them. |
 | `perfumes.json` | The catalog: 48,531 perfumes with accords, notes, note image IDs and ratings (9.3 MB) |
 | `fonts/` | Cormorant and Albert Sans, self-hosted (SIL Open Font License) |
 | `favicon.svg` | Browser tab icon |
@@ -71,6 +72,16 @@ After running the download script, replace any file in `images/perfumes/` or `im
 ## User accounts and the community
 
 On GitHub Pages or any plain host, the site saves each visitor's answers in their browser only. To give visitors real accounts (profile on every device) and turn on reviews, run the site on your own server with PocketBase. The full guide and a one-command setup script are in `server/README.md`.
+
+## Editing "Famous in Kurdistan"
+
+The "Famous in Kurdistan" shelf on the Community page comes from `featured.json`. To change it:
+
+1. Open a perfume on the site and copy the number at the end of its address. For Khamrah the address ends in `#p/75805`, so the number is `75805`.
+2. In `featured.json`, add or remove numbers in the `ids` list (keep the commas between them). The shelf shows them in that order.
+3. Upload `featured.json` again (on GitHub, open the file, click the pencil, edit, and commit).
+
+To add another hand-picked shelf (for example "Staff picks" or "Best for weddings"), copy a whole `{ ... }` block inside `shelves`, give it a new `title` and `subtitle`, and put a comma between the blocks.
 
 ## Page addresses
 

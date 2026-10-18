@@ -473,6 +473,8 @@ textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;
 .shelf > *{scroll-snap-align:start}
 .psec > *,.shelves > *{min-width:0}
 .shelves{display:grid;gap:40px}
+#comFeatured{display:grid;gap:56px;min-width:0}
+#comFeatured:empty{display:none}
 .shelves h4{margin:0 0 14px;font-family:var(--f-display);font-weight:600;font-size:28px}
 .shelves h4 span{font-family:var(--f-body);font-size:14px;font-weight:500;color:var(--ink-2);margin-left:10px}
 .members{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
@@ -695,6 +697,7 @@ textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;
         <input class="inp" id="comSearch" type="search" autocomplete="off" placeholder="Khamrah, Sauvage, Baccarat Rouge 540"><div class="list" id="comHits" hidden></div></div>
     </div>
     <div class="notice" id="comSoon" hidden><b>Ratings and reviews are coming soon</b>You can already look up any perfume, see how it wears and add it to your collection.</div>
+    <div id="comFeatured"></div>
     <section class="psec" id="comTopSec" hidden><header><h3>Top rated here</h3><span>Rated by at least two people</span></header><div class="shelf" id="comTop"></div></section>
     <section class="psec" id="comFeedSec" hidden><header><h3>Reviews</h3>
         <div class="seg" role="group" aria-label="Show reviews" id="feedSeg"><button type="button" data-s="-created" aria-pressed="true">Latest</button><button type="button" data-s="-likes,-created" aria-pressed="false">Most helpful</button></div></header>
@@ -1885,7 +1888,7 @@ let comPage = 0, feedSort = "-created", discG = "all";
 const statCard = st => { const p = D.byId.get(st.perfume); return p ? pcard(p, el("div", {class:"cr"}, starsEl(st.avg), `${st.avg.toFixed(1)} · ${plural(st.reviews, "review", "reviews")}`)) : null; };
 async function openCommunity(){
   await needData(); show("community");
-  drawDiscover();
+  drawDiscover(); drawFeatured();
   await Acc.ready;
   $("#comSoon").hidden = Acc.on;
   for (const sel of ["#comTopSec", "#comFeedSec", "#comMostSec", "#comPeopleSec", "#comStats"]) $(sel).hidden = true;
@@ -1930,18 +1933,31 @@ $$("#feedSeg button").forEach(b => b.addEventListener("click", () => {
   feedSort = b.dataset.s; $$("#feedSeg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
   comPage = 0; $("#comFeed").replaceChildren(); loadFeed();
 }));
+// hand-picked shelves (like "Famous in Kurdistan") live in featured.json, so they can be changed without touching the code
+const featuredReady = fetch("featured.json").then(r => r.ok ? r.json() : null).catch(() => null);
+async function drawFeatured(){
+  const f = await featuredReady, box = $("#comFeatured");
+  const shelves = (f && Array.isArray(f.shelves) ? f.shelves : []).map(sh => ({...sh, list:(sh.ids || []).map(id => D.byId.get(+id)).filter(Boolean)})).filter(sh => sh.list.length);
+  box.replaceChildren(...shelves.map(sh => el("section", {class:"psec"},
+    el("header", {}, el("h3", {text:sh.title || "Featured"}), sh.subtitle ? el("span", {text:sh.subtitle}) : null),
+    el("div", {class:"shelf"}, ...sh.list.map(p => pcard(p, el("div", {class:"r", text:`Rated ${p.rating.toFixed(2)} by ${fmt(p.votes)} people`})))))));
+}
 // shelves worked out from the catalog, so the page is useful even before anyone has written a review
 const THIS_YEAR = new Date().getFullYear();
+const ARABIAN = /lattafa|armaf|afnan|rasasi|ajmal|haramain|swiss arabian|arabian oud|french avenue|maison alhambra|zimaya|ard al zaafaran|paris corner|khadlaj|nabeel|al rehab|fragrance world|rayhaan|gulf orchid|al wataniah|amouage/i;
 const bySeason = (a, b) => (b.rating + Math.log10(b.votes) * .2) - (a.rating + Math.log10(a.votes) * .2);
 const SHELVES = [
   ["Most worn worldwide", "By Fragrantica votes", P => P],
+  ["Arabian houses", "Lattafa, Armaf, Afnan, Rasasi and more", P => P.filter(p => ARABIAN.test(p.brand))],
   ["Highest rated", "8,000+ votes", P => P.filter(p => p.votes >= 8000).sort((a, b) => b.rating - a.rating)],
   ["New releases", `${THIS_YEAR - 1} and ${THIS_YEAR}`, P => P.filter(p => p.year >= THIS_YEAR - 1 && p.votes >= 300)],
   ["Winter favorites", "Worn most in the cold", P => P.filter(p => p.votes >= 1500 && p.seasons[0] === 100 && p.seasons[2] < 50).sort(bySeason)],
   ["Summer favorites", "Worn most in the heat", P => P.filter(p => p.votes >= 1500 && p.seasons[2] === 100 && p.seasons[0] < 50).sort(bySeason)],
 ];
-function drawDiscover(){
-  const P = discG === "all" ? D.P : D.P.filter(p => p.g === +discG), seen = new Set();   // each perfume on one shelf only
+async function drawDiscover(){
+  const f = await featuredReady;   // each perfume on one shelf only, counting the hand-picked shelves above
+  const seen = new Set((f && Array.isArray(f.shelves) ? f.shelves : []).flatMap(sh => (sh.ids || []).map(Number)));
+  const P = discG === "all" ? D.P : D.P.filter(p => p.g === +discG);
   $("#comDisc").replaceChildren(...SHELVES.map(([title, sub, pick]) => {
     const list = pick(P).filter(p => !seen.has(p.id)).slice(0, 10); if (!list.length) return null;
     for (const p of list) seen.add(p.id);

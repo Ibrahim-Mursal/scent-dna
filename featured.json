@@ -1,0 +1,10 @@
+{
+  "how_to_edit": "Each shelf shows its perfumes in this order. To add a perfume, find it on the site, open its page, and copy the number at the end of the address (for Khamrah the address ends in #p/75805, so the number is 75805). Add or remove numbers in 'ids', keep the commas between them, then upload this file again. You can add more shelves by copying a whole { ... } block.",
+  "shelves": [
+    {
+      "title": "Famous in Kurdistan",
+      "subtitle": "What people wear in Erbil, Sulaymaniyah and Duhok",
+      "ids": [75805, 34696, 31861, 25967, 72821, 33519, 9828, 64948, 1825, 52802, 65414, 16657, 46890, 39681, 76880, 25324, 81642, 88175, 51816, 43871, 1826, 50757, 39314, 56077]
+    }
+  ]
+}
