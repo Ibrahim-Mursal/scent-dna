@@ -29,7 +29,7 @@
 /* Layout: a fragrance counter. The Scent DNA profile is the dark object on the glass; questions and matches sit beside it. */
 :root{
   --ground:#E3EAE7; --raise:#F6F9F8; --sunk:#D5DFDB; --ink:#10231F; --ink-2:#4F625D; --rule:#C3D0CB;
-  --vetiver:#0E6E5A; --vetiver-ink:#F3FBF8; --vetiver-soft:#CFE5DE; --warn:#A8322B; --tile:#FFFFFF; --star:#C48A1E; --star-off:#BFCBC6; --track:#D5DFDB;
+  --vetiver:#0E6E5A; --vetiver-ink:#F3FBF8; --vetiver-soft:#CFE5DE; --warn:#A8322B; --tile:#FFFFFF; --star:#C48A1E; --star-off:#BFCBC6; --track:#D5DFDB; --oil:#F2E2BF; --oil-ink:#6B4A12;
   --dna:#0D2621; --dna-2:#17463B; --dna-ink:#E9F4F0; --dna-muted:#8FB8AB; --dna-rule:#24493F;
   --f-body:"Albert Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-display:"Cormorant","Cormorant Garamond","Iowan Old Style",Georgia,serif;
@@ -37,10 +37,10 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --ground:#0B1815; --raise:#12231F; --sunk:#0E1D1A; --ink:#E2EEE9; --ink-2:#91A7A0; --rule:#22382F;
-  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; --star:#EBBB55; --star-off:#3D564D; --track:#1C302A; color-scheme:dark}}
+  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; --star:#EBBB55; --star-off:#3D564D; --track:#1C302A; --oil:#3B2E14; --oil-ink:#F0CF8A; color-scheme:dark}}
 :root[data-theme="dark"]{
   --ground:#0B1815; --raise:#12231F; --sunk:#0E1D1A; --ink:#E2EEE9; --ink-2:#91A7A0; --rule:#22382F;
-  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; --star:#EBBB55; --star-off:#3D564D; --track:#1C302A; color-scheme:dark}
+  --vetiver:#62C9AA; --vetiver-ink:#08140F; --vetiver-soft:#173A31; --warn:#FF9A8F; --tile:#F4F6F5; --star:#EBBB55; --star-off:#3D564D; --track:#1C302A; --oil:#3B2E14; --oil-ink:#F0CF8A; color-scheme:dark}
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -49,7 +49,7 @@ body{background:var(--ground);color:var(--ink);font-family:var(--f-body);font-si
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground)}
 h1,h2,h3{margin:0;font-family:var(--f-display);font-weight:600;text-wrap:balance;line-height:1}
 p{margin:0}
-button,input{font:inherit;color:inherit}
+button,input,textarea,select{font:inherit;color:inherit}
 :focus-visible{outline:2.5px solid var(--vetiver);outline-offset:3px}
 .wrap{max-width:1120px;margin:0 auto}
 
@@ -507,6 +507,139 @@ textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;
   .comstats{gap:12px 28px}
   .comstats dd{font-size:34px}
 }
+/* ---------- shops and orders ---------- */
+.badge{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:99px;font-size:13px;font-weight:650;background:var(--vetiver-soft);color:var(--vetiver);white-space:nowrap}
+.badge.oil{background:var(--oil);color:var(--oil-ink)}
+.badge.off{background:var(--sunk);color:var(--ink-2)}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:how}
+.how div{padding:18px 20px;border-radius:16px;background:var(--raise);border:1.5px solid var(--rule);font-size:15px;color:var(--ink-2)}
+.how div::before{counter-increment:how;content:counter(how);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--vetiver);color:var(--vetiver-ink);font-weight:700;margin-bottom:10px}
+.how b{display:block;color:var(--ink);font-size:16px;margin-bottom:2px}
+.shopgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.shopcard{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start;padding:20px;border-radius:20px;background:var(--raise);border:1.5px solid var(--rule);color:inherit;text-decoration:none}
+.shopcard:hover{border-color:var(--ink)}
+.shopcard h3{font-size:30px;line-height:1.05}
+.shopcard p{color:var(--ink-2);font-size:15px;margin-top:8px}
+.shopcard .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;font-size:14px;color:var(--ink-2)}
+.slogo{width:72px;height:72px;border-radius:18px;overflow:hidden;flex:none;background:var(--vetiver-soft);color:var(--vetiver);display:grid;place-items:center;font-family:var(--f-display);font-weight:600;font-size:30px}
+.slogo.oil{background:var(--oil);color:var(--oil-ink)}
+.slogo img{width:100%;height:100%;object-fit:cover}
+.slogo.s{width:40px;height:40px;border-radius:12px;font-size:18px}
+.slogo.l{width:110px;height:110px;border-radius:26px;font-size:46px}
+.shophead{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.shophead h1{font-size:clamp(44px,7vw,80px);line-height:.95}
+.shophead p{color:var(--ink-2);font-size:17px;max-width:60ch;margin-top:10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.toolbar .inp{max-width:360px}
+.prod .price{font-weight:750;font-size:17px}
+.prod .price small{font-weight:500;color:var(--ink-2);font-size:13px}
+.prod .go{min-height:44px;font-size:15px;padding:0 20px;justify-self:start}
+.prod .go:disabled{background:var(--sunk);color:var(--ink-2);opacity:1}
+.prod .insp{font-size:14px;color:var(--oil-ink);font-weight:600}
+.bt.photo{background:var(--tile)}
+.bt.photo img{object-fit:cover}
+/* order dialog */
+.dlg{width:min(600px,calc(100vw - 32px));max-height:min(860px,calc(100dvh - 32px));padding:0;border:0;border-radius:24px;background:var(--ground);color:var(--ink);box-shadow:0 40px 80px -30px rgba(0,0,0,.55)}
+.dlg::backdrop{background:rgba(8,20,17,.55)}
+.dlg .in{padding:28px;display:grid;gap:20px}
+.dlg .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.dlg h2{font-size:38px;line-height:1}
+.dlg .x{width:40px;height:40px;border-radius:50%;border:0;background:var(--sunk);font-size:20px;cursor:pointer;flex:none;color:var(--ink)}
+.dlg .sub{color:var(--ink-2);font-size:15px;margin-top:8px}
+.offgroup{display:grid;gap:10px}
+.offgroup h4{margin:0;font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px}
+.offgroup > p{font-size:14px;color:var(--ink-2);margin-top:-4px}
+.offer{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px;border-radius:16px;background:var(--raise);border:1.5px solid var(--rule)}
+.offer b{display:block;font-weight:650}
+.offer small{display:block;color:var(--ink-2);font-size:14px}
+.offer .go{min-height:42px;font-size:15px;padding:0 18px}
+.osum{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:12px;border-radius:16px;background:var(--raise)}
+.osum .bt{width:56px;height:74px}
+.osum b{display:block;font-weight:650;line-height:1.25}
+.osum small{display:block;color:var(--ink-2);font-size:14px}
+.sizes{display:flex;flex-wrap:wrap;gap:8px}
+.sizes button{min-height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--rule);background:var(--raise);cursor:pointer;font-weight:600;font-size:15px}
+.sizes button span{font-weight:500;color:var(--ink-2);margin-left:6px}
+.sizes button[aria-pressed="true"]{border-color:var(--vetiver);background:var(--vetiver-soft);box-shadow:inset 0 0 0 1px var(--vetiver)}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--rule);border-radius:12px;overflow:hidden;background:var(--raise)}
+.qty button{width:44px;height:44px;border:0;background:none;font-size:20px;cursor:pointer;color:var(--ink)}
+.qty span{min-width:36px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:14px;border-top:1.5px solid var(--rule)}
+.total b{font-size:24px;font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.fine2{font-size:14px;color:var(--ink-2)}
+.doneic{width:64px;height:64px;border-radius:50%;background:var(--vetiver);color:var(--vetiver-ink);display:grid;place-items:center;font-size:32px}
+/* order cards */
+.orders{display:grid;gap:12px}
+.ord{display:grid;gap:12px;padding:18px 20px;border-radius:18px;background:var(--raise);border:1.5px solid var(--rule)}
+.ord .top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;align-items:center}
+.ord .code{font-weight:750;font-variant-numeric:tabular-nums}
+.ord .code small{font-weight:500;color:var(--ink-2);margin-left:8px}
+.ord .item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center}
+.ord .item .bt{width:44px;height:56px}
+.ord .item b{display:block;font-weight:650;line-height:1.25}
+.ord .item small{display:block;color:var(--ink-2);font-size:14px}
+.ord .item .amt{text-align:right;font-weight:750;font-variant-numeric:tabular-nums}
+.ord .item .amt small{font-weight:500}
+.ord .cust{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px 20px;font-size:15px;padding-top:12px;border-top:1px solid var(--rule)}
+.ord .cust div{display:grid}
+.ord .cust span{font-size:13px;color:var(--ink-2)}
+.ord .cust a{color:inherit}
+.ord .acts{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.ord .acts .go,.ord .acts .quiet{min-height:42px;font-size:15px}
+.ord .anote{font-size:14px;color:var(--ink-2)}
+.st{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:99px;font-size:13px;font-weight:700;background:var(--sunk);color:var(--ink-2)}
+.st.pending{background:var(--oil);color:var(--oil-ink)}
+.st.approved{background:var(--vetiver-soft);color:var(--vetiver)}
+.st.delivered{background:var(--vetiver);color:var(--vetiver-ink)}
+.st.rejected,.st.cancelled{background:var(--sunk);color:var(--warn)}
+/* dashboards */
+.dashhead{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;justify-content:space-between}
+.dashhead h1{font-size:clamp(40px,6vw,64px);line-height:1}
+.dashhead p{color:var(--ink-2);margin-top:6px}
+.dashhead a{color:var(--vetiver);font-weight:600;text-underline-offset:3px}
+.panel .list:empty{display:none}
+.counts{display:flex;flex-wrap:wrap;gap:10px}
+.counts div{padding:12px 16px;border-radius:14px;background:var(--raise);border:1.5px solid var(--rule);min-width:110px}
+.counts b{display:block;font-family:var(--f-display);font-size:34px;line-height:1}
+.counts span{font-size:13px;color:var(--ink-2)}
+.panel{display:grid;gap:16px;padding:22px;border-radius:20px;background:var(--raise);border:1.5px solid var(--rule)}
+.panel h4{margin:0;font-family:var(--f-display);font-size:28px;font-weight:600}
+.sizerows{display:grid;gap:8px}
+.sizerow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) auto;gap:8px;align-items:center}
+.sizerow .inp{min-height:48px;font-size:16px}
+.check{display:inline-flex;align-items:center;gap:10px;font-weight:600;cursor:pointer}
+.check input{width:22px;height:22px;accent-color:var(--vetiver)}
+.plist{display:grid;border-top:1.5px solid var(--rule)}
+.prow{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--rule)}
+.prow .bt{width:44px;height:56px}
+.prow b{display:block;font-weight:650;line-height:1.2}
+.prow small{display:block;color:var(--ink-2);font-size:14px}
+.prow .quiet{min-height:38px;padding:0 14px;font-size:14px}
+.shoprow{display:grid;gap:12px;padding:18px 20px;border-radius:18px;background:var(--raise);border:1.5px solid var(--rule)}
+.shoprow .top{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.shoprow .top h4{margin:0;font-size:20px;font-weight:700}
+.shoprow .meta{font-size:14px;color:var(--ink-2)}
+.inline{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.inline .inp{min-height:44px;font-size:16px;max-width:320px}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.formgrid .full{grid-column:1/-1}
+@media (max-width:560px){
+  .how{grid-template-columns:1fr}
+  .dlg{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;border-radius:0;margin:0}
+  .dlg .in{padding:20px 16px 32px}
+  .dlg h2{font-size:32px}
+  .offer{grid-template-columns:auto minmax(0,1fr)}
+  .offer .go{grid-column:1/-1}
+  .two,.formgrid{grid-template-columns:1fr}
+  .shopgrid{grid-template-columns:1fr}
+  .prow{grid-template-columns:44px minmax(0,1fr) auto}
+  .prow .stock{grid-column:2/-1}
+  .ord .item{grid-template-columns:auto minmax(0,1fr)}
+  .ord .item .amt{grid-column:2;text-align:left}
+  .ord .cust{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .views a{padding:0 8px;font-size:14px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -515,7 +648,7 @@ textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;
 <body>
 <header class="top wrap">
   <button class="mark" id="homeBtn" type="button"><svg viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 2c0 7 12 8 12 11S7 17 7 24M19 2c0 7-12 8-12 11s12 4 12 11"/><path d="M9 6h8M9 20h8" stroke-width="1.6"/></svg>Scent DNA</button>
-  <nav class="views" id="viewNav" aria-label="Pages"><a href="#profile" data-view="profile" id="navProfile">Profile</a><a href="#matches" data-view="matches" id="navMatches">Matches</a><a href="#community" data-view="community">Community</a></nav>
+  <nav class="views" id="viewNav" aria-label="Pages"><a href="#profile" data-view="profile" id="navProfile">Profile</a><a href="#matches" data-view="matches" id="navMatches">Matches</a><a href="#community" data-view="community">Community</a><a href="#shops" data-view="shops">Shops</a></nav>
   <div class="acctwrap">
     <div class="status" id="status" role="status"><b></b><span id="statusTxt">Loading 48,531 perfumes</span></div>
     <button class="acct" id="acctBtn" type="button" hidden aria-haspopup="true" aria-expanded="false">Sign in</button>
@@ -523,6 +656,9 @@ textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;
       <div class="who" id="acctWho"></div>
       <div class="sync" id="acctSync"></div>
       <a class="quiet" id="acctPublic" href="#community" style="text-decoration:none;color:var(--ink);justify-content:center">Your public page</a>
+      <a class="quiet" id="acctOrders" href="#orders" style="text-decoration:none;color:var(--ink);justify-content:center">Your orders</a>
+      <a class="quiet" id="acctDash" href="#dashboard" style="text-decoration:none;color:var(--ink);justify-content:center" hidden>Shop dashboard</a>
+      <a class="go" id="acctAdmin" href="#admin" style="text-decoration:none;min-height:44px" hidden>Orders and shops</a>
       <button class="quiet" id="signOutBtn" type="button">Sign out</button>
       <button class="textbtn danger" id="delAcctBtn" type="button">Delete my account</button>
       <div id="delAsk" hidden style="font-size:14px">This permanently deletes your account and profile. <button class="textbtn danger" id="delYes" type="button">Delete it</button> <button class="textbtn" id="delNo" type="button">Keep it</button></div>
@@ -674,6 +810,7 @@ textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;
     <section class="psec"><header><h3>Your collection</h3>
         <div class="seg" role="group" aria-label="Collection" id="colSeg"><button type="button" data-c="wish" aria-pressed="true">Want to try</button><button type="button" data-c="own" aria-pressed="false">I own</button></div></header>
       <div class="pfavs" id="pCol"></div></section>
+    <section class="psec" id="pOrdSec" hidden><header><h3>Your orders</h3><span id="pOrdCount"></span></header><div class="orders" id="pOrds"></div></section>
     <section class="psec" id="pRevSec" hidden><header><h3>Your reviews</h3><span id="pRevCount"></span></header><div class="revlist" id="pRevs"></div></section>
     <section class="psec"><header><h3>Your main accords</h3></header><div class="pacc" id="pAcc"></div>
       <div id="pAccMoreWrap" hidden><div class="grouphead" style="margin-top:8px">More accords you like</div><div class="minipills big" id="pAccMore" style="margin-top:12px"></div></div></section>
@@ -711,6 +848,11 @@ textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;
       <div class="shelves" id="comDisc"></div></section>
   </section>
   <section id="vMember" class="com" hidden></section>
+  <section id="vShops" class="com" hidden></section>
+  <section id="vOrders" class="com" hidden></section>
+  <section id="vShop" class="com" hidden></section>
+  <section id="vDash" class="com" hidden></section>
+  <section id="vAdmin" class="com" hidden></section>
   <section id="vReset" class="auth" hidden>
     <div><h2>Choose a new password</h2><p class="sub">Use at least 8 characters.</p></div>
     <form id="resetForm" novalidate>
@@ -752,8 +894,14 @@ textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;
       <li>We use your data only to show your profile and recommendations. We don't sell it or share it with advertisers.</li>
       <li>If you sign in with Google, Google tells us your email address and name.</li>
     </ul>
+    <h3>Orders</h3>
+    <ul>
+      <li>When you order, we store your name, WhatsApp number, city, address and note with the order.</li>
+      <li>Scent DNA checks every order first. Once it's approved, the shop you ordered from gets your order details on WhatsApp so it can deliver. The shop sees only its own orders.</li>
+      <li>Shops never see the rest of your profile.</li>
+    </ul>
     <h3>Deleting your data</h3>
-    <p>Open the account menu at the top of the page and choose "Delete my account". Your account, profile, photo, reviews, replies and likes are deleted right away. To remove a single review, open it and choose Delete.</p>
+    <p>Open the account menu at the top of the page and choose "Delete my account". Your account, profile, photo, reviews, replies and likes are deleted right away. To remove a single review, open it and choose Delete. Orders you placed are kept as records of the sale, but they're no longer linked to any account.</p>
     <h3>Perfume data</h3>
     <p>Perfume information comes from the Decant dataset of Fragrantica community data. Bottle and note photos are from Fragrantica.</p>
     <p><a href="#profile" class="textbtn" style="padding:0">Back to Scent DNA</a></p>
@@ -763,6 +911,7 @@ textarea.inp{min-height:120px;padding:14px 18px;resize:vertical;line-height:1.5;
     <p id="loadTxt">Opening the catalog of 48,531 perfumes</p>
     <div class="meter"><i id="meter"></i></div>
   </section>
+  <dialog id="orderDlg" class="dlg" aria-labelledby="dlgTitle"></dialog>
   <footer class="sitefoot"><span>Scent DNA</span><a href="#privacy">Privacy</a></footer>
 </main>
 
@@ -991,8 +1140,8 @@ $("#sampleCard").append(card(SAMPLE));
 
 /* ---------- views ---------- */
 const V = {landing:$("#vLanding"), builder:$("#vBuilder"), result:$("#vResult"), profile:$("#vProfile"), perfume:$("#vPerfume"), community:$("#vCommunity"),
-  member:$("#vMember"), reset:$("#vReset"), auth:$("#vAuth"), privacy:$("#vPrivacy"), loading:$("#vLoading")};
-const NAVOF = {result:"matches", profile:"profile", landing:"profile", community:"community", perfume:"community", member:"community"};
+  member:$("#vMember"), reset:$("#vReset"), shops:$("#vShops"), shop:$("#vShop"), orders:$("#vOrders"), dash:$("#vDash"), admin:$("#vAdmin"), auth:$("#vAuth"), privacy:$("#vPrivacy"), loading:$("#vLoading")};
+const NAVOF = {result:"matches", profile:"profile", landing:"profile", community:"community", perfume:"community", member:"community", shops:"shops", shop:"shops"};
 function show(v){
   for (const [k, e] of Object.entries(V)) e.hidden = k !== v;
   document.title = "Scent DNA";
@@ -1008,9 +1157,14 @@ function route(){
   if (h === "#privacy") return show("privacy");
   if (h === "#account") return openAuth();
   if (h === "#community") return openCommunity();
+  if (h === "#shops") return openShops();
+  if (h === "#orders") return openOrders();
+  if (h === "#dashboard") return openDash();
+  if (h === "#admin") return openAdmin();
   let m;
   if ((m = h.match(/^#p\/(\d+)/))) return openPerfume(+m[1]);
   if ((m = h.match(/^#u\/([a-z0-9]+)$/))) return openMember(m[1]);
+  if ((m = h.match(/^#shop\/([a-z0-9-]+)$/))) return openShop(m[1]);
   if ((m = h.match(/^#reset\/(.+)$/))) return openReset(m[1]);
   if (!(S.issued && S.name)) return show("landing");
   return h === "#matches" ? openResult() : openProfile();
@@ -1310,7 +1464,7 @@ async function openProfile(){
     el("div", {class:"mt", text:`${r.match}% match`}),
     el("div", {class:"minipills"}, ...p.acc.slice(0, 3).map(([a]) => { const n = D.accords[a], c = accColor(n); return el("span", {style:`--c:${c};--t:${textOn(c)}`, text:n}); }))); }));
   $("#pCard").replaceChildren(card(m));
-  drawCollection(); drawMyReviews();
+  drawCollection(); drawMyReviews(); drawMyOrders();
   ["#pMsg", "#pMsg2"].forEach(x => $(x).textContent = ""); $("#pResetAsk").hidden = true;
 }
 $("#pEdit").addEventListener("click", () => openBuilder(0));
@@ -1492,6 +1646,7 @@ function drawAcct(){
     b.replaceChildren(el("span", {class:"dot"}, S.photo ? el("img", {src:S.photo, alt:""}) : ini), "Account");
     $("#acctWho").replaceChildren(el("b", {text:nm}), Acc.user.email);
     $("#acctPublic").href = `#u/${Acc.user.id}`;
+    $("#acctDash").hidden = !["shop", "admin"].includes(Acc.user.role); $("#acctAdmin").hidden = Acc.user.role !== "admin";
   } else { b.replaceChildren("Sign in"); $("#acctMenu").hidden = true; }
   if (V.profile && !V.profile.hidden) $("#saveBar").hidden = !!Acc.user;
 }
@@ -1499,7 +1654,7 @@ $("#acctBtn").addEventListener("click", () => {
   if (!Acc.user) return goView("account");
   const m = $("#acctMenu"); m.hidden = !m.hidden; $("#acctBtn").setAttribute("aria-expanded", String(!m.hidden)); $("#delAsk").hidden = true;
 });
-document.addEventListener("click", e => { if (!e.target.closest(".acctwrap") || e.target.closest("#acctPublic")) $("#acctMenu").hidden = true; });
+document.addEventListener("click", e => { if (!e.target.closest(".acctwrap") || e.target.closest("#acctMenu a")) $("#acctMenu").hidden = true; });
 function signedOutReset(){ Acc.pb.authStore.clear(); Acc.user = null; LIKED.clear(); wipe(); S = blank(); $("#resumeBtn").hidden = true; $("#startBtn").hidden = false; $("#acctMenu").hidden = true; drawAcct(); history.replaceState(null, "", location.pathname + location.search); show("landing"); }
 $("#signOutBtn").addEventListener("click", async () => { clearTimeout(Acc.pushT); if (Acc.user) await push(); signedOutReset(); });
 $("#delAcctBtn").addEventListener("click", () => $("#delAsk").hidden = false);
@@ -1774,8 +1929,8 @@ async function openPerfume(id){
           stat("Rating here", el("span", {id:"ppComm", text:"…"})),
           stat("On Fragrantica", `${p.rating.toFixed(2)} from ${fmt(p.votes)} votes`),
           forYou && stat("For you", forYou)),
-        el("div", {class:"actions"}, wishB, ownB,
-          el("button", {class:"go", type:"button", text:"Rate and review", onclick:() => $("#ppRev").scrollIntoView({behavior:reduce ? "auto" : "smooth"})})),
+        el("div", {class:"actions", id:"ppActs"}, wishB, ownB,
+          el("button", {class:"go", type:"button", id:"ppRate", text:"Rate and review", onclick:() => $("#ppRev").scrollIntoView({behavior:reduce ? "auto" : "smooth"})})),
         el("div", {class:"actions", style:"gap:4px 24px"}, shareBtn(p),
           el("a", {class:"textbtn", style:"padding:0", href:`https://www.fragrantica.com/perfume/${slugF(p.brand)}/${slugF(p.name)}-${p.id}.html`, target:"_blank", rel:"noopener", text:"Open on Fragrantica"})))),
     el("div", {class:"ppcols"},
@@ -1796,7 +1951,7 @@ async function openPerfume(id){
     sim.length ? el("section", {class:"psec"}, el("header", {}, el("h3", {text:"If you like this, try"}), el("span", {text:"Similar accords and notes"})),
       el("div", {class:"pfavs lim4"}, ...sim.map(q => pcard(q, el("div", {class:"minipills"}, ...q.acc.slice(0, 3).map(([a]) => { const n = D.accords[a], c = accColor(n); return el("span", {style:`--c:${c};--t:${textOn(c)}`, text:n}); })))))) : null,
     el("section", {class:"psec", id:"ppRev"}, el("header", {}, el("h3", {text:"Reviews"})), el("p", {class:"empty", text:"Loading reviews…"})));
-  drawReviews(p);
+  drawReviews(p); drawOffers(p);
 }
 async function drawReviews(p){
   const head = el("header", {}, el("h3", {text:"Reviews"}));
@@ -2045,6 +2200,537 @@ async function drawMyReviews(){
   const items = res.items.filter(r => D.byId.has(r.perfume));
   $("#pRevs").replaceChildren(...(items.length ? items.map(r => reviewEl(r, {showPerfume:true, onDeleted:drawMyReviews}))
     : [el("p", {class:"empty", text:"You haven't reviewed anything yet. Open any perfume to rate it."})]));
+}
+
+/* ---------- shops and orders ----------
+   Shops list their perfumes (an original bottle, or a perfume oil inspired by it) with sizes and prices.
+   Customers order with "Order now". Every order waits for the site admin, who approves it and sends it
+   to the shop on WhatsApp. Everything here needs the PocketBase server. */
+const iqd = n => `${fmt(Math.round(n || 0))} IQD`;
+const KIND = {original:"Original perfumes", oil:"Perfume oils"};
+const STATUS = {pending:"Waiting for approval", approved:"Sent to the shop", delivered:"Delivered", rejected:"Not accepted", cancelled:"Cancelled"};
+const CITIES = ["Erbil", "Sulaymaniyah", "Duhok", "Halabja", "Kirkuk", "Zakho", "Soran", "Ranya", "Koya", "Akre", "Baghdad", "Mosul", "Basra"];
+const fileURL = (rec, field, thumb) => rec && rec[field] ? Acc.pb.files.getURL(rec, rec[field], thumb ? {thumb} : undefined) : "";
+const shopLogo = (shop, size = "") => el("span", {class:`slogo ${shop.kind === "oil" ? "oil" : ""} ${size}`, "aria-hidden":"true"},
+  shop.logo ? el("img", {src:fileURL(shop, "logo", "200x200"), alt:""}) : initialsOf(shop.name));
+const kindBadge = kind => el("span", {class:"badge" + (kind === "oil" ? " oil" : ""), text:KIND[kind] || kind});
+const statusChip = st => el("span", {class:`st ${st}`, text:STATUS[st] || st});
+const minPrice = prod => Math.min(...(prod.sizes || []).map(s => s.price));
+// what a listing is called: oils go by the shop's own name and say what they're inspired by
+function itemName(prod, shop, p){
+  if (shop.kind === "oil") return {title:prod.label || `Inspired by ${p.name}`, sub:`Perfume oil inspired by ${p.name} by ${p.brand}`};
+  return {title:p.name, sub:meta(p)};
+}
+// a shop's own photo if it added one; oils never borrow the original's bottle photo
+function prodPic(prod, p, size = "xl", oil = false){
+  if (prod && prod.photo) return el("span", {class:`bt ${size} photo`}, el("img", {src:fileURL(prod, "photo", "400x400"), alt:"", loading:"lazy"}));
+  if (oil) return el("span", {class:`bt ${size} fb`, html:vial(p)});
+  return bottle(p, size);
+}
+const fmtPhone = ph => { const d = (ph || "").replace(/\D/g, ""); return d.startsWith("964") && d.length === 13 ? `+964 ${d.slice(3, 6)} ${d.slice(6, 9)} ${d.slice(9)}` : (ph || ""); };
+const waLink = (phone, text) => `https://wa.me/${(phone || "").replace(/\D/g, "")}?text=${encodeURIComponent(text)}`;
+// the server's own messages are written for people; its generic ones ("Failed to create record.") aren't
+function errText(e, fallback){
+  if (e?.status === 0) return "We couldn't reach the server. Check your connection and try again.";
+  if (e?.status === 429) return "Too many tries in a short time. Wait a minute and try again.";
+  const m = e?.response?.message || "";
+  return [400, 401, 403, 404].includes(e?.status) && m && !/^(Failed to|The requested resource|Something went wrong|Only superusers)/.test(m) ? m : fallback;
+}
+const needServer = (box, title, text) => { box.replaceChildren(noticeEl(title, text)); };
+
+let SHOPS = null;   // active shops, loaded once per visit
+async function loadShops(force){
+  if (SHOPS && !force) return SHOPS;
+  try { SHOPS = await Acc.pb.collection("shops").getFullList({filter:"active = true", sort:"sort,name"}); } catch { SHOPS = []; }
+  return SHOPS;
+}
+
+/* ---------- Shops page ---------- */
+async function openShops(){
+  await needData(); show("shops");
+  const box = $("#vShops");
+  const head = el("div", {class:"comhead"}, el("h1", {text:"Shops"}),
+    el("p", {text:"Order from perfume shops in Kurdistan: original bottles, or perfume oils inspired by the scents you love. Pay cash when it arrives."}));
+  const how = el("div", {class:"how"},
+    el("div", {}, el("b", {text:"Choose a perfume"}), "Pick a size from a shop, or a perfume oil if you want something cheaper."),
+    el("div", {}, el("b", {text:"We check your order"}), "Every order is checked by Scent DNA first, so you don't get surprises."),
+    el("div", {}, el("b", {text:"The shop delivers"}), "The shop contacts you on WhatsApp to confirm delivery. You pay cash on delivery."));
+  box.replaceChildren(head, el("p", {class:"empty", text:"Loading shops…"}));
+  await Acc.ready;
+  if (!Acc.on) { box.replaceChildren(head, noticeEl("Shops are coming soon", "Soon you'll be able to order perfumes from shops in Kurdistan right here."), how); return; }
+  const shops = await loadShops(true);
+  const counts = await Promise.all(shops.map(s => Acc.pb.collection("products").getList(1, 1, {filter:Acc.pb.filter("shop = {:s} && in_stock = true", {s:s.id}), fields:"id"}).then(r => r.totalItems).catch(() => 0)));
+  box.replaceChildren(head,
+    shops.length ? el("div", {class:"shopgrid"}, ...shops.map((s, i) => el("a", {class:"shopcard", href:`#shop/${s.slug}`}, shopLogo(s),
+      el("div", {}, el("h3", {text:s.name}),
+        el("div", {class:"row"}, kindBadge(s.kind), s.city ? el("span", {text:s.city}) : null, el("span", {text:plural(counts[i], "perfume", "perfumes")})),
+        s.about ? el("p", {text:s.about}) : null))))
+      : noticeEl("No shops yet", "Shops will appear here soon."),
+    el("section", {class:"psec"}, el("header", {}, el("h3", {text:"How ordering works"})), how));
+}
+
+/* ---------- one shop ---------- */
+let shopG = "all";
+async function openShop(slug){
+  await needData(); show("shop");
+  const box = $("#vShop"); box.replaceChildren(backBtn("shops"), el("p", {class:"empty", text:"Loading…"}));
+  await Acc.ready;
+  if (!Acc.on) { box.replaceChildren(backBtn("shops"), noticeEl("Shops are coming soon", "")); return; }
+  let shop = null;
+  try { shop = await Acc.pb.collection("shops").getFirstListItem(Acc.pb.filter("slug = {:s}", {s:slug})); } catch {}
+  if (!shop) { box.replaceChildren(backBtn("shops"), noticeEl("We couldn't find that shop", "It may have closed. See all shops on the Shops page.")); return; }
+  document.title = `${shop.name} · Scent DNA`;
+  let prods = [];
+  try { prods = await Acc.pb.collection("products").getFullList({filter:Acc.pb.filter("shop = {:s}", {s:shop.id}), sort:"-in_stock,-created"}); } catch {}
+  prods = prods.filter(x => D.byId.has(x.perfume));
+  const grid = el("div", {class:"pfavs"}), q = el("input", {class:"inp", type:"search", placeholder:"Search this shop", "aria-label":"Search this shop"});
+  const seg = el("div", {class:"seg", role:"group", "aria-label":"Style"});
+  for (const [k, l] of [["all", "All"], ["0", "Female"], ["1", "Male"], ["2", "Unisex"]]) {
+    const b = el("button", {type:"button", "aria-pressed":String(shopG === k), text:l});
+    b.addEventListener("click", () => { shopG = k; [...seg.children].forEach(x => x.setAttribute("aria-pressed", String(x === b))); draw(); }); seg.append(b);
+  }
+  const draw = () => {
+    const t = norm(q.value.trim());
+    const list = prods.filter(x => { const p = D.byId.get(x.perfume); return (shopG === "all" || p.g === +shopG) && (!t || norm(`${p.name} ${p.brand} ${x.label}`).includes(t)); });
+    grid.replaceChildren(...(list.length ? list.map(x => prodCard(x, shop)) : [el("p", {class:"empty", style:"grid-column:1/-1", text:prods.length ? "Nothing matches. Try another word." : "This shop hasn't added perfumes yet."})]));
+  };
+  q.addEventListener("input", draw);
+  box.replaceChildren(backBtn("shops"),
+    el("div", {class:"shophead"}, shopLogo(shop, "l"), el("div", {style:"min-width:0"}, el("h1", {text:shop.name}),
+      el("div", {class:"row", style:"display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-top:12px;color:var(--ink-2)"}, kindBadge(shop.kind), shop.city ? el("span", {text:shop.city}) : null, el("span", {text:plural(prods.length, "perfume", "perfumes")})),
+      shop.about ? el("p", {text:shop.about}) : null)),
+    shop.kind === "oil" ? el("div", {class:"notice"}, el("b", {text:"These are perfume oils"}), "Each one is inspired by a famous perfume. They're not the original, and they cost much less.") : null,
+    el("div", {class:"toolbar"}, q, seg), grid);
+  draw();
+}
+function prodCard(x, shop){
+  const p = D.byId.get(x.perfume), nm = itemName(x, shop, p);
+  const btn = el("button", {class:"go", type:"button", text:x.in_stock ? "Order now" : "Out of stock"});
+  if (!x.in_stock) btn.disabled = true; else btn.addEventListener("click", () => openOrder(p, [{prod:x, shop}], {prod:x, shop}));
+  return el("article", {class:"pfav prod"},
+    el("a", {class:"plink", href:`#p/${p.id}`}, prodPic(x, p, "xl", shop.kind === "oil"), el("div", {}, el("div", {class:"n", text:nm.title}),
+      shop.kind === "oil" ? el("div", {class:"insp", text:`Inspired by ${p.name}`}) : null, el("div", {class:"b", text:shop.kind === "oil" ? p.brand : meta(p)}))),
+    el("div", {class:"price"}, (x.sizes || []).length > 1 ? el("small", {text:"From "}) : null, iqd(minPrice(x)), el("small", {text:"  " + (x.sizes || []).map(s => s.size).join(" · ")})),
+    btn);
+}
+
+/* ---------- Order now on the perfume page ---------- */
+async function drawOffers(p){
+  await Acc.ready;
+  if (!Acc.on || curP !== p) return;
+  let offers = [];
+  try { offers = await Acc.pb.collection("products").getFullList({filter:Acc.pb.filter("perfume = {:p} && in_stock = true && shop.active = true", {p:p.id}), expand:"shop"}); } catch {}
+  if (curP !== p || !offers.length) return;
+  const list = offers.map(x => ({prod:x, shop:x.expand.shop})).filter(o => o.shop);
+  const acts = $("#ppActs"), rate = $("#ppRate"); if (!acts || !list.length) return;
+  rate.className = "quiet";
+  const n = new Set(list.map(o => o.shop.id)).size, hasOil = list.some(o => o.shop.kind === "oil"), hasOrig = list.some(o => o.shop.kind === "original");
+  const from = Math.min(...list.map(o => minPrice(o.prod)));
+  acts.prepend(el("button", {class:"go", type:"button", id:"ppOrder", text:"Order now", onclick:() => openOrder(p, list)}));
+  acts.after(el("p", {class:"fine2", id:"ppWhere", text:`From ${iqd(from)} at ${plural(n, "shop", "shops")}${hasOrig && hasOil ? ", as the original or a perfume oil" : hasOil ? ", as a perfume oil" : ""}.`}));
+}
+
+/* ---------- the order dialog ---------- */
+const LAST = "scentDNA.lastOrder";
+function openOrder(p, offers, pre){
+  const dlg = $("#orderDlg"), inner = el("div", {class:"in"});
+  const close = () => dlg.close();
+  const header = (title, sub) => el("div", {class:"hd"}, el("div", {}, el("h2", {id:"dlgTitle", text:title}), sub ? el("p", {class:"sub", text:sub}) : null),
+    el("button", {class:"x", type:"button", "aria-label":"Close", text:"×", onclick:close}));
+  const choose = () => {
+    const groups = [["original", "Original bottle", "The real perfume from the brand, from shops that sell originals."],
+                    ["oil", "Perfume oil", `An oil inspired by ${p.name}. Not the original, and it costs much less.`]];
+    inner.replaceChildren(header(`Order ${p.name}`, p.brand),
+      ...groups.map(([k, title, text]) => { const os = offers.filter(o => o.shop.kind === k).sort((a, b) => minPrice(a.prod) - minPrice(b.prod)); if (!os.length) return null;
+        return el("div", {class:"offgroup"}, el("h4", {}, title, k === "oil" ? el("span", {class:"badge oil", text:"Not the original"}) : null), el("p", {text:text}),
+          ...os.map(o => el("div", {class:"offer"}, shopLogo(o.shop, "s"),
+            el("div", {style:"min-width:0"}, el("b", {text:o.shop.kind === "oil" && o.prod.label ? `${o.prod.label} · ${o.shop.name}` : o.shop.name}),
+              el("small", {text:o.prod.sizes.map(s => `${s.size} ${iqd(s.price)}`).join(" · ")})),
+            el("button", {class:"go", type:"button", text:"Choose", onclick:() => form(o)})))); }));
+  };
+  const form = o => {
+    const nm = itemName(o.prod, o.shop, p);
+    let size = o.prod.sizes[0].size, qty = 1, last = {};
+    try { last = JSON.parse(localStorage.getItem(LAST) || "{}"); } catch {}
+    const price = () => (o.prod.sizes.find(s => s.size === size) || o.prod.sizes[0]).price;
+    const totalEl = el("b"), qtyEl = el("span");
+    const paint = () => { totalEl.textContent = iqd(price() * qty); qtyEl.textContent = String(qty); [...sizes.children].forEach(b => b.setAttribute("aria-pressed", String(b.dataset.s === size))); };
+    const sizes = el("div", {class:"sizes", role:"group", "aria-label":"Size"}, ...o.prod.sizes.map(s => { const b = el("button", {type:"button", "data-s":s.size}, s.size, el("span", {text:iqd(s.price)})); b.addEventListener("click", () => { size = s.size; paint(); }); return b; }));
+    const field = (id, label, input) => el("div", {class:"field"}, el("label", {for:id, text:label}), input);
+    const nameIn = el("input", {class:"inp", id:"oName", autocomplete:"name", maxlength:"80"}); nameIn.value = last.name || (Acc.user && Acc.user.name) || S.name || "";
+    const phoneIn = el("input", {class:"inp", id:"oPhone", type:"tel", inputmode:"tel", autocomplete:"tel", maxlength:"20", placeholder:"0750 123 4567"}); phoneIn.value = last.phone || "";
+    const cityIn = el("input", {class:"inp", id:"oCity", list:"oCities", autocomplete:"address-level2", maxlength:"60"}); cityIn.value = last.city || "";
+    const addrIn = el("input", {class:"inp", id:"oAddr", autocomplete:"street-address", maxlength:"300", placeholder:"Area, street, nearby landmark"}); addrIn.value = last.address || "";
+    const noteIn = el("textarea", {class:"inp", id:"oNote", maxlength:"500", style:"min-height:80px", placeholder:"Anything the shop should know"});
+    const err = el("div", {class:"err", role:"alert"}), send = el("button", {class:"go", type:"submit", text:"Send order", style:"width:100%"});
+    const f = el("form", {novalidate:"", style:"display:grid;gap:16px"},
+      el("div", {class:"osum"}, prodPic(o.prod, p, "m", o.shop.kind === "oil"), el("div", {style:"min-width:0"}, el("b", {text:nm.title}), el("small", {text:nm.sub}), el("small", {text:o.shop.name}))),
+      o.shop.kind === "oil" ? el("p", {class:"fine2", text:"This is a perfume oil inspired by the original, not the original perfume."}) : null,
+      el("div", {class:"field"}, el("span", {style:"font-weight:600;font-size:15px", text:"Size"}), sizes),
+      el("div", {class:"field"}, el("span", {style:"font-weight:600;font-size:15px", text:"How many"}),
+        el("div", {class:"qty"}, el("button", {type:"button", "aria-label":"One less", text:"−", onclick:() => { qty = Math.max(1, qty - 1); paint(); }}), qtyEl,
+          el("button", {type:"button", "aria-label":"One more", text:"+", onclick:() => { qty = Math.min(20, qty + 1); paint(); }}))),
+      el("div", {class:"total"}, el("span", {text:"Total, before delivery"}), totalEl),
+      el("div", {class:"two"}, field("oName", "Your name", nameIn), field("oPhone", "WhatsApp number", phoneIn)),
+      el("div", {class:"two"}, field("oCity", "City", cityIn), field("oAddr", "Address", addrIn)),
+      el("datalist", {id:"oCities"}, ...CITIES.map(c => el("option", {value:c}))),
+      field("oNote", "Note, if you want", noteIn),
+      err, send,
+      el("p", {class:"fine2", text:"Pay cash when it arrives. We check your order, then the shop contacts you on WhatsApp to confirm it and the delivery fee."}),
+      offers.length > 1 ? el("button", {class:"textbtn", type:"button", style:"justify-self:start", text:"← Other options", onclick:choose}) : null);
+    f.addEventListener("input", () => err.textContent = "");
+    f.addEventListener("submit", async ev => {
+      ev.preventDefault();
+      const name = nameIn.value.trim(), phone = phoneIn.value.trim(), city = cityIn.value.trim();
+      if (name.length < 2) { err.textContent = "Add your name."; nameIn.focus(); return; }
+      if (phone.replace(/\D/g, "").length < 8) { err.textContent = "Add your WhatsApp number, for example 0750 123 4567."; phoneIn.focus(); return; }
+      if (!city) { err.textContent = "Add your city."; cityIn.focus(); return; }
+      err.textContent = ""; send.disabled = true; send.textContent = "Sending…";
+      try {
+        const rec = await Acc.pb.collection("orders").create({product:o.prod.id, size, qty, name, phone, city, address:addrIn.value.trim(), note:noteIn.value.trim(),
+          item:`${nm.title}${o.shop.kind === "oil" ? ` (inspired by ${p.name} by ${p.brand})` : ` by ${p.brand}`}`});
+        try { localStorage.setItem(LAST, JSON.stringify({name, phone, city, address:addrIn.value.trim()})); } catch {}
+        done(rec, o);
+      } catch (e) { err.textContent = errText(e, "Your order couldn't be sent. Try again."); send.disabled = false; send.textContent = "Send order"; }
+    });
+    inner.replaceChildren(header("Your order", o.shop.kind === "oil" ? "Perfume oil" : "Original bottle"), f);
+    paint(); setTimeout(() => (nameIn.value ? phoneIn.value ? cityIn : phoneIn : nameIn).focus(), 50);
+  };
+  const done = (rec, o) => {
+    inner.replaceChildren(header("Order sent", null),
+      el("div", {class:"doneic", "aria-hidden":"true", text:"✓"}),
+      el("p", {style:"font-size:18px"}, "Your order ", el("b", {text:rec && rec.code ? rec.code : ""}), ` for ${itemName(o.prod, o.shop, p).title} is in.`),
+      el("p", {class:"fine2", text:"We'll check it now. Once it's approved, the shop will message you on WhatsApp to confirm delivery. You pay cash when it arrives."}),
+      Acc.user ? el("p", {class:"fine2"}, "You can follow it on ", el("a", {href:"#orders", text:"your orders page", onclick:close}), ".")
+        : Acc.on ? el("p", {class:"fine2"}, "Want to follow your orders here? ", el("a", {href:"#account", text:"Create a free account", onclick:close}), " with the same details next time.") : null,
+      el("button", {class:"go", type:"button", text:"Done", onclick:close}));
+  };
+  dlg.replaceChildren(inner);
+  if (pre) form(pre); else if (offers.length === 1) form(offers[0]); else choose();
+  if (!dlg.open) dlg.showModal();
+}
+$("#orderDlg").addEventListener("click", e => { if (e.target === $("#orderDlg")) $("#orderDlg").close(); });
+
+/* ---------- an order, as each person sees it ---------- */
+// mode: "customer" (your profile), "shop" (shop dashboard), "admin"
+function orderCard(o, mode, reload, shopsById = {}){
+  const p = D.byId.get(o.perfume), shop = (o.expand && o.expand.shop) || shopsById[o.shop] || {name:"Shop", kind:o.kind};
+  const title = p ? (o.kind === "oil" ? (o.item || "").split(" (")[0] : p.name) : o.item;
+  const sub = p ? (o.kind === "oil" ? `Perfume oil inspired by ${p.name}` : p.brand) : "";
+  const acts = el("div", {class:"acts"}), msg = el("span", {class:"fine2", role:"status"});
+  const setStatus = async (status, extra = {}) => {
+    try { await Acc.pb.collection("orders").update(o.id, {status, ...extra}); reload(); }
+    catch (e) { msg.textContent = errText(e, "That didn't work. Try again."); }
+  };
+  const custMsg = `Hello ${o.name}, this is about your Scent DNA order ${o.code} (${title}).`;
+  if (mode === "admin") {
+    const shopText = () => [`New order ${o.code} from Scent DNA`, ``, `${title}${p ? (o.kind === "oil" ? ` (inspired by ${p.name} by ${p.brand})` : ` by ${p.brand}`) : ""}`,
+      `Size: ${o.size} × ${o.qty}`, `Price: ${iqd(o.total)}`, ``, `Customer: ${o.name}`, `WhatsApp: ${fmtPhone(o.phone)}`, `City: ${o.city}`,
+      o.address ? `Address: ${o.address}` : null, o.note ? `Note: ${o.note}` : null, ``, `Please contact the customer to confirm delivery.`].filter(x => x !== null).join("\n");
+    const toShop = () => { if (!shop.whatsapp) { msg.textContent = "Add this shop's WhatsApp number first, in the Shops tab."; return false; } window.open(waLink(shop.whatsapp, shopText()), "_blank", "noopener"); return true; };
+    if (o.status === "pending") {
+      acts.append(el("button", {class:"go", type:"button", text:"Approve and send to shop", onclick:() => { if (toShop()) setStatus("approved"); }}));
+      const rej = el("button", {class:"quiet", type:"button", text:"Reject"});
+      rej.addEventListener("click", () => { const why = el("input", {class:"inp", placeholder:"Reason, the customer sees it (optional)", maxlength:"300", "aria-label":"Reason"});
+        const box = el("div", {class:"inline"}, why, el("button", {class:"textbtn danger", type:"button", text:"Reject order", onclick:() => setStatus("rejected", {admin_note:why.value.trim()})}),
+          el("button", {class:"textbtn", type:"button", text:"Cancel", onclick:() => box.replaceWith(rej)}));
+        rej.replaceWith(box); why.focus(); });
+      acts.append(rej);
+    }
+    if (o.status === "approved") {
+      acts.append(el("button", {class:"quiet", type:"button", text:"Send to shop again", onclick:toShop}),
+        el("button", {class:"quiet", type:"button", text:"Mark delivered", onclick:() => setStatus("delivered")}),
+        el("button", {class:"textbtn danger", type:"button", text:"Cancel order", onclick:() => setStatus("cancelled")}));
+    }
+    acts.append(el("a", {class:"textbtn", href:waLink(o.phone, custMsg), target:"_blank", rel:"noopener", text:"WhatsApp the customer"}));
+  } else if (mode === "shop") {
+    if (o.status === "approved") acts.append(el("button", {class:"go", type:"button", text:"Mark delivered", onclick:() => setStatus("delivered")}),
+      el("button", {class:"textbtn danger", type:"button", text:"Cancel order", onclick:() => setStatus("cancelled")}));
+    acts.append(el("a", {class:"textbtn", href:waLink(o.phone, custMsg), target:"_blank", rel:"noopener", text:"WhatsApp the customer"}));
+  } else if (o.status === "pending") {
+    const c = el("button", {class:"textbtn danger", type:"button", text:"Cancel order"});
+    c.addEventListener("click", () => confirmInline(c, "Cancel this order?", "Cancel it", () => setStatus("cancelled")));
+    acts.append(c);
+  }
+  acts.append(msg);
+  const showCustomer = mode !== "customer";
+  return el("article", {class:"ord"},
+    el("div", {class:"top"}, el("span", {class:"code"}, o.code || "Order", el("small", {text:ago(o.created)})), statusChip(o.status)),
+    el("div", {class:"item"}, p ? prodPic(null, p, "s", o.kind === "oil") : el("span"), el("div", {style:"min-width:0"}, el("b", {text:title}), el("small", {text:[sub, mode !== "shop" ? shop.name : null].filter(Boolean).join(" · ")})),
+      el("div", {class:"amt"}, iqd(o.total), el("small", {style:"display:block", text:`${o.size} × ${o.qty}`}))),
+    showCustomer ? el("div", {class:"cust"},
+      el("div", {}, el("span", {text:"Customer"}), o.name), el("div", {}, el("span", {text:"WhatsApp"}), el("a", {href:`tel:${o.phone}`, text:fmtPhone(o.phone)})),
+      el("div", {}, el("span", {text:"City"}), o.city), o.address ? el("div", {}, el("span", {text:"Address"}), o.address) : null,
+      o.note ? el("div", {style:"grid-column:1/-1"}, el("span", {text:"Note"}), o.note) : null) : null,
+    o.admin_note && (mode !== "shop") ? el("p", {class:"anote", text:(mode === "customer" ? "From Scent DNA: " : "Your note: ") + o.admin_note}) : null,
+    mode === "customer" && o.status === "pending" ? el("p", {class:"anote", text:"We're checking your order. The shop will message you on WhatsApp once it's approved."}) : null,
+    acts.children.length > 1 ? acts : null);
+}
+
+/* ---------- your orders, on your profile ---------- */
+async function drawMyOrders(){
+  const sec = $("#pOrdSec"); await Acc.ready;
+  if (!Acc.user) { sec.hidden = true; return; }
+  let res; try { res = await Acc.pb.collection("orders").getList(1, 30, {filter:Acc.pb.filter("user = {:u}", {u:Acc.user.id}), sort:"-created", expand:"shop"}); } catch { sec.hidden = true; return; }
+  sec.hidden = !res.totalItems;
+  $("#pOrdCount").textContent = res.totalItems ? plural(res.totalItems, "order", "orders") : "";
+  $("#pOrds").replaceChildren(...res.items.map(o => orderCard(o, "customer", drawMyOrders)));
+}
+
+/* ---------- your orders page (works without a Scent DNA profile) ---------- */
+async function openOrders(){
+  await needData(); show("orders");
+  const box = $("#vOrders"), head = el("div", {class:"comhead"}, el("h1", {text:"Your orders"}));
+  box.replaceChildren(head, el("p", {class:"empty", text:"Loading…"}));
+  await Acc.ready;
+  if (!Acc.on) { box.replaceChildren(head, noticeEl("Ordering is coming soon", "")); return; }
+  if (!Acc.user) { box.replaceChildren(head, noticeEl("Sign in to see your orders", "Orders you place while signed in show up here."), el("a", {class:"go", href:"#account", style:"justify-self:start;text-decoration:none", text:"Sign in"})); return; }
+  let res; try { res = await Acc.pb.collection("orders").getList(1, 50, {filter:Acc.pb.filter("user = {:u}", {u:Acc.user.id}), sort:"-created", expand:"shop"}); } catch { res = {items:[], totalItems:0}; }
+  box.replaceChildren(head, res.totalItems ? el("div", {class:"orders"}, ...res.items.map(o => orderCard(o, "customer", openOrders)))
+    : el("div", {style:"display:grid;gap:16px"}, noticeEl("No orders yet", "Find a perfume and choose Order now, or browse the shops."), el("a", {class:"go", href:"#shops", style:"justify-self:start;text-decoration:none", text:"See the shops"})));
+}
+
+/* ---------- shop dashboard ---------- */
+let dashTab = "perfumes", dashShopId = null;
+async function openDash(){
+  await needData(); show("dash");
+  const box = $("#vDash"); box.replaceChildren(el("p", {class:"empty", text:"Loading…"}));
+  await Acc.ready;
+  if (!Acc.on) return needServer(box, "The shop dashboard needs the Scent DNA server", "It works once the site runs on its own server.");
+  if (!Acc.user) { box.replaceChildren(noticeEl("Sign in to open your shop dashboard", ""), el("a", {class:"go", href:"#account", style:"justify-self:start;text-decoration:none", text:"Sign in"})); return; }
+  const admin = Acc.user.role === "admin";
+  let shops = [];
+  try { shops = await Acc.pb.collection("shops").getFullList({filter:admin ? "" : Acc.pb.filter("owner = {:u}", {u:Acc.user.id}), sort:"sort,name"}); } catch {}
+  if (!shops.length) { box.replaceChildren(noticeEl(admin ? "No shops yet" : "Your account isn't linked to a shop yet", admin ? "Add one on the admin page." : "Ask the Scent DNA admin to add you as your shop's owner, using the email you signed in with.")); return; }
+  const shop = shops.find(s => s.id === dashShopId) || shops[0]; dashShopId = shop.id;
+  const body = el("div", {style:"display:grid;gap:28px"});
+  const tabs = el("div", {class:"seg", role:"group", "aria-label":"Dashboard"});
+  for (const [k, l] of [["perfumes", "Perfumes"], ["orders", "Orders"], ["details", "Shop details"]]) {
+    const b = el("button", {type:"button", "aria-pressed":String(dashTab === k), text:l});
+    b.addEventListener("click", () => { dashTab = k; [...tabs.children].forEach(x => x.setAttribute("aria-pressed", String(x === b))); drawTab(); }); tabs.append(b);
+  }
+  const drawTab = () => dashTab === "orders" ? dashOrders(shop, body) : dashTab === "details" ? dashDetails(shop, body) : dashPerfumes(shop, body);
+  box.replaceChildren(
+    el("div", {class:"dashhead"}, el("div", {style:"display:flex;gap:18px;align-items:center"}, shopLogo(shop),
+      el("div", {}, el("h1", {text:shop.name}), el("p", {}, kindBadge(shop.kind), " ", shop.active ? el("a", {href:`#shop/${shop.slug}`, text:"See your shop page"}) : el("span", {class:"badge off", text:"Hidden until the admin turns it on"})))),
+      admin && shops.length > 1 ? el("select", {class:"inp", style:"max-width:260px", "aria-label":"Shop", onchange:e => { dashShopId = e.target.value; openDash(); }},
+        ...shops.map(s => { const op = el("option", {value:s.id, text:s.name}); if (s.id === shop.id) op.selected = true; return op; })) : null),
+    tabs, body);
+  drawTab();
+}
+async function dashPerfumes(shop, body){
+  body.replaceChildren(el("p", {class:"empty", text:"Loading your perfumes…"}));
+  let prods = [];
+  try { prods = await Acc.pb.collection("products").getFullList({filter:Acc.pb.filter("shop = {:s}", {s:shop.id}), sort:"-created"}); } catch {}
+  const editorBox = el("div"), list = el("div", {class:"plist"}), filt = el("input", {class:"inp", type:"search", placeholder:"Find in your list", "aria-label":"Find in your list", style:"max-width:320px"});
+  const search = el("input", {class:"inp", type:"search", autocomplete:"off", placeholder:"Search all 48,531 perfumes", "aria-label":"Search perfumes to add"}), hits = el("div", {class:"list"});
+  const reload = () => dashPerfumes(shop, body);
+  search.addEventListener("input", () => {
+    const t = search.value.trim(); if (!t) { hits.replaceChildren(); return; }
+    const have = new Set(prods.map(x => x.perfume));
+    hits.replaceChildren(...searchPerfumes(t, 6).map(p => el("button", {class:"hit", type:"button", "aria-disabled":String(have.has(p.id)), onclick:() => { if (have.has(p.id)) return; hits.replaceChildren(); search.value = ""; editorBox.replaceChildren(prodEditor(shop, p, null, reload, () => editorBox.replaceChildren())); editorBox.scrollIntoView({block:"start", behavior:"smooth"}); }},
+      bottle(p, "s"), el("div", {}, el("div", {class:"n", text:p.name}), el("div", {class:"b", text:meta(p)})), el("span", {class:"add", text:have.has(p.id) ? "Added" : "Add"}))));
+  });
+  const drawList = () => {
+    const t = norm(filt.value.trim());
+    const rows = prods.filter(x => D.byId.has(x.perfume)).filter(x => { const p = D.byId.get(x.perfume); return !t || norm(`${p.name} ${p.brand} ${x.label}`).includes(t); });
+    list.replaceChildren(...(rows.length ? rows.map(x => { const p = D.byId.get(x.perfume), nm = itemName(x, shop, p);
+      const stock = el("label", {class:"check stock"}, el("input", {type:"checkbox"}), "In stock"); stock.firstChild.checked = !!x.in_stock;
+      stock.firstChild.addEventListener("change", async e => { try { await Acc.pb.collection("products").update(x.id, {in_stock:e.target.checked}); x.in_stock = e.target.checked; } catch { e.target.checked = !e.target.checked; } });
+      return el("div", {class:"prow"}, prodPic(x, p, "s", shop.kind === "oil"), el("div", {style:"min-width:0"}, el("b", {text:nm.title}), el("small", {text:(x.sizes || []).map(s => `${s.size} ${iqd(s.price)}`).join(" · ")})), stock,
+        el("button", {class:"quiet", type:"button", text:"Edit", onclick:() => { editorBox.replaceChildren(prodEditor(shop, p, x, reload, () => editorBox.replaceChildren())); editorBox.scrollIntoView({block:"start", behavior:"smooth"}); }})); })
+      : [el("p", {class:"empty", style:"padding:16px 4px", text:prods.length ? "Nothing matches." : "No perfumes yet. Search above to add your first one."})]));
+  };
+  filt.addEventListener("input", drawList);
+  body.replaceChildren(
+    el("div", {class:"panel"}, el("h4", {text:"Add a perfume"}),
+      el("p", {class:"fine2", text:shop.kind === "oil" ? "Search for the perfume your oil is inspired by, then add your sizes and prices." : "Search for the perfume, then add your sizes and prices."}), search, hits),
+    editorBox,
+    el("section", {class:"psec"}, el("header", {}, el("h3", {text:"Your perfumes"}), el("span", {text:plural(prods.length, "perfume", "perfumes")})), filt, list));
+  drawList();
+}
+function prodEditor(shop, p, x, reload, close){
+  const rows = el("div", {class:"sizerows"}), err = el("div", {class:"err", role:"alert"});
+  const addRow = (size = "", price = "") => {
+    const r = el("div", {class:"sizerow"}, el("input", {class:"inp", placeholder:"Size, e.g. 100 ml", maxlength:"20", "aria-label":"Size"}),
+      el("input", {class:"inp", type:"number", inputmode:"numeric", min:"250", step:"250", placeholder:"Price in IQD", "aria-label":"Price in IQD"}),
+      el("button", {class:"x", type:"button", "aria-label":"Remove this size", text:"×", style:"width:40px;height:40px;border-radius:50%;border:0;background:var(--sunk);cursor:pointer", onclick:() => { if (rows.children.length > 1) r.remove(); }}));
+    r.children[0].value = size; r.children[1].value = price; rows.append(r);
+  };
+  (x && x.sizes && x.sizes.length ? x.sizes : [{size:"", price:""}]).forEach(s => addRow(s.size, s.price));
+  const label = shop.kind === "oil" ? el("input", {class:"inp", id:"pLabel", maxlength:"60", placeholder:"e.g. No. 21"}) : null; if (label) label.value = x ? x.label || "" : "";
+  const stock = el("label", {class:"check"}, el("input", {type:"checkbox"}), "In stock"); stock.firstChild.checked = x ? !!x.in_stock : true;
+  const note = el("input", {class:"inp", id:"pNote", maxlength:"300", placeholder:"e.g. Comes with a gift box"}); note.value = x ? x.note || "" : "";
+  let photo = null, removePhoto = false;
+  const pic = el("div", {style:"display:flex;gap:14px;align-items:center;flex-wrap:wrap"});
+  const fileIn = el("input", {type:"file", accept:"image/jpeg,image/png,image/webp", hidden:""});
+  const drawPic = () => pic.replaceChildren(photo ? el("span", {class:"bt m photo"}, el("img", {src:URL.createObjectURL(photo), alt:""})) : x && x.photo && !removePhoto ? prodPic(x, p, "m") : prodPic(null, p, "m", shop.kind === "oil"),
+    el("div", {style:"display:grid;gap:6px"}, el("button", {class:"quiet", type:"button", text:"Use my own photo", onclick:() => fileIn.click()}),
+      photo || (x && x.photo && !removePhoto) ? el("button", {class:"textbtn", type:"button", style:"justify-self:start", text:"Remove my photo", onclick:() => { photo = null; removePhoto = true; drawPic(); }}) : el("small", {class:"fine2", text:shop.kind === "oil" ? "Optional. A photo of your oil bottle helps customers." : "Optional. Otherwise the catalog photo is used."})), fileIn);
+  fileIn.addEventListener("change", () => { const f = fileIn.files[0]; if (!f) return; if (f.size > 3e6) { err.textContent = "That photo is over 3 MB. Choose a smaller one."; return; } photo = f; removePhoto = false; drawPic(); });
+  drawPic();
+  const save = el("button", {class:"go", type:"submit", text:x ? "Save changes" : "Add to my shop"});
+  const del = x ? el("button", {class:"textbtn danger", type:"button", text:"Remove from my shop"}) : null;
+  if (del) del.addEventListener("click", () => confirmInline(del, "Remove this perfume from your shop?", "Remove", async () => { await Acc.pb.collection("products").delete(x.id); close(); reload(); }));
+  const f = el("form", {class:"panel", novalidate:""},
+    el("div", {class:"osum"}, bottle(p, "m"), el("div", {}, el("b", {text:shop.kind === "oil" ? `Inspired by ${p.name}` : p.name}), el("small", {text:meta(p)}))),
+    label ? el("div", {class:"field"}, el("label", {for:"pLabel", text:"Your name for this oil (optional)"}), label) : null,
+    el("div", {class:"field"}, el("span", {style:"font-weight:600;font-size:15px", text:"Sizes and prices"}), rows,
+      el("button", {class:"textbtn", type:"button", style:"justify-self:start", text:"+ Add another size", onclick:() => { if (rows.children.length < 8) addRow(); }})),
+    stock, el("div", {class:"field"}, el("span", {style:"font-weight:600;font-size:15px", text:"Photo"}), pic),
+    el("div", {class:"field"}, el("label", {for:"pNote", text:"Note for customers (optional)"}), note),
+    err, el("div", {class:"actions"}, save, el("button", {class:"textbtn", type:"button", text:"Cancel", onclick:close}), del));
+  f.addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const sizes = [...rows.children].map(r => ({size:r.children[0].value.trim(), price:Number(r.children[1].value)})).filter(s => s.size || s.price);
+    if (!sizes.length) { err.textContent = "Add at least one size with a price."; return; }
+    if (sizes.some(s => !s.size || !(s.price >= 250))) { err.textContent = "Each size needs a name like 100 ml and a price in IQD, like 45000."; return; }
+    const fd = new FormData();
+    fd.append("sizes", JSON.stringify(sizes)); fd.append("in_stock", String(stock.firstChild.checked)); fd.append("note", note.value.trim());
+    if (label) fd.append("label", label.value.trim());
+    if (photo) fd.append("photo", photo); else if (removePhoto) fd.append("photo", "");
+    if (!x) { fd.append("shop", shop.id); fd.append("perfume", String(p.id)); }
+    save.disabled = true; err.textContent = "";
+    try { if (x) await Acc.pb.collection("products").update(x.id, fd); else await Acc.pb.collection("products").create(fd); close(); reload(); }
+    catch (e) { err.textContent = errText(e, "It couldn't be saved. Try again."); save.disabled = false; }
+  });
+  return f;
+}
+async function dashOrders(shop, body){
+  body.replaceChildren(el("p", {class:"empty", text:"Loading orders…"}));
+  let res; try { res = await Acc.pb.collection("orders").getList(1, 50, {filter:Acc.pb.filter("shop = {:s}", {s:shop.id}), sort:"-approved_at,-created"}); } catch { res = {items:[]}; }
+  const reload = () => dashOrders(shop, body);
+  body.replaceChildren(el("p", {class:"fine2", text:"Orders appear here after Scent DNA approves them and sends them to your WhatsApp. Message the customer to confirm delivery, then mark the order delivered."}),
+    el("div", {class:"orders"}, ...(res.items.length ? res.items.map(o => orderCard(o, "shop", reload)) : [el("p", {class:"empty", text:"No orders yet."})])));
+}
+function dashDetails(shop, body){
+  const about = el("textarea", {class:"inp", id:"sAbout", maxlength:"400", style:"min-height:100px"}); about.value = shop.about || "";
+  const city = el("input", {class:"inp", id:"sCity", maxlength:"60", list:"oCities2"}); city.value = shop.city || "";
+  const wa = el("input", {class:"inp", id:"sWa", type:"tel", maxlength:"20", placeholder:"0750 123 4567"}); wa.value = shop.whatsapp || "";
+  let logo = null; const fileIn = el("input", {type:"file", accept:"image/jpeg,image/png,image/webp", hidden:""}), logoBox = el("div", {style:"display:flex;gap:14px;align-items:center"});
+  const drawLogo = () => logoBox.replaceChildren(logo ? el("span", {class:"slogo"}, el("img", {src:URL.createObjectURL(logo), alt:""})) : shopLogo(shop), el("button", {class:"quiet", type:"button", text:"Choose a logo", onclick:() => fileIn.click()}), fileIn);
+  fileIn.addEventListener("change", () => { logo = fileIn.files[0] || null; drawLogo(); }); drawLogo();
+  const err = el("div", {class:"err", role:"alert"}), ok = el("div", {class:"msg", role:"status"}), save = el("button", {class:"go", type:"submit", text:"Save"});
+  const f = el("form", {class:"panel", novalidate:""},
+    el("p", {class:"fine2", text:`Your shop's name (${shop.name}) and type (${KIND[shop.kind]}) are set by the Scent DNA admin.`}),
+    el("div", {class:"field"}, el("span", {style:"font-weight:600;font-size:15px", text:"Logo"}), logoBox),
+    el("div", {class:"field"}, el("label", {for:"sAbout", text:"About your shop"}), about),
+    el("div", {class:"formgrid"}, el("div", {class:"field"}, el("label", {for:"sCity", text:"City"}), city),
+      el("div", {class:"field"}, el("label", {for:"sWa", text:"WhatsApp for orders (private)"}), wa)),
+    el("datalist", {id:"oCities2"}, ...CITIES.map(c => el("option", {value:c}))),
+    err, ok, el("div", {class:"actions"}, save));
+  f.addEventListener("submit", async ev => {
+    ev.preventDefault(); save.disabled = true; err.textContent = ""; ok.textContent = "";
+    const fd = new FormData(); fd.append("about", about.value.trim()); fd.append("city", city.value.trim()); fd.append("whatsapp", wa.value.trim()); if (logo) fd.append("logo", logo);
+    try { Object.assign(shop, await Acc.pb.collection("shops").update(shop.id, fd)); ok.textContent = "Saved."; logo = null; drawLogo(); }
+    catch (e) { err.textContent = errText(e, "It couldn't be saved. Try again."); }
+    finally { save.disabled = false; }
+  });
+  body.replaceChildren(f);
+}
+
+/* ---------- admin: orders and shops ---------- */
+let adminTab = "orders", adminStatus = "pending", adminSub = null;
+async function openAdmin(){
+  await needData(); show("admin");
+  const box = $("#vAdmin"); box.replaceChildren(el("p", {class:"empty", text:"Loading…"}));
+  await Acc.ready;
+  if (!Acc.on) return needServer(box, "The admin page needs the Scent DNA server", "It works once the site runs on its own server.");
+  if (!Acc.user || Acc.user.role !== "admin") { box.replaceChildren(noticeEl("This page is for the Scent DNA admin", Acc.user ? "Your account doesn't have admin access." : "Sign in with the admin account.")); return; }
+  const C = Acc.pb.collection("orders");
+  const body = el("div", {style:"display:grid;gap:24px"});
+  const tabs = el("div", {class:"seg", role:"group", "aria-label":"Admin"});
+  for (const [k, l] of [["orders", "Orders"], ["shops", "Shops"]]) {
+    const b = el("button", {type:"button", "aria-pressed":String(adminTab === k), text:l});
+    b.addEventListener("click", () => { adminTab = k; [...tabs.children].forEach(x => x.setAttribute("aria-pressed", String(x === b))); draw(); }); tabs.append(b);
+  }
+  const draw = () => adminTab === "shops" ? adminShops(body) : adminOrders(body);
+  box.replaceChildren(
+    el("div", {class:"dashhead"}, el("div", {}, el("h1", {text:"Orders and shops"}), el("p", {text:"Approve each order, then send it to the shop on WhatsApp."})),
+      el("div", {class:"counts", id:"admCounts"})),
+    tabs, body);
+  draw(); adminCounts();
+  // new orders show up while this page is open
+  if (!adminSub) { adminSub = true; try { await C.subscribe("*", ev => { if (!V.admin.hidden && adminTab === "orders" && ev.action === "create") openAdmin(); }); } catch { adminSub = null; } }
+}
+async function adminCounts(){
+  const C = Acc.pb.collection("orders"), sts = ["pending", "approved", "delivered"];
+  const nums = await Promise.all(sts.map(st => C.getList(1, 1, {filter:Acc.pb.filter("status = {:s}", {s:st}), fields:"id"}).then(r => r.totalItems).catch(() => 0)));
+  const box = $("#admCounts"); if (box) box.replaceChildren(...sts.map((s, i) => el("div", {}, el("b", {text:fmt(nums[i])}), el("span", {text:STATUS[s]}))));
+}
+async function adminOrders(body){
+  adminCounts();
+  const shops = await Acc.pb.collection("shops").getFullList({sort:"sort,name"}).catch(() => []), byId = Object.fromEntries(shops.map(s => [s.id, s]));
+  const seg = el("div", {class:"seg", role:"group", "aria-label":"Status"});
+  for (const [k, l] of [["pending", "Waiting"], ["approved", "Sent to shop"], ["delivered", "Delivered"], ["rejected", "Rejected"], ["cancelled", "Cancelled"], ["", "All"]]) {
+    const b = el("button", {type:"button", "aria-pressed":String(adminStatus === k), text:l});
+    b.addEventListener("click", () => { adminStatus = k; adminOrders(body); }); seg.append(b);
+  }
+  const list = el("div", {class:"orders"}), more = el("button", {class:"quiet", type:"button", text:"Show more", hidden:""});
+  let page = 0;
+  const load = async () => {
+    page++; let res;
+    try { res = await Acc.pb.collection("orders").getList(page, 20, {filter:adminStatus ? Acc.pb.filter("status = {:s}", {s:adminStatus}) : "", sort:"-created"}); }
+    catch { list.append(el("p", {class:"empty", text:"Orders didn't load. Reload the page."})); return; }
+    list.append(...res.items.map(o => orderCard(o, "admin", () => openAdmin(), byId)));
+    if (!res.totalItems) list.append(el("p", {class:"empty", text:adminStatus === "pending" ? "No orders waiting. New ones appear here by themselves." : "Nothing here."}));
+    more.hidden = page >= res.totalPages;
+  };
+  more.addEventListener("click", load);
+  body.replaceChildren(seg, list, el("div", {}, more));
+  load();
+}
+async function adminShops(body){
+  body.replaceChildren(el("p", {class:"empty", text:"Loading shops…"}));
+  const [shops, owners] = await Promise.all([Acc.pb.collection("shops").getFullList({sort:"sort,name"}).catch(() => []),
+    Acc.pb.send("/api/scentdna/shop-owners", {}).catch(() => ({}))]);
+  const reload = () => { SHOPS = null; adminShops(body); };
+  const form = (s) => {
+    const v = k => s ? s[k] ?? "" : "";
+    const name = el("input", {class:"inp", maxlength:"60", "aria-label":"Shop name", placeholder:"Shop name"}); name.value = v("name");
+    const slug = el("input", {class:"inp", maxlength:"40", "aria-label":"Web address", placeholder:"web-address"}); slug.value = v("slug");
+    if (!s) name.addEventListener("input", () => slug.value = name.value.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""));
+    const kind = el("select", {class:"inp", "aria-label":"Type"}, el("option", {value:"original", text:"Original perfumes"}), el("option", {value:"oil", text:"Perfume oils (not original)"})); kind.value = v("kind") || "original";
+    const city = el("input", {class:"inp", maxlength:"60", "aria-label":"City", placeholder:"City", list:"oCities3"}); city.value = v("city");
+    const wa = el("input", {class:"inp", type:"tel", maxlength:"20", "aria-label":"WhatsApp", placeholder:"WhatsApp, e.g. 0750 123 4567"}); wa.value = v("whatsapp");
+    const about = el("input", {class:"inp", maxlength:"400", "aria-label":"About", placeholder:"One line about the shop"}); about.value = v("about");
+    const sort = el("input", {class:"inp", type:"number", "aria-label":"Order on the Shops page", placeholder:"Order on the Shops page (1, 2, 3…)"}); sort.value = v("sort");
+    const active = el("label", {class:"check"}, el("input", {type:"checkbox"}), "Show on the site"); active.firstChild.checked = s ? !!s.active : true;
+    const err = el("div", {class:"err", role:"alert"}), save = el("button", {class:"go", type:"submit", text:s ? "Save shop" : "Add shop"});
+    const lab = (t, i) => el("label", {class:"field"}, el("span", {style:"font-weight:600;font-size:14px", text:t}), i);
+    const f = el("form", {class:"panel", novalidate:""}, el("h4", {text:s ? `Edit ${s.name}` : "Add a shop"}),
+      el("div", {class:"formgrid"}, lab("Name", name), lab("Web address (#shop/…)", slug), lab("Type", kind), lab("City", city), lab("WhatsApp for orders", wa), lab("Order on the Shops page", sort),
+        el("div", {class:"full"}, lab("About", about))), el("datalist", {id:"oCities3"}, ...CITIES.map(c => el("option", {value:c}))), active, err,
+      el("div", {class:"actions"}, save, el("button", {class:"textbtn", type:"button", text:"Cancel", onclick:reload})));
+    f.addEventListener("submit", async ev => {
+      ev.preventDefault();
+      if (name.value.trim().length < 2 || !/^[a-z0-9-]+$/.test(slug.value)) { err.textContent = "Add a name and a web address using only small letters, numbers and dashes."; return; }
+      const data = {name:name.value.trim(), slug:slug.value, kind:kind.value, city:city.value.trim(), whatsapp:wa.value.trim(), about:about.value.trim(), sort:Number(sort.value) || 0, active:active.firstChild.checked};
+      save.disabled = true;
+      try { if (s) await Acc.pb.collection("shops").update(s.id, data); else await Acc.pb.collection("shops").create(data); reload(); }
+      catch (e) { err.textContent = e?.response?.data?.slug ? "Another shop already uses that web address." : errText(e, "It couldn't be saved. Check the details and try again."); save.disabled = false; }
+    });
+    return f;
+  };
+  const top = el("div");
+  const addBtn = el("button", {class:"go", type:"button", text:"Add a shop", style:"justify-self:start", onclick:() => { top.replaceChildren(form(null)); }});
+  body.replaceChildren(addBtn, top,
+    el("div", {class:"orders"}, ...(shops.length ? shops.map(s => {
+      const ow = owners[s.id], email = el("input", {class:"inp", type:"email", placeholder:"Owner's account email", "aria-label":`Owner email for ${s.name}`}), msg = el("span", {class:"fine2", role:"status"});
+      const setOwner = el("button", {class:"quiet", type:"button", text:ow ? "Change owner" : "Set owner"});
+      setOwner.addEventListener("click", async () => {
+        if (!/^\S+@\S+\.\S+$/.test(email.value.trim())) { msg.textContent = "Enter the email the shop owner signed up with."; return; }
+        try { await Acc.pb.send("/api/scentdna/shop-owner", {method:"POST", body:{shop:s.id, email:email.value.trim()}}); reload(); }
+        catch (e) { msg.textContent = e?.response?.message || "That didn't work."; }
+      });
+      return el("div", {class:"shoprow"},
+        el("div", {class:"top"}, shopLogo(s, "s"), el("h4", {text:s.name}), kindBadge(s.kind), s.active ? null : el("span", {class:"badge off", text:"Hidden"})),
+        el("div", {class:"meta", text:[s.city, s.whatsapp ? `WhatsApp ${fmtPhone(s.whatsapp)}` : "No WhatsApp yet", `#shop/${s.slug}`].filter(Boolean).join(" · ")}),
+        el("div", {class:"meta", text:ow ? `Owner: ${ow.name || "no name"} (${ow.email})` : "No owner yet. The owner signs up on the site, then you add their email here."}),
+        el("div", {class:"inline"}, email, setOwner, msg),
+        el("div", {class:"acts", style:"display:flex;gap:12px;flex-wrap:wrap"}, el("button", {class:"quiet", type:"button", text:"Edit", onclick:() => { top.replaceChildren(form(s)); top.scrollIntoView({behavior:"smooth"}); }}),
+          el("a", {class:"textbtn", href:"#dashboard", text:"Open its dashboard", onclick:() => { dashShopId = s.id; }})));
+    }) : [el("p", {class:"empty", text:"No shops yet. Add your first one."})])));
 }
 
 /* ---------- boot ---------- */

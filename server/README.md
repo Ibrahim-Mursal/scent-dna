@@ -67,6 +67,35 @@ In the dashboard: **Settings → Backups**. Turn on automatic backups (for examp
 
 Rate limiting is already turned on by the setup (it slows down password guessing and spam). You can adjust it in **Settings → Application → Rate limiting**.
 
+## Shops and orders
+
+Partner shops list their perfumes on the site, customers press **Order now**, and every order comes to you first.
+
+**Make yourself the admin (once).** Create your own account on the site, then in the dashboard open **Collections → users**, click your account, set **role** to **admin** and save. Sign in again on the site and the account menu shows **Orders and shops**.
+
+**Add a shop.** On the site, open **Orders and shops → Shops → Add a shop**:
+
+- **Type:** "Original perfumes" for shops selling original bottles, or "Perfume oils (not original)" for a shop like Sha Perfume. Oils are always labeled "inspired by" and "not the original".
+- **WhatsApp for orders:** where you send approved orders. Customers never see it.
+- **Web address:** the shop's page becomes `#shop/<web address>`.
+
+**Give the shop owner their dashboard.** Ask the owner to create a normal account on the site. Then type their email next to the shop and press **Set owner**. Their account menu now shows **Shop dashboard**, where they:
+
+- add perfumes (search the catalog, then add sizes, prices in IQD, stock and an optional photo)
+- see the orders you approved, and mark them delivered
+- edit their logo, description, city and WhatsApp number
+
+**When an order comes in:**
+
+1. It appears under **Orders and shops → Orders → Waiting** (the page updates by itself). If email sending is set up, you also get an email.
+2. Press **Approve and send to shop**. WhatsApp opens with the order already written to that shop; press send.
+3. Or press **Reject** and write a short reason; the customer sees it if they ordered while signed in.
+4. The shop contacts the customer, delivers, and marks the order **delivered** (you can too).
+
+Customers can order without an account (name, WhatsApp number, city, address). Signed-in customers can follow their orders on **Your orders**, and can cancel while an order is still waiting. Prices always come from the shop's listing on the server, so nobody can change a price in their browser. Each internet address can send at most 10 orders a minute.
+
+**Fully automatic WhatsApp (optional, later):** sending without pressing send needs Meta's WhatsApp Business Platform (a business account, an approved message template, and a small fee per message). The approve button can be switched to it later.
+
 ## Looking after the community
 
 You're the moderator. Everything is in the dashboard (`https://scentdna.owlava.com/_/`):
@@ -107,6 +136,9 @@ The photos are already in the GitHub repository, so the setup script copies them
 | `review_likes` | Member, review | Only the member who liked |
 | `reports` | Member, review or reply, reason | Only you |
 | `perfume_stats` | Average stars, review count and star spread per perfume, worked out automatically from `reviews` | Everyone |
+| `shops` | Shop name, type (original or oil), about, city, logo, WhatsApp, owner, shown or hidden | Everyone, except WhatsApp and owner (only you and the owner) |
+| `products` | A shop's listing: catalog perfume, its own name for oils, sizes and prices, in stock, photo | Everyone, for shown shops |
+| `orders` | Item, size, quantity, total, customer name, WhatsApp, city, address, note, status | You; the customer (if signed in); the shop after you approve |
 | `community_stats` | Total members, reviews and perfumes rated, for the Community page | Everyone |
 | `top_reviewers` | Review and "helpful" counts per member, for the Community page | Everyone |
 
@@ -121,4 +153,4 @@ Photo files are served from addresses with a random part in the name, so they ca
 | `setup.sh` | One-time server setup |
 | `update.sh` | Pulls the latest site from GitHub and restarts |
 | `pb_migrations/` | Creates the Scent DNA fields, the community collections and their privacy rules. Runs automatically. |
-| `pb_hooks/` | Server rules the database can't express on its own: hiding private profile fields from other people, like and reply counts, and hiding posts after 3 reports. |
+| `pb_hooks/` | Server rules the database can't express on its own: hiding private profile fields from other people, like and reply counts, hiding posts after 3 reports, order prices and statuses, and the tools behind the shops admin page. |

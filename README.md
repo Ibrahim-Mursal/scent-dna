@@ -92,6 +92,11 @@ To add another hand-picked shelf (for example "Staff picks" or "Best for wedding
 | `#community` | Community: search, community numbers, top rated, reviews (latest or most helpful), top reviewers, and Discover shelves (most worn, highest rated, new releases, winter and summer favorites) with a Female / Male / Unisex filter |
 | `#p/75805` | A perfume's page (the number is its Fragrantica ID) |
 | `#u/<id>` | A member's public page (name, photo, scent type, reviews) |
+| `#shops` | Partner shops, and how ordering works |
+| `#shop/sha-perfume` | One shop's perfumes, each with Order now |
+| `#orders` | A signed-in customer's orders and their status |
+| `#dashboard` | Shop owners: add perfumes, sizes and prices, see approved orders, edit shop details |
+| `#admin` | You: approve or reject orders (approving opens WhatsApp to the shop), add shops and set their owners |
 | `#account` | Sign in or create an account |
 | `#reset/<token>` | Choose a new password (linked from the reset email) |
 | `#privacy` | Privacy |

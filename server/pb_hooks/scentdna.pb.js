@@ -8,7 +8,7 @@ onRecordEnrich((e) => {
   const info = e.requestInfo
   const auth = info ? info.auth : null
   const owner = auth && (auth.id === e.record.id || auth.isSuperuser())
-  if (!owner) e.record.hide("birthday", "favorites", "accords", "notes", "profile_made", "wishlist", "owned")
+  if (!owner) e.record.hide("birthday", "favorites", "accords", "notes", "profile_made", "wishlist", "owned", "role")
   e.next()
 }, "users")
 
