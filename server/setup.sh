@@ -34,7 +34,7 @@ mkdir -p "$APP"
 echo "==> Downloading the site"
 if [[ -d "$APP/repo/.git" ]]; then git -C "$APP/repo" pull --ff-only; else git clone --depth 1 "$REPO" "$APP/repo"; fi
 # the public folder gets the site only, never the git history or server files
-rsync -a --delete --exclude ".git" --exclude "server" --exclude "tools" --exclude "README.md" --exclude ".htaccess" --exclude "_headers" "$APP/repo/" "$APP/public/"
+rsync -a --delete --exclude ".git" --exclude "server" --exclude "tools" --exclude "local" --exclude "Start Scent DNA.cmd" --exclude "README.md" --exclude ".htaccess" --exclude "_headers" "$APP/repo/" "$APP/public/"
 
 echo "==> Installing PocketBase $PB_VERSION"
 curl -fsSL -o /tmp/pocketbase.zip "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip"

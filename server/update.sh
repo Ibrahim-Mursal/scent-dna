@@ -4,7 +4,7 @@
 set -euo pipefail
 APP="/opt/scentdna"
 git -C "$APP/repo" pull --ff-only
-rsync -a --delete --exclude ".git" --exclude "server" --exclude "tools" --exclude "README.md" --exclude ".htaccess" --exclude "_headers" "$APP/repo/" "$APP/public/"
+rsync -a --delete --exclude ".git" --exclude "server" --exclude "tools" --exclude "local" --exclude "Start Scent DNA.cmd" --exclude "README.md" --exclude ".htaccess" --exclude "_headers" "$APP/repo/" "$APP/public/"
 chown -R scentdna:scentdna "$APP"
 systemctl restart scentdna
 echo "Updated and restarted."

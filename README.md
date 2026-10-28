@@ -24,7 +24,20 @@ It runs in two ways:
 | `tools/download_images.py` | Downloads the bottle and note photos into `images/` |
 | `tools/export_data.py` | Rebuilds `perfumes.json` from a newer Decant `perfumes.db` |
 
-Upload everything except `README.md` and `tools/`, including the `images` folder if you made it. Keep the folder structure as it is.
+Upload everything except `README.md`, `tools/`, `local/` and `Start Scent DNA.cmd`, including the `images` folder if you made it. Keep the folder structure as it is.
+
+## Run it on your PC (Windows)
+
+Double-click **`Start Scent DNA.cmd`**. The first time it downloads PocketBase (about 15 MB). Then it opens **http://127.0.0.1:8090** with everything switched on: accounts, Community, Shops and the admin page, filled with demo data. Keep the black window open; closing it stops the site.
+
+| Demo account (password `demo12345`) | What it shows |
+|---|---|
+| ibrahim@demo.local | You, the admin: account menu → Orders and shops (2 orders waiting) |
+| sha@demo.local | Sha Perfume's owner: Shop dashboard (perfume oils) |
+| shop@demo.local | Erbil Originals' owner: Shop dashboard (original bottles) |
+| sara@demo.local | A member with reviews |
+
+The PocketBase dashboard is at http://127.0.0.1:8090/_/ (admin@scentdna.local / demo12345). The local database lives in `%LOCALAPPDATA%\ScentDNA`, outside this folder; delete that folder to start fresh. The demo data (`local/demo_data.js`) is only ever used on your PC, never on the real server.
 
 ## Step 1: download the photos (recommended)
 
